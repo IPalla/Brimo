@@ -1,0 +1,64 @@
+<div class="content">
+
+<nav class="navbar navbar-expand-sm navbar-dark">
+  <a class="navbar-brand" href="#">
+    <img src="./assets/logoBrimo.png" alt="logo" class="rounded">
+  </a>
+  <button class="navbar-toggler navbar-toggler-right" [ngClass]="claseBoton" type="button" (click)="botonMenu()" >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  <!-- Links -->
+  <ul class="navbar-nav" [ngClass]="claseUl">
+      <li class="nav-item">
+          <button class="navbar-toggler navbar-toggler-right" type="button" (click)="botonMenu()" >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Devices <i class="fa fa-thermometer-half"></i></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Rooms</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Settings <i class="fa fa-cog"></i></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">About </a>
+    </li><li class="nav-item">
+        <button class="btn btn-success my-2 my-sm-0" type="button" (click)="botonLogin()" >Log In</button>
+      </li>
+  </ul>
+</nav>
+<div class="container" [ngClass]="claseLoginForm">
+    <div class="row" >
+      <div class="card bg-light text-dark col-lg-3 col-md-5 offset-md-7 offset-lg-9">
+        <div class="card-header">
+          <h3>LOGIN:</h3>
+        </div>
+          <div class="card-body">
+              <form method="post" action="/login" >
+                <p>
+                  <label for="username">User:</label>
+                </p>
+                <p>
+                  <input type="text" id="username" name="username">
+                </p>
+                <p>
+                  <label for="pwd">Password:</label>
+                </p>
+                <p>
+                <input type="password" id="pwd" name="pwd">
+                </p>
+                <p>
+                <button type="submit" class="btn btn-primary">Log In <i class="fa fa-sign-in"></i></button>
+                </p>
+              </form>
+          </div>
+        </div>
+      </div>
+</div>
+<div class="alert alert-danger">
+    <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.<br> If is the first time you acess check manual for default user and password.
+</div>
+</div>

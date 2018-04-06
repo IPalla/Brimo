@@ -1,0 +1,23 @@
+   <html>
+    <head>
+        <title>MI CAMARA</title>
+        <!-- Usamos JQUERY -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+            var images = '/image_*.png';
+            var i = 1;
+            setInterval(function() {
+                var path = images.replace('*', i);
+                $('#cam').attr('src', '/pic.jpg?n=' + i);
+                i = i + 1;
+                if (i == 100) i = 1;
+            }, 1000);
+        });
+        </script>
+    </head>
+    <body>
+    <h1>WELCOME</h1>
+    <img id="cam" src="/images/pic.jpg" alt="" />
+    </body>
+    </html>

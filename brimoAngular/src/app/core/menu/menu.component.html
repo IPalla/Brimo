@@ -1,0 +1,31 @@
+
+<nav class="navbar navbar-expand-sm navbar-dark">
+  <a class="navbar-brand" href="#" routerLinkActive="active" routerLink="">
+    <img src="./assets/logoBrimo.png" alt="logo" class="rounded">
+  </a>
+  <button class="navbar-toggler navbar-toggler-right" [ngClass]="claseBoton" type="button" (click)="botonMenu()" >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  <!-- Links -->
+  <ul class="navbar-nav" [ngClass]="claseUl">
+      <li class="nav-item">
+          <button class="navbar-toggler navbar-toggler-right" type="button" (click)="botonMenu()" >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" routerLinkActive="active" routerLink="devices_menu" >Devices <i class="fa fa-thermometer-half"></i></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" routerLinkActive="active" routerLink="cam">Cam <i class="fa fa-camera"></i></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" routerLinkActive="active" routerLink="">Settings <i class="fa fa-cog"></i></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" routerLinkActive="active" routerLink="">About </a>
+    </li><li class="nav-item">
+        <a href="/logout" ><button class="btn btn-warning my-2 my-sm-0" type="button" >Log Out <i class="fa fa-sign-out"></i></button></a>
+      </li>
+  </ul>
+</nav>

@@ -1,0 +1,25 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+
+@font-face {
+  font-family: 'AdamcgPRO';
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/ADAMCGPRO.otf") format("opentype");
+}
+
+*,
+*::before, *::after, *:before, *:after{
+    box-sizing: border-box;
+}
+.selector-for-some-widget {
+    box-sizing: content-box;
+}
+
+* {
+  font-family: 'AdamcgPRO';
+  margin: 0;
+}
+html, body{
+   height: 100%;
+ }

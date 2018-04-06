@@ -1,0 +1,60 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+
+@font-face {
+  font-family: 'AdamcgPRO';
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/ADAMCGPRO.otf") format("opentype");
+}
+
+*,
+*::before, *::after, *:before, *:after{
+    box-sizing: border-box;
+}
+.selector-for-some-widget {
+    box-sizing: content-box;
+}
+
+* {
+  font-family: 'AdamcgPRO';
+  margin: 0;
+}
+html, body{
+   height: 100%;
+ }
+ .content
+ {
+     min-height: 80%;
+     min-height: -webkit-calc(100% - 240px);
+     min-height: -moz-calc(100% - 240px);
+     min-height: calc(100% - 240px);
+ }
+ @media only screen and (max-width: 1225px){
+  .content
+  {
+      min-height: 90%;
+      min-height: -webkit-calc(100% - 265px);
+      min-height: -moz-calc(100% - 265px);
+      min-height: calc(100% - 265px);
+  }
+}
+@media only screen and (max-width: 1225px){
+  .content
+  {
+      min-height: 80%;
+      min-height: -webkit-calc(100% - 250px);
+      min-height: -moz-calc(100% - 250px);
+      min-height: calc(100% - 250px);
+  }
+}
+
+@media only screen and (max-width: 700px){
+  .content
+  {
+      min-height: 90%;
+      min-height: -webkit-calc(100% - 165px);
+      min-height: -moz-calc(100% - 165px);
+      min-height: calc(100% - 165px);
+  }
+}
