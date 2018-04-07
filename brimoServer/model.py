@@ -141,7 +141,7 @@ def setup_databases():
     setup_users_table()
 
 
-##POBLAR BASE DATOS
+##CLEAN DDBB
 
 if __name__ == '__main__':
 	clean_databases()

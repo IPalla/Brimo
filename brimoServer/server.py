@@ -5,13 +5,10 @@ import sqlite3
 import sys
 from err import Logger, levels
 from model import device_add, device_edit, device_delete, device_JSON_by_id, devices_JSON, device_edit_info, users_login, setup_databases
-
+from cache import Caches
 import cherrypy
 
 """
-
-CREAR LOGS INFO Y ERRORES
-OBJETOS __STR__
 
 REVISAR CAMARA
 
@@ -24,6 +21,13 @@ ip_actuador/
 sudo raspistill -w 640 -h 480 -q 5 -o /home/pi/Desktop/brimoServer/dist/pic.jpg -tl 100 -t 9999999 -th 0:0:0 -n 
 """
 
+
+USERS = {'jon': 'secret'}
+
+def validate_password(realm, username, password):
+    if username in USERS and USERS[username] == password:
+       return True
+    return False
 
 def is_logged():
     if 'logged' not in cherrypy.session:
@@ -52,12 +56,16 @@ class webService(object):
 @cherrypy.expose
 class devices(object):
     exposed = True
-
     @cherrypy.tools.json_out()
     def GET(self):
-        logging.debug('GET DEVICES')
         cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
-        return devices_JSON()
+        logging.debug('GET DEVICES')
+        res = cache.getResponse('/devices')
+        if res:
+            return res
+        tocache = devices_JSON()
+        cache.setResponse('/devices', tocache)
+        return tocache
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def POST(self):
@@ -73,6 +81,7 @@ class devices(object):
         if ret != -1 and ret != 0:
             logging.info('Resource created, id: ' + str(ret))
             cherrypy.response.status = "201 Resource Created"
+            cache.unsetResponse('/devices')
             result={
                 'id': ret
                 }
@@ -124,6 +133,7 @@ class device(object):
                 return 
             logging.info('Device ' + device_id + ' info edited')
             cherrypy.response.status = "200 OK"
+            cache.unsetResponse('/devices')
             return 
         if new_name != "" and new_location != "":
             logging.debug('EDIT DEVICE LOCATION AND NAME: ' + new_name.upper() + ' ' + new_location.upper())
@@ -134,6 +144,7 @@ class device(object):
                 return
             logging.info('Device ' + device_id + ' name and location updated: ' + new_name.upper() + ' ' + new_location.upper()) 
             cherrypy.response.status = "200 OK"
+            cache.unsetResponse('/devices')
             return
         
         logging.warning('Bad request')
@@ -146,6 +157,7 @@ class device(object):
         if ret == 1:
             logging.info('Device ' + device_id + ' deleted')
             cherrypy.response.status = "200 OK"
+            cache.unsetResponse('/devices')
             return
         if ret == 0:
                 logging.warning('Device ' + device_id + ' not found')
@@ -196,6 +208,11 @@ if __name__ == '__main__':
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.staticdir.on': True,
             'tools.staticdir.dir': os.path.abspath(os.getcwd()) + '/dist/dist'
+        },
+        '/protected/area': {
+            'tools.auth_basic.on': True,
+            'tools.auth_basic.realm': 'localhost',
+            'tools.auth_basic.checkpassword': validate_password
         }
     }
     cherrypy.config.update({'server.socket_host': '0.0.0.0',
@@ -205,9 +222,10 @@ if __name__ == '__main__':
                         'log.error_file': './logs/cherr.logs'
                        })
     webservice = webService()
+    logging = Logger(levels.DEBUG)
+    cache = Caches(logging)
     webservice.devices = devices()
     webservice.device = device()
     webservice.login = login()
     cherrypy.engine.subscribe('start', setup_databases)
-    logging = Logger(levels.DEBUG)
     cherrypy.quickstart(webservice, '/', conf)
