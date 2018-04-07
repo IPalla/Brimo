@@ -26,21 +26,21 @@ class Caches:
     if cacheObject:
       if cacheObject.response:
         if self.logging:
-          self.logging.debug('Response from cache: /' + url)
+          self.logging.debug('Response from cache: ' + url)
         return cacheObject.response
     return None
   
   def setResponse(self, url, response):
     self.caches[url] = Cache(response)
     if self.logging:
-      self.logging.debug('Initialized cache: /' + url)
+      self.logging.debug('Initialized cache: ' + url)
 
   def unsetResponse(self, url):
     if self.caches.has_key(url) == False:
       return
     self.caches[url] = None
     if self.logging:
-      self.logging.debug('Deleted cache: /' + url)
+      self.logging.debug('Deleted cache: ' + url)
   
   def clearAll(self):
     self.caches.clear()

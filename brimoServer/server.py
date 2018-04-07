@@ -7,6 +7,13 @@ from err import Logger, levels
 from model import device_add, device_edit, device_delete, device_JSON_by_id, devices_JSON, device_edit_info, users_login, setup_databases
 from cache import Caches
 import cherrypy
+from cherrypy.lib import auth_digest
+
+USERS = {'jon': 'secret'}
+
+SSL =  False
+DEBUG_LEVEL = levels.INFO
+
 
 """
 
@@ -22,7 +29,10 @@ sudo raspistill -w 640 -h 480 -q 5 -o /home/pi/Desktop/brimoServer/dist/pic.jpg 
 """
 
 
-USERS = {'jon': 'secret'}
+class main_config(object):
+    def __init__(self, SSL=False, DEBUG_LEVEL=levels.DEBUG):
+        self.SSL = SSL
+        self.DEBUG_LEVEL =DEBUG_LEVEL
 
 def validate_password(realm, username, password):
     if username in USERS and USERS[username] == password:
@@ -38,8 +48,8 @@ class webService(object):
 
     @cherrypy.expose
     def index(self):
-        if is_logged() == 0:
-            raise cherrypy.HTTPRedirect("/login")
+        #if is_logged() == 0:
+        #    raise cherrypy.HTTPRedirect("/login")
         return open('./dist/index.html')
 
     @cherrypy.expose
@@ -70,7 +80,6 @@ class devices(object):
     @cherrypy.tools.json_out()
     def POST(self):
         logging.debug('POST DEVICES')
-        #,name, freq, commands, info=""
         input_json = cherrypy.request.json
         name = input_json["name"]
         freq = input_json["freq"]
@@ -105,13 +114,10 @@ class devices(object):
 @cherrypy.popargs('device_id')
 class device(object):
     exposed = True
-
-    cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def PUT(self, device_id):
         logging.debug('PUT DEVICE/' + device_id)
-        cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
         input_json = cherrypy.request.json
         info = ""
         new_location = ""
@@ -152,7 +158,6 @@ class device(object):
         return
     def DELETE(self, device_id):
         logging.debug('DELETE DEVICE/' + device_id)
-        cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
         ret = device_delete(int(device_id))
         if ret == 1:
             logging.info('Device ' + device_id + ' deleted')
@@ -169,7 +174,7 @@ class device(object):
 
     @cherrypy.tools.json_out()
     def GET(self, device_id):
-        """Trigger function"""
+        print cherrypy.request.headers.values
         return device_JSON_by_id(device_id)
 
 
@@ -188,11 +193,23 @@ class login(object):
     def GET(self):
         return open('./dist/dist/index.html')
     
+# set the priority according to your needs if you are hooking something
+# else on the 'before_finalize' hook point.
+@cherrypy.tools.register('before_finalize', priority=60)
+def secureheaders():
+    headers = cherrypy.response.headers
+    headers['X-Frame-Options'] = 'DENY'
+    headers['X-XSS-Protection'] = '1; mode=block'
+    headers['Content-Security-Policy'] = "default-src='self'"
+    cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
 
 if __name__ == '__main__':
     conf = {
         '/': {
             'tools.sessions.on': True,
+            'tools.sessions.secure' : True,
+            'tools.sessions.httponly' : True,
+            'tools.secureheaders.on' : True,
             'tools.staticdir.root': os.path.abspath(os.getcwd()),
             'tools.staticdir.on': True,
             'tools.staticdir.dir': os.path.abspath(os.getcwd()) + '/dist',
@@ -221,8 +238,14 @@ if __name__ == '__main__':
                         'log.access_file': './logs/cherr.logs',
                         'log.error_file': './logs/cherr.logs'
                        })
+    ssl_config =   {   'server.ssl_module' : 'builtin',
+                        'server.ssl_certificate' : './cert.pem',
+                        'server.ssl_private_key' : './privkey.pem'}
+    config_object = main_config(SSL, DEBUG_LEVEL)
+    if config_object.SSL:
+        cherrypy.config.update(ssl_config)
     webservice = webService()
-    logging = Logger(levels.DEBUG)
+    logging = Logger(config_object.DEBUG_LEVEL)
     cache = Caches(logging)
     webservice.devices = devices()
     webservice.device = device()

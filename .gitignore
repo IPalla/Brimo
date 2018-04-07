@@ -57,7 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
-## database and compiled python files
+## database, compiled python files and keys
 
 .bd
 .pyc
+.pem
