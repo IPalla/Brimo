@@ -59,6 +59,6 @@ typings/
 
 ## database, compiled python files and keys
 
-.bd
-.pyc
-.pem
+*.bd
+*.pyc
+*.pem
