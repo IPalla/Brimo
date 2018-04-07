@@ -209,5 +209,5 @@ if __name__ == '__main__':
     webservice.device = device()
     webservice.login = login()
     cherrypy.engine.subscribe('start', setup_databases)
-    logging = Logger(levels.INFO)
+    logging = Logger(levels.DEBUG)
     cherrypy.quickstart(webservice, '/', conf)
