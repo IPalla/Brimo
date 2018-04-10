@@ -7,9 +7,6 @@ from err import Logger, levels
 from model import device_add, device_edit, device_delete, device_JSON_by_id, devices_JSON, device_edit_info, users_login, setup_databases
 from cache import Caches
 import cherrypy
-from cherrypy.lib import auth_digest
-
-USERS = {'jon': 'secret'}
 
 SSL =  False
 DEBUG_LEVEL = levels.DEBUG
