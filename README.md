@@ -293,9 +293,9 @@ This URI also accepts DELETE and PUT to delete/update other information:
 	}
 
   
-## VERSION
+## VERSION 0.0.1
 
-**0.0.1**  
+
 Brimo is already on production phase.
 
 ## AUTHOR
