@@ -12,7 +12,7 @@ from cherrypy.lib import auth_digest
 USERS = {'jon': 'secret'}
 
 SSL =  False
-DEBUG_LEVEL = levels.INFO
+DEBUG_LEVEL = levels.DEBUG
 
 
 """
@@ -40,16 +40,17 @@ def validate_password(realm, username, password):
     return False
 
 def is_logged():
-    if 'logged' not in cherrypy.session:
-        return 0
-    return cherrypy.session['logged']
+    if 'logged' in cherrypy.request.cookie:
+        return cherrypy.request.cookie['logged']
+    return 0
 
 class webService(object):
 
     @cherrypy.expose
     def index(self):
-        #if is_logged() == 0:
-        #    raise cherrypy.HTTPRedirect("/login")
+        if is_logged() == 0:
+            logging.debug('No auth user')
+            raise cherrypy.HTTPRedirect("/login")
         return open('./dist/index.html')
 
     @cherrypy.expose
@@ -58,9 +59,9 @@ class webService(object):
 
     @cherrypy.expose
     def logout(self):
-        if 'logged' in cherrypy.session:
-            cherrypy.session.pop('logged', None)
-        cherrypy.lib.sessions.expire
+        cherrypy.response.cookie['logged'] = 0
+        cherrypy.response.cookie['logged']['expires'] = 0
+        logging.debug('Log Out received')
         raise cherrypy.HTTPRedirect("/")
 
 @cherrypy.expose
@@ -68,6 +69,10 @@ class devices(object):
     exposed = True
     @cherrypy.tools.json_out()
     def GET(self):
+        if is_logged() == 0:
+            logging.debug('No auth user')
+            cherrypy.response.status = "401 Unauthorized"
+            return "LOG IN NECESSARY"
         cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
         logging.debug('GET DEVICES')
         res = cache.getResponse('/devices')
@@ -174,7 +179,10 @@ class device(object):
 
     @cherrypy.tools.json_out()
     def GET(self, device_id):
-        print cherrypy.request.headers.values
+        if is_logged() == 0:
+            logging.debug('No auth user')
+            cherrypy.response.status = "401 Unauthorized"
+            return "LOG IN NECESSARY"
         return device_JSON_by_id(device_id)
 
 
@@ -183,10 +191,9 @@ class login(object):
     def POST(self, username, pwd):
         ret=users_login(username, pwd)
         if ret==1:
-            if 'logged' not in cherrypy.session:
-                cherrypy.session['logged'] = 1
-            else:
-                cherrypy.session['logged'] = 1
+            cherrypy.response.cookie['logged'] = 1
+            cherrypy.response.cookie['logged']['expires'] = 3600
+            print 'auth'
             raise cherrypy.HTTPRedirect("/")
         else:
             raise cherrypy.HTTPRedirect("/")
@@ -200,8 +207,8 @@ def secureheaders():
     headers = cherrypy.response.headers
     headers['X-Frame-Options'] = 'DENY'
     headers['X-XSS-Protection'] = '1; mode=block'
-    headers['Content-Security-Policy'] = "default-src='self'"
-    cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
+    ##headers['Content-Security-Policy'] = "default-src='self'"
+    headers['Access-Control-Allow-Origin'] = '*'
 
 if __name__ == '__main__':
     conf = {
@@ -225,11 +232,6 @@ if __name__ == '__main__':
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.staticdir.on': True,
             'tools.staticdir.dir': os.path.abspath(os.getcwd()) + '/dist/dist'
-        },
-        '/protected/area': {
-            'tools.auth_basic.on': True,
-            'tools.auth_basic.realm': 'localhost',
-            'tools.auth_basic.checkpassword': validate_password
         }
     }
     cherrypy.config.update({'server.socket_host': '0.0.0.0',
