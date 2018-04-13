@@ -38,6 +38,8 @@ export class DevicesService {
       // instead an array object.
       this.aDevices =  Object.values(response);
       return this.aDevices;
+    }).catch( res => {
+      return this.aDevices;
     });
   }
   deleteDevice(oDevice: Device) {

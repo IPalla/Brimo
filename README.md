@@ -244,7 +244,7 @@ URIS:
 
   
 
-When a sensor wants to register in Brimo it has to make a **POST /devices ** request with some parameters on the request body as JSON:
+When a sensor wants to register in Brimo it has to make a **POST /devices** request with some parameters on the request body as JSON:
 
 	{
 	"commands" : "NNY",
@@ -272,7 +272,7 @@ If everything is OK server will send a response with and id on its body and a 20
 
   
 
-After register, device must update its information by using **PUT /device/{device_id} ** with the information on its body:
+After register, device must update its information by using **PUT /device/{device_id}** with the information on its body:
 
   
 	
@@ -305,3 +305,5 @@ Supervised and reviewed by Oscar Delgado (oscar.delgado@uam.es) and Eloy Anguian
 Feel free to contact me if you want to collaborate adding/editing resources.
 
 	contact: nachopallaj@gmail.com
+
+

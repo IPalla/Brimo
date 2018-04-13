@@ -67,7 +67,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<app-menu></app-menu >\n<div class=\"content\">\n<router-outlet></router-outlet>\n</div>\n<app-footer class = \"footer\"></app-footer>\n"
+module.exports = "\n\n<div *ngIf=\"logged; else login_required\">\n  <app-menu class=\"content\" (login_emitter)=\"login($event)\" [is_logged]=\"true\"></app-menu >\n  <router-outlet ></router-outlet>\n  <app-footer class = \"footer\"></app-footer>\n</div>\n<ng-template #login_required>\n    <app-menu   (login_emitter)=\"login($event)\" [is_logged]=\"false\" ></app-menu>\n    <div class=\"content\">\n        <div class=\" alert alert-danger \">\n            <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.\n            <br> If is the first time you acess check manual for default user and password.\n          </div>\n    </div>\n    <app-footer class = \"footer\"></app-footer>\n</ng-template>\n\n"
 
 /***/ }),
 
@@ -88,6 +88,15 @@ var AppComponent = /** @class */ (function () {
     function AppComponent() {
         this.title = 'app';
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.logged = false;
+    };
+    AppComponent.prototype.logout = function () {
+        this.logged = false;
+    };
+    AppComponent.prototype.login = function (logged) {
+        this.logged = logged;
+    };
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-root',
@@ -257,15 +266,17 @@ var CameraComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_menu_component__ = __webpack_require__("./src/app/core/menu/menu.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__footer_footer_component__ = __webpack_require__("./src/app/core/footer/footer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__servicios_authentication_service__ = __webpack_require__("./src/app/servicios/authentication.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_authentication_service__ = __webpack_require__("./src/app/services/authentication.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_routing_module__ = __webpack_require__("./src/app/app-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -281,14 +292,15 @@ var CoreModule = /** @class */ (function () {
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
                 __WEBPACK_IMPORTED_MODULE_5__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_6__app_routing_module__["a" /* AppRoutingModule */]
+                __WEBPACK_IMPORTED_MODULE_6__app_routing_module__["a" /* AppRoutingModule */],
+                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["a" /* FormsModule */]
             ],
             declarations: [__WEBPACK_IMPORTED_MODULE_2__menu_menu_component__["a" /* MenuComponent */], __WEBPACK_IMPORTED_MODULE_3__footer_footer_component__["a" /* FooterComponent */]],
             exports: [
                 __WEBPACK_IMPORTED_MODULE_2__menu_menu_component__["a" /* MenuComponent */], __WEBPACK_IMPORTED_MODULE_3__footer_footer_component__["a" /* FooterComponent */]
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_4__servicios_authentication_service__["a" /* AuthenticationService */],
+                __WEBPACK_IMPORTED_MODULE_4__services_authentication_service__["a" /* AuthenticationService */],
             ]
         })
     ], CoreModule);
@@ -352,14 +364,14 @@ var FooterComponent = /** @class */ (function () {
 /***/ "./src/app/core/menu/menu.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "\nnav{\n  background-color:#221f2e;\n}\nul{\n  text-align: center;\n}\nnav img{\n  width:150px;\n}\ninput{\n  width: 70%;\n}\n.container{\n  padding-top: 1%;\n  padding-bottom: 3%;\n}\n.oculto2{\n  display: none; /*Oculto 2 es para todos los tamaños a diferencia de oculto*/\n}\nh3{\n  font-family: 'Courier New', Courier, monospace;\n  font-style: italic;\n}\n@media only screen and (max-width: 1225px){\n  .content\n  {\n      min-height: 90%;\n      min-height: calc(100% - 200px);\n  }\n}\n@media only screen and (max-width: 1225px){\n  .content\n  {\n      min-height: 80%;\n      min-height: calc(100% - 175px);\n  }\n}\n@media only screen and (max-width: 700px){\n  nav img{\n   width: 100px;\n  }\n  .container .card-header{\n    display: none;\n  }\n  .content\n  {\n      min-height: 90%;\n      min-height: calc(100% - 100px);\n  }\n}\n@media only screen and (max-width: 620px){\n  nav img{\n    display: none;\n  }\n}\n@media only screen and (max-width: 575px){\n\n  .oculto{\n    display: none;\n  }\n  ul{\n    width: 100%;\n    -ms-flex-line-pack: center;\n        align-content: center;\n  }\n  nav {\n    -ms-flex-line-pack: center;\n        align-content: center;\n  }\n}\n"
+module.exports = "\nnav{\n  background-color:#221f2e;\n}\nul{\n  text-align: center;\n}\nnav img{\n  width:150px;\n}\ninput{\n  width: 70%;\n}\n.container{\n  padding-top: 1%;\n  padding-bottom: 3%;\n}\n.oculto2{\n  display: none; /*Oculto 2 es para todos los tamaños a diferencia de oculto*/\n}\np input{\n  font-family: 'Courier New', Courier, monospace;\n  font-style: italic;\n}\n@media only screen and (max-width: 1225px){\n  .content\n  {\n      min-height: 90%;\n      min-height: calc(100% - 200px);\n  }\n}\n@media only screen and (max-width: 1225px){\n  .content\n  {\n      min-height: 80%;\n      min-height: calc(100% - 175px);\n  }\n}\n@media only screen and (max-width: 700px){\n  nav img{\n   width: 100px;\n  }\n  .container .card-header{\n    display: none;\n  }\n  .content\n  {\n      min-height: 90%;\n      min-height: calc(100% - 100px);\n  }\n}\n@media only screen and (max-width: 620px){\n  nav img{\n    display: none;\n  }\n}\n@media only screen and (max-width: 575px){\n\n  .oculto{\n    display: none;\n  }\n  ul{\n    width: 100%;\n    -ms-flex-line-pack: center;\n        align-content: center;\n  }\n  nav {\n    -ms-flex-line-pack: center;\n        align-content: center;\n  }\n}\n"
 
 /***/ }),
 
 /***/ "./src/app/core/menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<nav class=\"navbar navbar-expand-sm navbar-dark\">\n  <a class=\"navbar-brand\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">\n    <img src=\"./assets/logoBrimo.png\" alt=\"logo\" class=\"rounded\">\n  </a>\n  <button class=\"navbar-toggler navbar-toggler-right\" [ngClass]=\"claseBoton\" type=\"button\" (click)=\"botonMenu()\" >\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n  <!-- Links -->\n  <ul class=\"navbar-nav\" [ngClass]=\"claseUl\">\n      <li class=\"nav-item\">\n          <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" (click)=\"botonMenu()\" >\n            <span class=\"navbar-toggler-icon\"></span>\n          </button>\n      </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"devices_menu\" >Devices <i class=\"fa fa-thermometer-half\"></i></a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"cam\">Cam <i class=\"fa fa-camera\"></i></a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">Settings <i class=\"fa fa-cog\"></i></a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">About </a>\n    </li><li class=\"nav-item\">\n        <a href=\"/logout\" ><button class=\"btn btn-warning my-2 my-sm-0\" type=\"button\" >Log Out <i class=\"fa fa-sign-out\"></i></button></a>\n      </li>\n  </ul>\n</nav>\n"
+module.exports = "<nav class=\"navbar navbar-expand-sm navbar-dark\">\n  <a class=\"navbar-brand\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">\n    <img src=\"./assets/logoBrimo.png\" alt=\"logo\" class=\"rounded\">\n  </a>\n  <button class=\"navbar-toggler navbar-toggler-right\" [ngClass]=\"claseBoton\" type=\"button\" (click)=\"botonMenu()\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <!-- Links -->\n  <ul class=\"navbar-nav\" [ngClass]=\"claseUl\">\n    <li class=\"nav-item\">\n      <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" (click)=\"botonMenu()\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"devices_menu\">Devices\n        <i class=\"fa fa-thermometer-half\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"cam\">Cam\n        <i class=\"fa fa-camera\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">Settings\n        <i class=\"fa fa-cog\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">About </a>\n    </li>\n    <li class=\"nav-item\" [ngClass]=\"logOutButtonClass\">\n        <button class=\"btn btn-warning my-2 my-sm-0\" (click)=\"logout()\" type=\"button\">Log Out\n          <i class=\"fa fa-sign-out\"></i>\n        </button>\n    </li>\n    <li class=\"nav-item\" [ngClass]=\"logInButtonClass\" (click)=\"botonLogin()\">\n      <a class=\"btn btn-success my-2 my-sm-0 nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\" >Log In\n        <i class=\"fa fa-sign-in\"></i></a>\n    </li>\n  </ul>\n</nav>\n\n<div class=\"container\" [ngClass]=\"loginFormClass\">\n  <div class=\"row\">\n    <div class=\"card  text-white bg-success col-lg-3 col-md-5 offset-md-7 offset-lg-9\">\n      <div class=\"card-body\">\n          <p>\n            <label for=\"username\">User:</label>\n          </p>\n          <p>\n            <input type=\"text\" id=\"username\" name=\"username\" [(ngModel)]=\"username\">\n          </p>\n          <p>\n            <label for=\"pwd\">Password:</label>\n          </p>\n          <p>\n            <input type=\"password\" id=\"pwd\" name=\"pwd\" [(ngModel)]=\"password\">\n          </p>\n          <p>\n            <button class=\"btn btn-primary\" (click)=\"login()\">Log In\n              <i class=\"fa fa-sign-in\" ></i>\n            </button>\n          </p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -369,6 +381,8 @@ module.exports = "\n<nav class=\"navbar navbar-expand-sm navbar-dark\">\n  <a cl
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MenuComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_authentication_service__ = __webpack_require__("./src/app/services/authentication.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_authentication_model__ = __webpack_require__("./src/app/models/authentication.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -379,13 +393,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
 var MenuComponent = /** @class */ (function () {
-    function MenuComponent() {
+    function MenuComponent(login_service) {
+        this.login_service = login_service;
+        this.login_emitter = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* EventEmitter */]();
     }
     MenuComponent.prototype.ngOnInit = function () {
         this.estado = false;
         this.claseUl = ' oculto';
         this.claseBoton = '';
+        this.username = '';
+        this.password = '';
+        if (this.is_logged) {
+            this.logInButtonClass = 'oculto2';
+            this.logOutButtonClass = '';
+        }
+        else {
+            this.logOutButtonClass = 'oculto2';
+            this.logInButtonClass = '';
+        }
+        this.loginFormClass = 'oculto2';
     };
     MenuComponent.prototype.botonMenu = function () {
         this.estado = !this.estado;
@@ -398,13 +428,42 @@ var MenuComponent = /** @class */ (function () {
             this.claseBoton = ' ';
         }
     };
+    MenuComponent.prototype.botonLogin = function () {
+        if (this.is_logged) {
+            return;
+        }
+        (this.loginFormClass === 'oculto2') ? this.loginFormClass = '' : this.loginFormClass = 'oculto2';
+    };
+    MenuComponent.prototype.login = function () {
+        var _this = this;
+        if (this.username === '' || this.password === '') {
+            return;
+        }
+        var auth_object = new __WEBPACK_IMPORTED_MODULE_2__models_authentication_model__["a" /* AuthenticationModel */](this.username, this.password);
+        this.login_service.login(auth_object).then(function (res) {
+            if (res === true) {
+                _this.login_emitter.emit(true);
+            }
+        }).catch(console.error);
+    };
+    MenuComponent.prototype.logout = function () {
+        this.login_emitter.emit(false);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
+        __metadata("design:type", Boolean)
+    ], MenuComponent.prototype, "is_logged", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* Output */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* EventEmitter */])
+    ], MenuComponent.prototype, "login_emitter", void 0);
     MenuComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-menu',
             template: __webpack_require__("./src/app/core/menu/menu.component.html"),
             styles: [__webpack_require__("./src/app/core/menu/menu.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_authentication_service__["a" /* AuthenticationService */]])
     ], MenuComponent);
     return MenuComponent;
 }());
@@ -624,7 +683,6 @@ var DevicesComponent = /** @class */ (function () {
             _this.getRooms();
         });
         this.timer = setInterval(function () {
-            console.log('aa');
             _this.devicesService.getDevices().then(function (response) {
                 if (JSON.stringify(_this.aDevices) !== JSON.stringify(response)) {
                     if (_this.aDevices.length !== response.length) {
@@ -706,6 +764,23 @@ var DevicesComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/models/authentication.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationModel; });
+var AuthenticationModel = /** @class */ (function () {
+    function AuthenticationModel(name, password) {
+        this.name = name;
+        this.password = password;
+    }
+    return AuthenticationModel;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/models/devices.model.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -733,6 +808,61 @@ var DeviceEdit = /** @class */ (function () {
         this.new_location = new_location;
     }
     return DeviceEdit;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/authentication.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var URLAPI = window.location.origin;
+var httpOptions = {
+    headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        'Content-Type': 'application/json',
+        'Authorization': 'my-auth-token'
+    })
+};
+var AuthenticationService = /** @class */ (function () {
+    function AuthenticationService(http) {
+        this.http = http;
+        this.url = URLAPI;
+    }
+    AuthenticationService.prototype.login = function (auth_object) {
+        var url_login = this.url + '/login';
+        return this.http.post(url_login, JSON.stringify(auth_object)).toPromise().then(function (response) {
+            console.log(response);
+            return response;
+        });
+    };
+    AuthenticationService.prototype.logout = function () {
+        var url_logout = this.url + '/login';
+        return this.http.get(url_logout).toPromise().then(function (response) {
+            console.log(response);
+            return response;
+        });
+    };
+    AuthenticationService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], AuthenticationService);
+    return AuthenticationService;
 }());
 
 
@@ -790,6 +920,8 @@ var DevicesService = /** @class */ (function () {
             // instead an array object.
             _this.aDevices = Object.values(response);
             return _this.aDevices;
+        }).catch(function (res) {
+            return _this.aDevices;
         });
     };
     DevicesService.prototype.deleteDevice = function (oDevice) {
@@ -815,47 +947,6 @@ var DevicesService = /** @class */ (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
     ], DevicesService);
     return DevicesService;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/servicios/authentication.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var AuthenticationService = /** @class */ (function () {
-    function AuthenticationService(http) {
-        this.http = http;
-        this.loginUrl = '/login'; //'http://127.0.0.1:8080/login';
-        this.logoutUrl = '/logout'; // 'http://127.0.0.1:8080/logout';
-    }
-    AuthenticationService.prototype.login = function (user, pwd) {
-        this.http.get(this.loginUrl).subscribe(function (data) {
-            console.log(data);
-        });
-        return;
-    };
-    AuthenticationService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
-    ], AuthenticationService);
-    return AuthenticationService;
 }());
 
 

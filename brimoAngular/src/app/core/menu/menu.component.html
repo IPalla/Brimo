@@ -1,31 +1,70 @@
-
 <nav class="navbar navbar-expand-sm navbar-dark">
   <a class="navbar-brand" href="#" routerLinkActive="active" routerLink="">
     <img src="./assets/logoBrimo.png" alt="logo" class="rounded">
   </a>
-  <button class="navbar-toggler navbar-toggler-right" [ngClass]="claseBoton" type="button" (click)="botonMenu()" >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <button class="navbar-toggler navbar-toggler-right" [ngClass]="claseBoton" type="button" (click)="botonMenu()">
+    <span class="navbar-toggler-icon"></span>
+  </button>
   <!-- Links -->
   <ul class="navbar-nav" [ngClass]="claseUl">
-      <li class="nav-item">
-          <button class="navbar-toggler navbar-toggler-right" type="button" (click)="botonMenu()" >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-      </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" routerLinkActive="active" routerLink="devices_menu" >Devices <i class="fa fa-thermometer-half"></i></a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" (click)="botonMenu()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" routerLinkActive="active" routerLink="cam">Cam <i class="fa fa-camera"></i></a>
+      <a class="nav-link" href="#" routerLinkActive="active" routerLink="devices_menu">Devices
+        <i class="fa fa-thermometer-half"></i>
+      </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#" routerLinkActive="active" routerLink="">Settings <i class="fa fa-cog"></i></a>
+      <a class="nav-link" href="#" routerLinkActive="active" routerLink="cam">Cam
+        <i class="fa fa-camera"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" routerLinkActive="active" routerLink="">Settings
+        <i class="fa fa-cog"></i>
+      </a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#" routerLinkActive="active" routerLink="">About </a>
-    </li><li class="nav-item">
-        <a href="/logout" ><button class="btn btn-warning my-2 my-sm-0" type="button" >Log Out <i class="fa fa-sign-out"></i></button></a>
-      </li>
+    </li>
+    <li class="nav-item" [ngClass]="logOutButtonClass">
+        <button class="btn btn-warning my-2 my-sm-0" (click)="logout()" type="button">Log Out
+          <i class="fa fa-sign-out"></i>
+        </button>
+    </li>
+    <li class="nav-item" [ngClass]="logInButtonClass" (click)="botonLogin()">
+      <a class="btn btn-success my-2 my-sm-0 nav-link" href="#" routerLinkActive="active" routerLink="" >Log In
+        <i class="fa fa-sign-in"></i></a>
+    </li>
   </ul>
 </nav>
+
+<div class="container" [ngClass]="loginFormClass">
+  <div class="row">
+    <div class="card  text-white bg-success col-lg-3 col-md-5 offset-md-7 offset-lg-9">
+      <div class="card-body">
+          <p>
+            <label for="username">User:</label>
+          </p>
+          <p>
+            <input type="text" id="username" name="username" [(ngModel)]="username">
+          </p>
+          <p>
+            <label for="pwd">Password:</label>
+          </p>
+          <p>
+            <input type="password" id="pwd" name="pwd" [(ngModel)]="password">
+          </p>
+          <p>
+            <button class="btn btn-primary" (click)="login()">Log In
+              <i class="fa fa-sign-in" ></i>
+            </button>
+          </p>
+      </div>
+    </div>
+  </div>
+</div>
+

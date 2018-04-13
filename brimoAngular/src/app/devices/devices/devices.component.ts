@@ -26,7 +26,6 @@ export class DevicesComponent implements OnInit {
       }
     );
     this.timer = setInterval( () => {
-      console.log('aa');
       this.devicesService.getDevices().then(
         response => {
           if (JSON.stringify(this.aDevices) !== JSON.stringify(response)) {

@@ -31,10 +31,6 @@ class main_config(object):
         self.SSL = SSL
         self.DEBUG_LEVEL =DEBUG_LEVEL
 
-def validate_password(realm, username, password):
-    if username in USERS and USERS[username] == password:
-       return True
-    return False
 
 def is_logged():
     if 'logged' in cherrypy.request.cookie:
@@ -45,9 +41,7 @@ class webService(object):
 
     @cherrypy.expose
     def index(self):
-        if is_logged() == 0:
-            logging.debug('No auth user')
-            raise cherrypy.HTTPRedirect("/login")
+        
         return open('./dist/index.html')
 
     @cherrypy.expose
@@ -185,14 +179,29 @@ class device(object):
 
 @cherrypy.expose
 class login(object):
-    def POST(self, username, pwd):
+    @cherrypy.tools.json_in()
+    def POST(self):
+        input_json = cherrypy.request.json
+
+        username = ""
+        pwd = ""
+
+        for key in input_json:
+            if key == "username":
+                username = input_json["username"]
+            if key == "password":
+                pwd = input_json["password"]
+        logging.debug('POST LOGIN/ username: ' + username)
         ret=users_login(username, pwd)
         if ret==1:
             cherrypy.response.cookie['logged'] = 1
             cherrypy.response.cookie['logged']['expires'] = 3600
-            print 'auth'
+            logging.info('User logged ' + str(username))
+            cherrypy.response.status = "200 Ok"
             raise cherrypy.HTTPRedirect("/")
         else:
+            cherrypy.response.status = "401 Unauthorized"
+            logging.debug('Bad credentials: ' + username)
             raise cherrypy.HTTPRedirect("/")
     def GET(self):
         return open('./dist/dist/index.html')

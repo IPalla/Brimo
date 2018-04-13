@@ -18,10 +18,12 @@ input{
 .oculto2{
   display: none; /*Oculto 2 es para todos los tamaños a diferencia de oculto*/
 }
-h3{
+p input{
   font-family: 'Courier New', Courier, monospace;
   font-style: italic;
 }
+
+
 @media only screen and (max-width: 1225px){
   .content
   {
