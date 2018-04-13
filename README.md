@@ -293,6 +293,10 @@ This URI also accepts DELETE and PUT to delete/update other information:
 	}
 
   
+## VERSION 0.0.1
+
+
+Brimo is already on production phase.
 
 ## AUTHOR
 
@@ -305,5 +309,3 @@ Supervised and reviewed by Oscar Delgado (oscar.delgado@uam.es) and Eloy Anguian
 Feel free to contact me if you want to collaborate adding/editing resources.
 
 	contact: nachopallaj@gmail.com
-
-
