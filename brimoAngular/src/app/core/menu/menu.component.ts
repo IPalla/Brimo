@@ -64,10 +64,11 @@ export class MenuComponent implements OnInit {
     }
     const auth_object = new AuthenticationModel(this.username, this.password);
     this.login_service.login(auth_object).then( res => {
+      console.log(res);
       if (res === true) {
         this.login_emitter.emit(true);
       }
-    }).catch(console.error);
+    }).catch(console.log);
   }
   logout() {
     this.login_emitter.emit(false);

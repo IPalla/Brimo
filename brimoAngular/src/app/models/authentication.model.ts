@@ -1,3 +1,3 @@
 export class AuthenticationModel {
-  constructor( public name: string, public password: string) {}
+  constructor( public username: string, public password: string) {}
 }

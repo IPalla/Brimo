@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationModel } from './models/authentication.model';
+import { AuthenticationService } from './services/authentication.service';
 
 
 @Component({
@@ -10,6 +11,7 @@ import { AuthenticationModel } from './models/authentication.model';
 export class AppComponent implements OnInit {
   title = 'app';
   logged: boolean;
+  constructor(public login_service: AuthenticationService) {  }
   ngOnInit() {
     this.logged = false;
   }
@@ -17,7 +19,9 @@ export class AppComponent implements OnInit {
     this.logged = false;
   }
   login(logged: boolean) {
-
+    if (!logged){
+      this.login_service.logout().then(console.log).catch(console.log);
+    }
     this.logged = logged;
   }
 

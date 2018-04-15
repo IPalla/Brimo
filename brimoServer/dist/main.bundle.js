@@ -77,15 +77,21 @@ module.exports = "\n\n<div *ngIf=\"logged; else login_required\">\n  <app-menu c
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_authentication_service__ = __webpack_require__("./src/app/services/authentication.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
 
 var AppComponent = /** @class */ (function () {
-    function AppComponent() {
+    function AppComponent(login_service) {
+        this.login_service = login_service;
         this.title = 'app';
     }
     AppComponent.prototype.ngOnInit = function () {
@@ -95,6 +101,9 @@ var AppComponent = /** @class */ (function () {
         this.logged = false;
     };
     AppComponent.prototype.login = function (logged) {
+        if (!logged) {
+            this.login_service.logout().then(console.log).catch(console.log);
+        }
         this.logged = logged;
     };
     AppComponent = __decorate([
@@ -102,7 +111,8 @@ var AppComponent = /** @class */ (function () {
             selector: 'app-root',
             template: __webpack_require__("./src/app/app.component.html"),
             styles: [__webpack_require__("./src/app/app.component.css")]
-        })
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_authentication_service__["a" /* AuthenticationService */]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -441,10 +451,11 @@ var MenuComponent = /** @class */ (function () {
         }
         var auth_object = new __WEBPACK_IMPORTED_MODULE_2__models_authentication_model__["a" /* AuthenticationModel */](this.username, this.password);
         this.login_service.login(auth_object).then(function (res) {
+            console.log(res);
             if (res === true) {
                 _this.login_emitter.emit(true);
             }
-        }).catch(console.error);
+        }).catch(console.log);
     };
     MenuComponent.prototype.logout = function () {
         this.login_emitter.emit(false);
@@ -770,8 +781,8 @@ var DevicesComponent = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationModel; });
 var AuthenticationModel = /** @class */ (function () {
-    function AuthenticationModel(name, password) {
-        this.name = name;
+    function AuthenticationModel(username, password) {
+        this.username = username;
         this.password = password;
     }
     return AuthenticationModel;
@@ -832,7 +843,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var URLAPI = window.location.origin;
+var URLAPI = 'http://localhost:8080'; // window.location.origin;
 var httpOptions = {
     headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
         'Content-Type': 'application/json',
@@ -846,15 +857,15 @@ var AuthenticationService = /** @class */ (function () {
     }
     AuthenticationService.prototype.login = function (auth_object) {
         var url_login = this.url + '/login';
-        return this.http.post(url_login, JSON.stringify(auth_object)).toPromise().then(function (response) {
-            console.log(response);
-            return response;
+        return this.http.post(url_login, auth_object).toPromise().then(function (response) {
+            return true;
         });
     };
     AuthenticationService.prototype.logout = function () {
-        var url_logout = this.url + '/login';
+        var url_logout = this.url + '/logout';
         return this.http.get(url_logout).toPromise().then(function (response) {
             console.log(response);
+            console.log('logout');
             return response;
         });
     };

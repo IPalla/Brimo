@@ -179,13 +179,13 @@ class device(object):
 
 @cherrypy.expose
 class login(object):
+    @cherrypy.tools.json_out()
     @cherrypy.tools.json_in()
     def POST(self):
         input_json = cherrypy.request.json
-
         username = ""
         pwd = ""
-
+        print input_json
         for key in input_json:
             if key == "username":
                 username = input_json["username"]
@@ -198,11 +198,18 @@ class login(object):
             cherrypy.response.cookie['logged']['expires'] = 3600
             logging.info('User logged ' + str(username))
             cherrypy.response.status = "200 Ok"
-            raise cherrypy.HTTPRedirect("/")
+            return 'Logged'
+            #raise cherrypy.HTTPRedirect("/")
         else:
             cherrypy.response.status = "401 Unauthorized"
             logging.debug('Bad credentials: ' + username)
-            raise cherrypy.HTTPRedirect("/")
+            return 'Bad credentials'
+            #raise cherrypy.HTTPRedirect("/")
+    
+    @cherrypy.tools.json_out()
+    @cherrypy.tools.json_in()
+    def OPTIONS(self, device_id):
+        cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
     def GET(self):
         return open('./dist/dist/index.html')
     
