@@ -1,64 +1,92 @@
+<div class="row" (click)="setContent()">
+  <div class="col-sm-5">
+      <i [className]="this.arrowClass"></i>
+    Name: {{oDevice.name}}
+  </div>
+  <div class="col-sm-4">
+    Location: {{oDevice.location}}
+  </div>
+  <div class="col-sm-3">
+    Status:
+    <i class="fa fa-circle" [ngClass]="getStatus()"></i>
+  </div>
+</div>
+<div class="card" [ngClass]="contentClass">
+  <div class="card-header">INFO: {{oDevice.info}}</div>
+  <div class="card-body">
+    <div class="row" [ngClass]='editClass'>
+      <div class="col-sm-3">
+        <label for="command">Commands
+          <i alt="as" (click)="showInstructions()" class="fa fa-question-circle"></i>
+        </label>
+      </div>
+      <div *ngIf="this.oDevice.commands == 'NNN';" class="col-sm-9">
+        <p>This device does not accept commands.</p>
+      </div>
+      <div *ngIf="(this.oDevice.commands[2] == 'Y' && this.oDevice.commands != 'NNN');" class="col-sm-9">
+        <div class="col-sm-7">
+          <input type="text" class="form-control" name="command" id="command" placeholder="" [(value)]="commandText">
+        </div>
+        <div class="col-sm-2 col-6">
+          <button type="button" class="btn btn-primary" (click)="sendCommandDevice(commandText)">SEND</button>
+        </div>
+      </div>
 
-  <div class="row" (click)="setContent()">
-    <div class="col-1" >
-        <i [className]="this.arrowClass" ></i>
     </div>
-    <div class="col-md-4" >
-      Name: {{oDevice.name}}
+    <div class="row " [ngClass]='editClass'>
+      <div *ngIf="this.oDevice.commands[0] == 'Y';" class="command-buttons col-6">
+        <button type="button" class="btn btn-success col-4" (click)="sendCommandDevice('ON')">ON</button>
+        <button type="button" class="btn btn-danger col-4" (click)="sendCommandDevice('OFF')">OFF</button>
+      </div>
+      <div *ngIf="this.oDevice.commands[1] == 'Y';"  class="command-buttons col-6">
+        <button type="button" class="btn btn-warning col-4" (click)="sendCommandDevice('+')">+</button>
+        <button type="button" class="btn btn-warning col-4" (click)="sendCommandDevice('-')">-</button>
+      </div>
     </div>
-    <div class="col-md-4" >
-      Location: {{oDevice.location}}
-    </div>
-    <div class="col-md-3">
-      Status: <i class="fa fa-circle" [ngClass]="getStatus()"></i>
+    <div class="card-body">
+      <div class="row" [ngClass]='editClass2'>
+        <div class="col-sm-5">
+          <label for="command">New name: </label>
+        </div>
+        <div class="col-sm-7 ">
+          <input type="text" class="form-control" name="new_name" placeholder="" [(ngModel)]="new_name">
+        </div>
+      </div>
+      <div class="row" [ngClass]='editClass2'>
+        <div class="col-sm-5">
+          <label for="command">New location: </label>
+        </div>
+        <div class="col-sm-7 ">
+          <input type="text" class="form-control" name="new_location" placeholder="" [(ngModel)]="new_location">
+        </div>
+      </div>
     </div>
   </div>
-  <div class="card" [ngClass]="contentClass">
-    <div class="card-header">INFO: {{oDevice.info}}</div>
-    <div class="card-body" >
-      <div class="row" [ngClass]='editClass'>
-          <div class="col-sm-3">
-            <label for="command">Commands <i alt="as"(click)="showInstructions()" class="fa fa-question-circle"></i></label>
-          </div>
-          <div class="col-sm-7">
-            <input type="text" class="form-control" name="command" id="command" placeholder="">
-          </div>
-          <div class="col-sm-2 col-6">
-            <button type="button" class="btn btn-primary">SEND</button>
-          </div>
-      </div>
-      <div class="row command-buttons"  [ngClass]='editClass'>
-        <button type="button" class="btn btn-success col-2">ON</button>
-        <button type="button" class="btn btn-danger col-2">OFF</button>
-        <button type="button" class="btn btn-warning col-2">+</button>
-        <button type="button" class="btn btn-warning col-2">-</button>
-      </div>
-      <div class="card-body">
-          <div class="row" [ngClass]='editClass2'>
-              <div class="col-sm-5">
-                <label for="command">New name: </label>
-              </div>
-              <div class="col-sm-7 ">
-                <input type="text" class="form-control" name="new_name" placeholder="" [(ngModel)] = "new_name">
-              </div>
-          </div>
-          <div class="row" [ngClass]='editClass2'>
-              <div class="col-sm-5">
-                <label for="command">New location: </label>
-              </div>
-              <div class="col-sm-7 ">
-                <input type="text" class="form-control" name="new_location" placeholder="" [(ngModel)] = "new_location">
-              </div>
-          </div>
-      </div>
-    </div>
 
-    <div class="card-footer" >
-      <div class="row">
-        <button type="button" class="btn btn-secondary col-2" [ngClass]='editClass' (click)="editDevice()"><i class="fa fa-pencil"></i> <span class="txtBtn"  >EDIT</span> </button>
-        <button type="button" class="btn btn-secondary col-2" [ngClass]='editClass2' (click)="editDeviceSave()"><i class="fa fa-save"></i> <span class="txtBtn"  >SAVE</span> </button>
-        <button type="button" class="btn btn-secondary col-2" [ngClass]='editClass2' (click)="editDevice()"><i class="fa fa-times-circle"></i> <span class="txtBtn"  >CANCEL</span> </button>
-        <button type="button" class="btn btn-secondary col-2" (click)="deleteDevice()"><i class="fa fa-trash"></i>  <span class="txtBtn">DELETE</span></button>
+  <div class="card-footer">
+    <div class="row">
+      <button type="button" class="btn btn-secondary col-2" [ngClass]='editClass' (click)="editDevice()">
+        <i class="fa fa-pencil"></i>
+        <span class="txtBtn">EDIT</span>
+      </button>
+      <button type="button" class="btn btn-secondary col-2" [ngClass]='editClass2' (click)="editDeviceSave()">
+        <i class="fa fa-save"></i>
+        <span class="txtBtn">SAVE</span>
+      </button>
+      <button type="button" class="btn btn-secondary col-2" [ngClass]='editClass2' (click)="editDevice()">
+        <i class="fa fa-times-circle"></i>
+        <span class="txtBtn">CANCEL</span>
+      </button>
+      <button type="button" class="btn btn-secondary col-2" (click)="deleteDevice()">
+        <i class="fa fa-trash"></i>
+        <span class="txtBtn">DELETE</span>
+      </button>
+      <div *ngIf="this.oDevice.camera;" class="col-2" [ngClass]='editClass'>
+        <button type="button" class="btn btn-primary">
+          <i class="fa fa-camera"></i>
+          <span class="txtBtn">VIEW CAM</span>
+        </button>
       </div>
     </div>
   </div>
+</div>

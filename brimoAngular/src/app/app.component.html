@@ -1,18 +1,17 @@
-
-
 <div *ngIf="logged; else login_required">
-  <app-menu class="content" (login_emitter)="login($event)" [is_logged]="true"></app-menu >
-  <router-outlet ></router-outlet>
-  <app-footer class = "footer"></app-footer>
+  <app-menu (login_emitter)="login($event)" [is_logged]="true"></app-menu>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer class="footer"></app-footer>
 </div>
 <ng-template #login_required>
-    <app-menu   (login_emitter)="login($event)" [is_logged]="false" ></app-menu>
-    <div class="content">
-        <div class=" alert alert-danger ">
-            <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.
-            <br> If is the first time you acess check manual for default user and password.
-          </div>
+  <app-menu (login_emitter)="login($event)" [is_logged]="false"></app-menu>
+  <div class="content">
+    <div class=" alert alert-danger ">
+      <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.
+      <br> If is the first time you acess check manual for default user and password.
     </div>
-    <app-footer class = "footer"></app-footer>
+  </div>
+  <app-footer class="footer"></app-footer>
 </ng-template>
-

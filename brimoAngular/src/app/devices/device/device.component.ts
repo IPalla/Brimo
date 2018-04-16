@@ -18,6 +18,7 @@ export class DeviceComponent implements OnInit {
   editClass2: string;
   new_name: string;
   new_location: string;
+  commandText: string;
   constructor(public devices_service: DevicesService) {
     this.deleted = new EventEmitter();
     this.arrowClass = 'fa fa-sort-down';
@@ -25,17 +26,19 @@ export class DeviceComponent implements OnInit {
     this.contentClass = 'oculto';
     this.editClass = '';
     this.editClass2 = 'oculto';
+    this.commandText = '';
   }
 
   ngOnInit() {
   }
   showInstructions() {
+    console.log('cam' + this.oDevice.commands);
     alert('Different commands are avalaible depending on your device type. Check instructions to know more.');
   }
   getStatus() {
     const lastupdate = Math.round(Number(new Date(this.oDevice.lastupdate)) / 1000);  // Seconds of lastupdate
     const now = Math.round(Number(new Date()) / 1000);                                // Actual seconds
-    const update_frequency =  Math.round(Number(this.oDevice.freq ));                 // Update Frequency on seconds
+    const update_frequency = Math.round(Number(this.oDevice.freq));                 // Update Frequency on seconds
     if (now - lastupdate <= update_frequency) {
       return 'online';
     }
@@ -66,22 +69,33 @@ export class DeviceComponent implements OnInit {
       this.editClass2 = 'oculto';
     }
   }
-    editDeviceSave() {
-      if (this.new_location === '') {
-        this.new_location = this.oDevice.location;
-      }
-      if (this.new_name === '') {
-        this.new_name = this.oDevice.name;
-      }
-
-      this.editClass = '';
-      this.editClass2 = 'oculto';
-      this.oDevice.name = this.new_name;
-      this.oDevice.location = this.new_location;
-      this.devices_service.editDevice(this.oDevice).then(
-        () => {
-          console.log('editado');
-        }
-      );
+  editDeviceSave() {
+    if (this.new_location === '') {
+      this.new_location = this.oDevice.location;
     }
+    if (this.new_name === '') {
+      this.new_name = this.oDevice.name;
+    }
+
+    this.editClass = '';
+    this.editClass2 = 'oculto';
+    this.oDevice.name = this.new_name;
+    this.oDevice.location = this.new_location;
+    this.devices_service.editDevice(this.oDevice).then(
+      () => {
+        console.log('editado');
+      }
+    );
+  }
+  sendCommandDevice(command) {
+    console.log(command);
+    this.devices_service.sendCommandDevice(this.oDevice, command).then(
+      () => {
+        console.log('Command sent');
+      }
+    ).catch( err => {
+      alert('Error while sending command: ' + err);
+      console.log(err);
+    });
+  }
 }

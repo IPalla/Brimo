@@ -17,7 +17,8 @@ const URLAPI = window.location.origin;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',
-    'Authorization': 'my-auth-token'
+    'Authorization': 'my-auth-token',
+    'CORS': 'Access-Control-Allow-Origin',
   })
 };
 @Injectable()
@@ -60,7 +61,17 @@ export class DevicesService {
       return this.aDevices;
     });
   }
+  sendCommandDevice(oDevice: Device, command: string) {
+    const urlDevice = 'http://' + oDevice.ip;
+    const commandOBject = {
+      id: oDevice.id,
+      command: command,
+    };
+    console.log(urlDevice);
+    console.log(commandOBject);
+    return this.http.put(urlDevice, JSON.stringify(commandOBject), httpOptions).toPromise();
 
+  }
   /* devicesTrigger() {
     const urlget = this.url + '/trigger';
     return this.http.get(urlget).toPromise().then( (response: any) => {
@@ -69,3 +80,9 @@ export class DevicesService {
     });
   } */
 }
+/*
+ip_actuador/
+{
+    "id" : "33",
+    "command" : "ON", "OFF", "+", "-", "texto"
+}*/

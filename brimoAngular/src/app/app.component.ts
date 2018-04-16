@@ -19,8 +19,8 @@ export class AppComponent implements OnInit {
     this.logged = false;
   }
   login(logged: boolean) {
-    if (!logged){
-      this.login_service.logout().then(console.log).catch(console.log);
+    if (!logged) {
+      this.login_service.logout().then().catch(console.log);
     }
     this.logged = logged;
   }

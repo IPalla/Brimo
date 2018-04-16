@@ -67,7 +67,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n\n<div *ngIf=\"logged; else login_required\">\n  <app-menu class=\"content\" (login_emitter)=\"login($event)\" [is_logged]=\"true\"></app-menu >\n  <router-outlet ></router-outlet>\n  <app-footer class = \"footer\"></app-footer>\n</div>\n<ng-template #login_required>\n    <app-menu   (login_emitter)=\"login($event)\" [is_logged]=\"false\" ></app-menu>\n    <div class=\"content\">\n        <div class=\" alert alert-danger \">\n            <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.\n            <br> If is the first time you acess check manual for default user and password.\n          </div>\n    </div>\n    <app-footer class = \"footer\"></app-footer>\n</ng-template>\n\n"
+module.exports = "<div *ngIf=\"logged; else login_required\">\n  <app-menu (login_emitter)=\"login($event)\" [is_logged]=\"true\"></app-menu>\n  <div class=\"content\">\n    <router-outlet></router-outlet>\n  </div>\n  <app-footer class=\"footer\"></app-footer>\n</div>\n<ng-template #login_required>\n  <app-menu (login_emitter)=\"login($event)\" [is_logged]=\"false\"></app-menu>\n  <div class=\"content\">\n    <div class=\" alert alert-danger \">\n      <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.\n      <br> If is the first time you acess check manual for default user and password.\n    </div>\n  </div>\n  <app-footer class=\"footer\"></app-footer>\n</ng-template>\n"
 
 /***/ }),
 
@@ -102,7 +102,7 @@ var AppComponent = /** @class */ (function () {
     };
     AppComponent.prototype.login = function (logged) {
         if (!logged) {
-            this.login_service.logout().then(console.log).catch(console.log);
+            this.login_service.logout().then().catch(console.log);
         }
         this.logged = logged;
     };
@@ -493,7 +493,7 @@ module.exports = ".row{\n  cursor: pointer;\n}\n.offline{\n  color: red;\n}\n.on
 /***/ "./src/app/devices/device/device.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n  <div class=\"row\" (click)=\"setContent()\">\n    <div class=\"col-1\" >\n        <i [className]=\"this.arrowClass\" ></i>\n    </div>\n    <div class=\"col-md-4\" >\n      Name: {{oDevice.name}}\n    </div>\n    <div class=\"col-md-4\" >\n      Location: {{oDevice.location}}\n    </div>\n    <div class=\"col-md-3\">\n      Status: <i class=\"fa fa-circle\" [ngClass]=\"getStatus()\"></i>\n    </div>\n  </div>\n  <div class=\"card\" [ngClass]=\"contentClass\">\n    <div class=\"card-header\">INFO: {{oDevice.info}}</div>\n    <div class=\"card-body\" >\n      <div class=\"row\" [ngClass]='editClass'>\n          <div class=\"col-sm-3\">\n            <label for=\"command\">Commands <i alt=\"as\"(click)=\"showInstructions()\" class=\"fa fa-question-circle\"></i></label>\n          </div>\n          <div class=\"col-sm-7\">\n            <input type=\"text\" class=\"form-control\" name=\"command\" id=\"command\" placeholder=\"\">\n          </div>\n          <div class=\"col-sm-2 col-6\">\n            <button type=\"button\" class=\"btn btn-primary\">SEND</button>\n          </div>\n      </div>\n      <div class=\"row command-buttons\"  [ngClass]='editClass'>\n        <button type=\"button\" class=\"btn btn-success col-2\">ON</button>\n        <button type=\"button\" class=\"btn btn-danger col-2\">OFF</button>\n        <button type=\"button\" class=\"btn btn-warning col-2\">+</button>\n        <button type=\"button\" class=\"btn btn-warning col-2\">-</button>\n      </div>\n      <div class=\"card-body\">\n          <div class=\"row\" [ngClass]='editClass2'>\n              <div class=\"col-sm-5\">\n                <label for=\"command\">New name: </label>\n              </div>\n              <div class=\"col-sm-7 \">\n                <input type=\"text\" class=\"form-control\" name=\"new_name\" placeholder=\"\" [(ngModel)] = \"new_name\">\n              </div>\n          </div>\n          <div class=\"row\" [ngClass]='editClass2'>\n              <div class=\"col-sm-5\">\n                <label for=\"command\">New location: </label>\n              </div>\n              <div class=\"col-sm-7 \">\n                <input type=\"text\" class=\"form-control\" name=\"new_location\" placeholder=\"\" [(ngModel)] = \"new_location\">\n              </div>\n          </div>\n      </div>\n    </div>\n\n    <div class=\"card-footer\" >\n      <div class=\"row\">\n        <button type=\"button\" class=\"btn btn-secondary col-2\" [ngClass]='editClass' (click)=\"editDevice()\"><i class=\"fa fa-pencil\"></i> <span class=\"txtBtn\"  >EDIT</span> </button>\n        <button type=\"button\" class=\"btn btn-secondary col-2\" [ngClass]='editClass2' (click)=\"editDeviceSave()\"><i class=\"fa fa-save\"></i> <span class=\"txtBtn\"  >SAVE</span> </button>\n        <button type=\"button\" class=\"btn btn-secondary col-2\" [ngClass]='editClass2' (click)=\"editDevice()\"><i class=\"fa fa-times-circle\"></i> <span class=\"txtBtn\"  >CANCEL</span> </button>\n        <button type=\"button\" class=\"btn btn-secondary col-2\" (click)=\"deleteDevice()\"><i class=\"fa fa-trash\"></i>  <span class=\"txtBtn\">DELETE</span></button>\n      </div>\n    </div>\n  </div>\n"
+module.exports = "<div class=\"row\" (click)=\"setContent()\">\n  <div class=\"col-sm-5\">\n      <i [className]=\"this.arrowClass\"></i>\n    Name: {{oDevice.name}}\n  </div>\n  <div class=\"col-sm-4\">\n    Location: {{oDevice.location}}\n  </div>\n  <div class=\"col-sm-3\">\n    Status:\n    <i class=\"fa fa-circle\" [ngClass]=\"getStatus()\"></i>\n  </div>\n</div>\n<div class=\"card\" [ngClass]=\"contentClass\">\n  <div class=\"card-header\">INFO: {{oDevice.info}}</div>\n  <div class=\"card-body\">\n    <div class=\"row\" [ngClass]='editClass'>\n      <div class=\"col-sm-3\">\n        <label for=\"command\">Commands\n          <i alt=\"as\" (click)=\"showInstructions()\" class=\"fa fa-question-circle\"></i>\n        </label>\n      </div>\n      <div *ngIf=\"this.oDevice.commands == 'NNN';\" class=\"col-sm-9\">\n        <p>This device does not accept commands.</p>\n      </div>\n      <div *ngIf=\"(this.oDevice.commands[2] == 'Y' && this.oDevice.commands != 'NNN');\" class=\"col-sm-9\">\n        <div class=\"col-sm-7\">\n          <input type=\"text\" class=\"form-control\" name=\"command\" id=\"command\" placeholder=\"\" [(value)]=\"commandText\">\n        </div>\n        <div class=\"col-sm-2 col-6\">\n          <button type=\"button\" class=\"btn btn-primary\" (click)=\"sendCommandDevice(commandText)\">SEND</button>\n        </div>\n      </div>\n\n    </div>\n    <div class=\"row \" [ngClass]='editClass'>\n      <div *ngIf=\"this.oDevice.commands[0] == 'Y';\" class=\"command-buttons col-6\">\n        <button type=\"button\" class=\"btn btn-success col-4\" (click)=\"sendCommandDevice('ON')\">ON</button>\n        <button type=\"button\" class=\"btn btn-danger col-4\" (click)=\"sendCommandDevice('OFF')\">OFF</button>\n      </div>\n      <div *ngIf=\"this.oDevice.commands[1] == 'Y';\"  class=\"command-buttons col-6\">\n        <button type=\"button\" class=\"btn btn-warning col-4\" (click)=\"sendCommandDevice('+')\">+</button>\n        <button type=\"button\" class=\"btn btn-warning col-4\" (click)=\"sendCommandDevice('-')\">-</button>\n      </div>\n    </div>\n    <div class=\"card-body\">\n      <div class=\"row\" [ngClass]='editClass2'>\n        <div class=\"col-sm-5\">\n          <label for=\"command\">New name: </label>\n        </div>\n        <div class=\"col-sm-7 \">\n          <input type=\"text\" class=\"form-control\" name=\"new_name\" placeholder=\"\" [(ngModel)]=\"new_name\">\n        </div>\n      </div>\n      <div class=\"row\" [ngClass]='editClass2'>\n        <div class=\"col-sm-5\">\n          <label for=\"command\">New location: </label>\n        </div>\n        <div class=\"col-sm-7 \">\n          <input type=\"text\" class=\"form-control\" name=\"new_location\" placeholder=\"\" [(ngModel)]=\"new_location\">\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"card-footer\">\n    <div class=\"row\">\n      <button type=\"button\" class=\"btn btn-secondary col-2\" [ngClass]='editClass' (click)=\"editDevice()\">\n        <i class=\"fa fa-pencil\"></i>\n        <span class=\"txtBtn\">EDIT</span>\n      </button>\n      <button type=\"button\" class=\"btn btn-secondary col-2\" [ngClass]='editClass2' (click)=\"editDeviceSave()\">\n        <i class=\"fa fa-save\"></i>\n        <span class=\"txtBtn\">SAVE</span>\n      </button>\n      <button type=\"button\" class=\"btn btn-secondary col-2\" [ngClass]='editClass2' (click)=\"editDevice()\">\n        <i class=\"fa fa-times-circle\"></i>\n        <span class=\"txtBtn\">CANCEL</span>\n      </button>\n      <button type=\"button\" class=\"btn btn-secondary col-2\" (click)=\"deleteDevice()\">\n        <i class=\"fa fa-trash\"></i>\n        <span class=\"txtBtn\">DELETE</span>\n      </button>\n      <div *ngIf=\"this.oDevice.camera;\" class=\"col-2\" [ngClass]='editClass'>\n        <button type=\"button\" class=\"btn btn-primary\">\n          <i class=\"fa fa-camera\"></i>\n          <span class=\"txtBtn\">VIEW CAM</span>\n        </button>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -526,10 +526,12 @@ var DeviceComponent = /** @class */ (function () {
         this.contentClass = 'oculto';
         this.editClass = '';
         this.editClass2 = 'oculto';
+        this.commandText = '';
     }
     DeviceComponent.prototype.ngOnInit = function () {
     };
     DeviceComponent.prototype.showInstructions = function () {
+        console.log('cam' + this.oDevice.commands);
         alert('Different commands are avalaible depending on your device type. Check instructions to know more.');
     };
     DeviceComponent.prototype.getStatus = function () {
@@ -577,6 +579,15 @@ var DeviceComponent = /** @class */ (function () {
         this.oDevice.location = this.new_location;
         this.devices_service.editDevice(this.oDevice).then(function () {
             console.log('editado');
+        });
+    };
+    DeviceComponent.prototype.sendCommandDevice = function (command) {
+        console.log(command);
+        this.devices_service.sendCommandDevice(this.oDevice, command).then(function () {
+            console.log('Command sent');
+        }).catch(function (err) {
+            alert('Error while sending command: ' + err);
+            console.log(err);
         });
     };
     __decorate([
@@ -658,7 +669,7 @@ module.exports = "\n\n.container-fluid{\n  max-width: 760px;\n}\nul {\n  padding
 /***/ "./src/app/devices/devices/devices.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <div *ngIf=\"aRooms.length > 0\" class=\"row\" >\n    <div class=\"col-sm-5\">\n      <label for=\"sel1\">Filter by room:</label>\n    </div>\n    <div class=\"col-sm-7 \">\n      <select class=\"form-control\" id=\"sel1\" [(ngModel)]=\"filtered_room\">\n            <option>None</option>\n          <ng-container *ngFor=\"let item of aRooms; index as i;\">\n              <option>{{item}}</option>\n          </ng-container>\n      </select>\n    </div>\n</div>\n  <ul class=\"list-group row\">\n    <div *ngIf=\"filtered_room == 'None'; else filtered\">\n      <ng-container *ngFor=\"let item of aDevices; index as i;\">\n          <li class=\"list-group-item container-fluid row\" [ngClass]=\"getStatus(item)\" >\n              <app-device class=\"col-10\" [oDevice]=\"item\"  (deleted)=\"deleteDevice($event)\"></app-device>\n          </li>\n      </ng-container>\n    </div>\n\n  </ul>\n</div>\n<ng-template #filtered>\n  <ng-container *ngFor=\"let item of aDevices; index as i;\">\n      <li *ngIf=\"item.location === filtered_room\" class=\"list-group-item container-fluid row\" [ngClass]=\"getStatus(item)\" >\n          <app-device class=\"col-10\"  [oDevice]=\"item\"  (deleted)=\"deleteDevice($event)\"></app-device>\n      </li>\n  </ng-container>\n</ng-template>\n"
+module.exports = "<div class=\"container-fluid\">\n  <div *ngIf=\"aRooms.length > 0\" class=\"row\" >\n    <div class=\"col-sm-5\">\n      <label for=\"sel1\">Filter by room:</label>\n    </div>\n    <div class=\"col-sm-7 \">\n      <select class=\"form-control\" id=\"sel1\" [(ngModel)]=\"filtered_room\">\n            <option>None</option>\n          <ng-container *ngFor=\"let item of aRooms; index as i;\">\n              <option>{{item}}</option>\n          </ng-container>\n      </select>\n    </div>\n</div>\n  <ul class=\"list-group row\">\n    <div *ngIf=\"filtered_room == 'None'; else filtered\">\n      <ng-container *ngFor=\"let item of aDevices; index as i;\">\n          <li class=\"list-group-item row\" [ngClass]=\"getStatus(item)\" >\n              <app-device class=\"col-10\" [oDevice]=\"item\"  (deleted)=\"deleteDevice($event)\"></app-device>\n          </li>\n      </ng-container>\n    </div>\n\n  </ul>\n</div>\n<ng-template #filtered>\n  <ng-container *ngFor=\"let item of aDevices; index as i;\">\n      <li *ngIf=\"item.location === filtered_room\" class=\"list-group-item row\" [ngClass]=\"getStatus(item)\" >\n          <app-device class=\"col-10\"  [oDevice]=\"item\"  (deleted)=\"deleteDevice($event)\"></app-device>\n      </li>\n  </ng-container>\n</ng-template>\n"
 
 /***/ }),
 
@@ -799,13 +810,16 @@ var AuthenticationModel = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Device; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return DeviceEdit; });
 var Device = /** @class */ (function () {
-    function Device(id, name, freq, info, location, lastupdate) {
+    function Device(id, name, freq, info, commands, location, lastupdate, camera, ip) {
         this.id = id;
         this.name = name;
         this.freq = freq;
         this.info = info;
+        this.commands = commands;
         this.location = location;
         this.lastupdate = lastupdate;
+        this.camera = camera;
+        this.ip = ip;
     }
     Device.prototype.getStatus = function () {
         return true;
@@ -843,7 +857,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var URLAPI = 'http://localhost:8080'; // window.location.origin;
+var URLAPI = window.location.origin;
 var httpOptions = {
     headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
         'Content-Type': 'application/json',
@@ -913,7 +927,8 @@ var URLAPI = window.location.origin;
 var httpOptions = {
     headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
         'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
+        'Authorization': 'my-auth-token',
+        'CORS': 'Access-Control-Allow-Origin',
     })
 };
 var DevicesService = /** @class */ (function () {
@@ -953,6 +968,16 @@ var DevicesService = /** @class */ (function () {
             return _this.aDevices;
         });
     };
+    DevicesService.prototype.sendCommandDevice = function (oDevice, command) {
+        var urlDevice = 'http://' + oDevice.ip;
+        var commandOBject = {
+            id: oDevice.id,
+            command: command,
+        };
+        console.log(urlDevice);
+        console.log(commandOBject);
+        return this.http.put(urlDevice, JSON.stringify(commandOBject), httpOptions).toPromise();
+    };
     DevicesService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
@@ -960,6 +985,12 @@ var DevicesService = /** @class */ (function () {
     return DevicesService;
 }());
 
+/*
+ip_actuador/
+{
+    "id" : "33",
+    "command" : "ON", "OFF", "+", "-", "texto"
+}*/
 
 
 /***/ }),

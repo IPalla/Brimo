@@ -15,7 +15,7 @@
   <ul class="list-group row">
     <div *ngIf="filtered_room == 'None'; else filtered">
       <ng-container *ngFor="let item of aDevices; index as i;">
-          <li class="list-group-item container-fluid row" [ngClass]="getStatus(item)" >
+          <li class="list-group-item row" [ngClass]="getStatus(item)" >
               <app-device class="col-10" [oDevice]="item"  (deleted)="deleteDevice($event)"></app-device>
           </li>
       </ng-container>
@@ -25,7 +25,7 @@
 </div>
 <ng-template #filtered>
   <ng-container *ngFor="let item of aDevices; index as i;">
-      <li *ngIf="item.location === filtered_room" class="list-group-item container-fluid row" [ngClass]="getStatus(item)" >
+      <li *ngIf="item.location === filtered_room" class="list-group-item row" [ngClass]="getStatus(item)" >
           <app-device class="col-10"  [oDevice]="item"  (deleted)="deleteDevice($event)"></app-device>
       </li>
   </ng-container>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 
 
-const URLAPI = 'http://localhost:8080'; // window.location.origin;
+const URLAPI = window.location.origin;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',

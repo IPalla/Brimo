@@ -3,13 +3,17 @@ interface DeviceIf {
   name: string;
   freq: number;
   info: string;
+  commands: string;
   location: string;
   lastupdate: string;
+  camera: boolean;
+  ip: string;
 }
 
 export class Device implements DeviceIf {
   constructor(public id: number, public name: string, public freq: number,
-    public info: string, public location: string, public lastupdate: string) {}
+    public info: string, public commands: string, public location: string, public lastupdate: string,
+    public camera: boolean, public ip: string) {}
     getStatus() {
       return true;
     }

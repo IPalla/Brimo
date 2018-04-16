@@ -18,7 +18,7 @@ class device:
 
 #DEVICES TABLE
 
-def device_add(name, freq, commands, IP,info=""):
+def device_add(name, freq, commands, IP,camera="false", info=""):
 	if len(commands) != 3:
 		return 0
 	if commands[0] != "Y" and commands[0] != "N":
@@ -28,7 +28,7 @@ def device_add(name, freq, commands, IP,info=""):
 	if commands[2] != "Y" and commands[2] != "N":
 		return 0 
 	with sqlite3.connect(SERVER_DB) as c:
-		r = c.execute("INSERT INTO devices (name, freq, info , lastupdate,commands,IP) VALUES (?,?,?,datetime('now', 'localtime'),?,? )", [name.upper(), freq, info, commands, IP])
+		r = c.execute("INSERT INTO devices (name, freq, info , lastupdate,commands,IP, camera) VALUES (?,?,?,datetime('now', 'localtime'),?,?,? )", [name.upper(), freq, info, commands, IP, camera])
 		c.commit()
 		if r.rowcount != 1:
 			return -1
@@ -79,7 +79,7 @@ def devices_JSON():
 	return ndic
 
 def device_JSON(row):
-	mid_json = {'id' : str(row[0]), 'name': row[1], 'type': str(row[2]), 'freq': str(row[3]), 'info': str(row[4]), 'location': str(row[5]), 'lastupdate': str(row[6]), 'commands': str(row[7]), 'ip': str(row[8])  }
+	mid_json = {'id' : str(row[0]), 'name': row[1], 'type': str(row[2]), 'freq': str(row[3]), 'info': str(row[4]), 'location': str(row[5]), 'lastupdate': str(row[6]), 'commands': str(row[7]), 'ip': str(row[8]), 'camera': str(row[9])  }
 	return mid_json
 
 def device_JSON_by_id(id):
@@ -113,7 +113,7 @@ def users_login(user, pwd):
 
 def setup_devices_table():
 	with sqlite3.connect(SERVER_DB) as con:
-		con.execute("CREATE TABLE IF NOT EXISTS devices (id INTEGER PRIMARY KEY AUTOINCREMENT,name, type, freq, info,location ,lastupdate, commands, IP) ")
+		con.execute("CREATE TABLE IF NOT EXISTS devices (id INTEGER PRIMARY KEY AUTOINCREMENT,name, type, freq, info,location ,lastupdate, commands, IP, camera) ")
 		con.commit()
     
 def clean_devices_table():

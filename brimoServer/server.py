@@ -9,7 +9,7 @@ from cache import Caches
 import cherrypy
 
 SSL =  False
-DEBUG_LEVEL = levels.DEBUG
+DEBUG_LEVEL = levels.INFO
 
 
 """
@@ -82,7 +82,10 @@ class devices(object):
         commands = input_json["commands"]
         IP = input_json["IP"]
         cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
-        ret = device_add(name, freq, commands, IP )
+        camera = 'false'
+        if 'camera' in input_json:
+            camera = input_json['camera']
+        ret = device_add(name, freq, commands, IP, camera )
         if ret != -1 and ret != 0:
             logging.info('Resource created, id: ' + str(ret))
             cherrypy.response.status = "201 Resource Created"
