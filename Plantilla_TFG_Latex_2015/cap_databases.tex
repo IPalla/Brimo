@@ -1,0 +1,344 @@
+\chapter{Bases de datos}
+\label{chap:databases}
+
+Este capítulo esta enteramente dedicado a la muestra y descripción de las bases de datos utilizadas en este proyecto, esto se debe a su amplitud y cuantía pues son muchas las bases de datos disponibles.
+
+\lsection{CASIA} \label{sec:CASIA_database}
+
+El centro de investigación y seguridad biométrica (Center for Biometrics and Security Research~\cite{database:CASIA_web}) pone a disposición del público la base de datos CASIA (Institute of Automation Chinese Academy of Sciences), se trata por tanto de una base de datos de libre acceso con el objetivo de promover la investigacin y el avance en el reconocimiento del iris.
+
+CASIA V1 contiene 756 imágenes de iris de 108 sujetos, fue la primera de las versiones de libre acceso pero con una peculiaridad, con el fin de proteger los derechos de propiedad intelectual en el diseo de la captura de iris, especialmente en el sistema de iluminacin (IIN), las imgenes de esta base de datos fueron tratadas sustituyndose la pupila por una regin circular de intensidad constante para enmascarar las reflexiones especulares de la iluminacin. En esta edicin la frontera entre la pupila y el iris es mucho mas notable, lo que hace que la deteccin sea mucho ms fcil, pero no tiene ningn efecto sobre las otras fases del sistema de reconocimiento de iris.
+
+\begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Caractersticas}   & \textbf{CASIA v1}      & \multicolumn{2}{|c|}{\textbf{CASIA v2}} \\
+        \cline{3-4}
+                                   &                        & device 1          & device 2       \\
+        \hline
+        \textbf{Sensor}            & desconocido            & desconocido 1     & desconocido 2  \\
+        \hline
+        \textbf{Entorno}           & interior               & interior          & interior        \\
+        \hline
+                                   &                        &                   &                \\
+        \textbf{Sesiones}          & 2                      & 1                 & 1              \\
+                                   &                        &                   &                \\
+        \hline
+        \textbf{Num. de usuarios}  & 108                    & 60                & 60             \\
+        \hline
+        \textbf{Num. de imgenes}  & 3 primera session      & 20 imgenes en    & 20 imgenes en \\
+                                   & y 4 segunda session    & una sola sesin   & una sola sesin\\
+        \hline
+        \textbf{Resolucin}        & 320x280                & 640x480           & 640x480        \\
+        \hline
+        \textbf{Caractersticas}   &                        &                   &                \\
+        \hline
+        \textbf{Total}             & 3x108 + 4x108 = 756    & 20x60 = 1200      & 20x60 = 1200   \\
+        \hline
+    \end{tabular}
+    \caption{Caractersticas de la base de datos de CASIA v1 y v2:\citet{database:CASIA_web}.}
+    \label{table:info_CASIAv1_2}
+\end{table}
+
+CASIA v3 incluye tres subconjuntos que son etiquetados como: CASIA v3-Interval, CASIA v3-Lamp y CASIA v3-Twins. Contiene un total de 22051 imgenes del iris de ms de 700 temas. Todas las imgenes de iris son de 8 bits en color gris con una compresin de archivos JPEG. Algunas estadsticas y caractersticas de cada subgrupo se resumen en el cuadro~\ref{table:info_CASIAv3}. Casi todos los individuos son de origen chino, excepto en unos pocos CASIA v3-Interval. Debido a que los tres conjuntos de datos fueron capturados en diferentes momentos, slo CASIA v3-Interval y CASIA v3-Lamp tienen una pequea superposicin en temas.
+CASIA v3-Interval es un superconjunto de CASIA v1, tras obtener las patentes en el diseo de la cmara de iris se produjo la liberacin desenmascarada de las imgenes originales. La disponibilidad de CASIA-IrisV3-Interval puede hacer CASIA V1 este obsoleta, aunque es todava muy utilizada por ese marcaje de la pupila.
+
+\vspace{0.5cm}
+
+\begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Caractersticas}   & \multicolumn{3}{|c|}{\textbf{CASIA v3}}            \\
+        \cline{2-4}
+                                   & \textbf{v3-Interval}   & \textbf{v3-Lamp}  & \textbf{v3-Twins}         \\
+        \hline
+        \textbf{Sensor}            & Desarrollado           & OKIs IRISPASS-h  & OKIs IRISPASS-h \\
+        \hline
+        \textbf{Entorno}           & interior               & interior          & exterior         \\
+        \hline
+                                   & 2 sesiones con         &                   &           \\
+        \textbf{Sesiones}          & una semana de          & 1                 & 1         \\
+                                   & intervalo              &                   &           \\
+        \hline
+        \textbf{Num. de usuarios}  & 249                    & 411               & 200       \\
+        \hline
+        \textbf{Num. de imgenes}  & 396 ojos               & 819 ojos          & 400 ojos   \\
+                                   & distintos              & distintos         & distintos  \\
+        \hline
+        \textbf{Resolucin}        & 320x280                & 640x480           & 640x480    \\
+        \hline
+        \textbf{Caractersticas}   &                        &                   &           \\
+        \hline
+        \textbf{Total}             & 2655                   & 16213             & 3183      \\
+        \hline
+    \end{tabular}
+    \caption{Caractersticas de la base de datos de CASIA v3:\citet{database:CASIA_web}.}
+    \label{table:info_CASIAv3}
+\end{table}
+
+
+%\begin{table}[h]
+%    \centering
+%    \scriptsize
+%    \begin{tabular}{|c|c|c|c|c|c|c|}
+%        \hline
+%        \textbf{Caractersticas}   & \textbf{CASIA v1}      & \multicolumn{2}{|c|}{\textbf{CASIA v2}} & \multicolumn{3}{|c|}{\textbf{CASIA v3}}            \\
+%        \cline{3-7}
+%                                   &                        & device 1          & device 2       & v3-Interval    & v3-Lamp          & v3-Twins         \\
+%        \hline
+%        \textbf{Sensor}            & desconocido            & desconocido 1     & desconocido 2  & Desarrollado   & OKIs IRISPASS-h & OKIs IRISPASS-h \\
+%        \hline
+%        \textbf{Entorno}           & interior               & interior          & interior       & interior       & interior         & exterior         \\
+%        \hline
+%        \textbf{Sesiones}          &                        &                   &                & 2 sesiones con &                  &           \\
+%                                   & 2                      & 1                 & 1              & una semana de  & 1                & 1         \\
+%                                   &                        &                   &                & intervalo      &                  &           \\
+%        \hline
+%        \textbf{Num. de usuarios}  & 108                    & 60                & 60             & 249            & 411              & 200       \\
+%        \hline
+%        \textbf{Num. de imgenes}  & 3 primera session      & 20 imgenes en    & 20 imgenes en & 396 ojos       & 819 ojos         & 400 ojos   \\
+%                                   & y 4 segunda session    & una sola sesin   & una sola sesin& distintos      & distintos        & distintos  \\
+%        \hline
+%        \textbf{Resolucin}        & 320x280                & 640x480           & 640x480        & 320x280        & 640x480          & 640x480    \\
+%        \hline
+%        \textbf{Caractersticas}   &                        &                   &                &                  &           \\
+%        \hline
+%        \textbf{Total}             & 3x108 + 4x108 = 756    & 20x60 = 1200      & 20x60 = 1200   & 2655           & 16213            & 3183      \\
+%        \hline
+%    \end{tabular}
+%    \caption{Caractersticas de la base de datos de CASIA: \citet{DBLP:journals/tcsv/JainRP04}.}
+%    \label{table:info_CASIA}
+%\end{table}
+
+
+
+\lsection{UBIRIS} \label{sec:UBIRIS_database}
+
+Esta base de datos tiene caractersticas que la distinguen claramente de la existentes, su objetivo principal es la evaluacin robusta de metodologas de identificacin del iris. Las actuales bases de datos de iris estn libres de ruido y puede ser utilizadas para pruebas y desarrollo de los algoritmos de segmentacin y reconocimiento que son capaces de trabajar con imgenes capturadas bajo condiciones casi perfectas. Las nuevas necesidades de un acceso seguro (edificios, zonas restringidas, ...) requiere aplicaciones con una captura cotidiana invadida de cualquier tipo de efecto de ambiente. UBIRIS es una herramienta para el desarrollo de tales mtodos ya que exhibe varios tipos de ruido de imagen. El objetivo de esta base de datos es proporcionar imgenes con diferentes tipos de ruido, convirtindose en un recurso eficaz para la evaluacin y el desarrollo robusto de los sistemas de identificacin del iris.
+
+La base de datos est compuesta por 1877 imgenes recogidas de 241 personas durante el mes de septiembre de 2004 en dos sesiones. Para la captura se utiliz una cmara Nikon E5700 con la versin de software E5700v1.0, 71mm de longitud focal y 1/30 seg. de tiempo de exposicin. Las imgenes son en color RGB con dimensiones de 2560x1704 pxeles con 300 ppp de resolucin horizontal y vertical. El formato que utilizan es JPEG con perdidas de compresin de 24 bits de profundidad.
+
+Para la primera sesin de captura, trataron de minimizar los factores de ruido, especialmente las relativas a la reflexin, la luminosidad y el contraste, para ello se realizaron las tomas en el interior de una habitacin oscura con una lmpara halgena de 500W como foco iluminador, colocado a 50cm del sujeto. En la segunda sesin, se cambi el lugar de captura con el fin de introducir factores naturales de luminosidad, permitiendo la aparicin de imgenes heterogneas con problemas respecto a la reflexin, el contraste, el brillo y el foco. Las imgenes recogidas en esta segunda sesin pretende simular los capturados por un sistema sin o con un mnimo de colaboracin de los sujetos, obtenindose imgenes ruidosos en comparacin con las recogidas durante la primera sesin.
+
+Todas las imgenes de ambas sesiones, se clasificaron manualmente con respecto a tres parmetros: \emph{enfoque, reflexin y iris visible} en una escala de tres de valores: \emph{buenas, medias, malas}.
+
+\begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Caractersticas}   & \multicolumn{3}{|c|}{\textbf{UBIRIS}}            \\
+        \cline{2-4}
+                                   & \textbf{Ubiris 1}      & \textbf{Ubiris 2}  & \textbf{Ubiris 3}         \\
+        \hline
+        \textbf{Sensor}            & \multicolumn{3}{|c|}{Nikon E5700 camera - RGB Color}            \\
+        \hline
+        \textbf{Entorno}           & interior               & interior          & interior         \\
+        \hline
+                                   & 2 con                  & 2 convertidas     & 2 con          \\
+        \textbf{Sesiones}          & distinta               & a blanco y        & distinta         \\
+                                   & iluminacin            & negro             & iluminacin          \\
+        \hline
+        \textbf{Num. de usuarios}  & 241                    & 241               & 241       \\
+        \hline
+        \textbf{Num. de imgenes}  & aprox. 5               & aprox. 5          & aprox. 5  \\
+                                   & imgenes               & imgenes          & imgenes  \\
+        \hline
+        \textbf{Resolucin}        & 200x150                & 200x150           & 800x600    \\
+        \hline
+                            & \multicolumn{3}{|c|}{\emph{Enfoque} (Buena = 73,83\%, Media = 17,53\%, Mala = 8,63\%)}\\
+        \textbf{Caractersticas}   & \multicolumn{3}{|c|}{\emph{Reflexin} (Buena = 58,87\%, Media = 36,78\%, Mala = 4,34\%) } \\
+                        & \multicolumn{3}{|c|}{\emph{Iris visible} (Buena = 36,73\%, Media = 47,83\%, Mala = 15,44\%)}\\
+        \hline
+        \textbf{Total}             & 1877                   & 1877              & 1877      \\
+        \hline
+    \end{tabular}
+    \caption{Caractersticas de la base de datos UBIRIS v1: \citet{database:UBIRISv1_ProencaAlexandre2005,database:UBIRISv1_web}.}
+    \label{table:info_UBIRIS}
+\end{table}
+
+
+\lsection{BioSec Baseline y BioSecurID} \label{sec:ATVS_database}
+
+Se trata de dos bases de datos multimodales, la primera BioSec est compuesta por huella digital (obtenidas con tres sensores diferentes), iris, voz y cara. La segunda BioSecurID es una base de datos de mayor envergadura compuesta por huella digital, iris, voz, cara, mano, escritura y firma.
+
+La base de datos BioSec Baseline contiene datos de 200 personas en 2 sesiones de adquisicin, mientras que BioSecurID data de 400 personas en 4 sesiones de adquisicin. Todo esto esta descrito en el cuadro~\ref{table:info_ATVS}.
+
+En particular BioSec trata de superar la ausencia de importantes rasgos (por ejemplo, iris), los sensores (por ejemplo, los sensores de huella digital) e intentos de falsificacin (por ejemplo, declaraciones de voz pronunciando el PIN de otro usuario) en las bases de datos existentes.
+
+La adquisicin de la base de datos BioSec Baseline fue realizada conjuntamente por la Universidad Politcnica De Madrid (UPM) y la Universidad Politcnica de Catalua (UPC) en Espaa.
+
+El escenario de adquisicin fue una habitacin de una oficina, con un amplio escritorio compuesto por dos sillas para el donante y el supervisor de la adquisicin. Las condiciones ambientales (Por ejemplo, iluminacin, el ruido de fondo, etc) no fueron controladas con el fin de simular una situacin real. Cada sujeto particip en dos sesiones de adquisicin separadas de una a cuatro semanas. En cada sesin se tendi a cambiar las condiciones para simular diferentes situaciones y utilizar distintos sensores.
+%
+%Para la \emph{cara}. 4 imgenes de la cara frontal a unos 30 cm de distancia a la cmara (2 al principio y 2 al final del perodo de sesiones). Los individuos en cada sesin cambiaron sus expresiones faciales entre adquisicin y adquisicin a fin de evitar muestras idnticas de la cara. El nmero total de imgenes de este subconjunto es NF = 1600.
+%
+%Para la \emph{voz}. 4 declaraciones de un usuario especfico diciendo un nmero de 8 dgitos (2 al principio y 2 en la final) y 3 declaraciones de otros usuarios diciendo los mismos nmeros para falsificaciones en el que un impostor tiene acceso al nmero de un cliente. Los 8 dgitos se pronuncian siempre dgito por dgito en una sola y fluida expresin. Los 8 dgitos se registraron tanto en Espaol e Ingls. El nmero total de muestras de voz es, por tanto, NV = 2 x 200 x
+%(4 + 3) x 2 x 2 sensores de idiomas.
+%
+%Para el \emph{iris}. 4 iris de cada ojo cambiando entre consecutivas adquisiciones, el numero de muestras es NI = 3200 iris.
+%
+%Para la \emph{huella digital}. 4 muestras con cada uno de los 3 tipos de sensores, intercalado dedos entre consecutivas adquisiciones. El nmero total de imgenes de las huellas dactilares es NP = 2 x 200 x 4 x 3 x 4 sensores de huella.
+
+\vspace{1cm}
+
+\begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Caractersticas}   & \textbf{BioSec Baseline}      &  \textbf{BioSecurID}       \\
+        \hline
+        \textbf{Sensor}            & \multicolumn{2}{|c|}{LG Iris Access 3000}\\
+        \hline
+        \textbf{Entorno}           & interior               & interior        \\
+        \hline
+                                   &                        & 4, con un                \\
+        \textbf{Sesiones}          & 2                      & intervalo de               \\
+                                   &                        & 1 ao/sesin           \\
+        \hline
+        \textbf{Num. de usuarios}  & 200                    & 400              \\
+        \hline
+        \textbf{Num. de imgenes}  & 8 imgenes,            & 4 imgenes  \\
+                                   & 4 por ojo              & de cada ojo \\
+        \hline
+        \textbf{Resolucin}        & 640x480                & 640x480         \\
+        \hline
+        \textbf{Caractersticas}   &                        &                 \\
+        \hline
+        \textbf{Total}             & 200x2x2x4 = 3200       & 400x4x2x4 = 12800    \\
+        \hline
+    \end{tabular}
+    \caption{Caractersticas de las bases de datos BioSec\citet{database:Biosec} y BioSecurID\citet{database:BiosecurID}.}
+    \label{table:info_ATVS}
+\end{table}
+
+\newpage
+
+\lsection{BATH} \label{sec:BATH_database}
+
+La universidad de Bath pone a disposicin pblica la base de datos de imgenes de iris Bath. En esta base de datos las imgenes son en escala de grises y en formato .bmp de 1,2 MB cada una. Son aproximadamente, 1000 las imgenes de iris disponible para su descarga gratuita. Las carpetas estn indexadas numricamente como 0001, 0002, etc. Dentro de cada carpeta hay dos subcarpetas, L (a la izquierda) y R (a la derecha), cada uno con 20 imgenes de los respectivos ojos.
+
+Para la captura de dichas imgenes se utiliz una cmara ISG LightWise LW-1.3-S-1394, con alta calidad de vdeo y caractersticas de respuesta excelente. Su eleccin se debi al bajo costo y la facilidad de integracin, adems de su buena respuesta espectral en la regin cercano al infrarrojo y la alta tasa de captura de video de 30 FPS para 1280 x 1024 de resolucin. El procedimiento de captura consisti en una secuencia de 200 fotogramas del iris de donde los 20 mejores son seleccionados para su inclusin en la base de datos final. Todo este proceso se haca en apenas 5 minutos.
+
+La lente utilizada, con el fin de maximizar el uso de toda la resolucin de la imagen fue la Pentax C-3516 M, lente de 35 mm, con dos anillos de extensin se utiliz para captar la imagen del iris. Con el fin de obtener una imagen ntida, el objetivo se centr en el iris y no en cualquier otra parte del ojo. Para la iluminacin se hizo uso de luz infrarroja y se hizo uso de un filtro para eliminar reflejos causados por fuentes de luz ambiental.
+
+La descripcin de la base de datos se muestra en la siguiente cuadro:
+
+\vspace{1cm}
+
+\begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Caractersticas}   & \textbf{Bath 05}      &  \textbf{Bath 07}       \\
+        \hline
+        \textbf{Sensor}            & \multicolumn{2}{|c|}{ISG LightWise LW-1.3-S-1394}\\
+        \hline
+        \textbf{Entorno}           & interior               & interior        \\
+        \hline
+                                   &                        &                 \\
+        \textbf{Sesiones}          & 1                      & 1               \\
+                                   &                        &              \\
+        \hline
+        \textbf{Num. de usuarios}  & 50                     & 25              \\
+        \hline
+        \textbf{Num. de imgenes}  & 20 imgenes,           & 20 imgenes  \\
+                                   & por ojo                & de cada ojo \\
+        \hline
+        \textbf{Resolucin}        & 1280x960                & 1280x960         \\
+        \hline
+        \textbf{Caractersticas}   &                        &                 \\
+        \hline
+        \textbf{Total}             & 50x2x20 = 2000       & 25x2x20 = 1000    \\
+        \hline
+    \end{tabular}
+    \caption{Caractersticas de las bases de datos Bath~\citet{database:UniversityBath_web}.}
+    \label{table:info_bath}
+\end{table}
+
+
+\lsection{UPOL} \label{sec:UPOL_database}
+
+La base de datos UPOL~\cite{database:UPOL}, est formada por 3 x 128 = 384 imgenes de iris. Las imgenes son en color RGB y centralizadas en el iris gracias a que los iris fueron escaneados con el dispositivo ptico TOPCON TRC50IA conectado con la cmara SONY DXC-950P 3CCD. De esta manera se obtuvieron 3 imgenes de cada ojo de 64 individuos (3 x 64 izquierdo y 3 x 64 derecho), con un formato de almacenaje de 24 bit de extension .png y unas dimensiones 576 x 768 pixels.
+
+La base de datos data del ao 2004 y est referenciada por dos publicaciones~\cite{article:Dobes04HumanEyeIris,article:Dobes06HumanEyeHough}.
+
+\newpage
+
+\lsection{Competiciones o Evaluaciones de Iris}
+\label{sec:competiciones}
+
+\subsection{The Iris Challenge Evaluation (ICE)}
+El Instituto Nacional de Estndares y Tecnologa (NIST~\cite{web:NIST}) organiz y gestion la Iris Challenge Evaluation (ICE~\cite{web:ICE}). El ICE 2005 fue un proyecto para el desarrollo de la tecnologa de reconocimiento del iris. Un ao mas tarde el ICE 2006 fue el primer certamen, independiente y abierto a gran escala, de evaluacin de las tecnologas de reconocimiento del iris. El objetivo principal de la ICE es promover el desarrollo y el avance de la tecnologa de reconocimiento del iris y evaluar su estado de capacidad tcnica. El ICE esta abierto cualquier institucin acadmica, industrial y los centros de investigacin.
+
+En la edicin de ICE 2005 participacin de 9 organizaciones de 6 pases diferentes, consisti en una tarea de reconocimiento del iris, problema que se distribuy a los participantes potenciales. Los resultados pueden observarse en la Fig~\ref{fig:grafica_ice2005}.
+
+\begin{figure}[h]
+  \centerline{
+    \mbox{\includegraphics[width=1.0\linewidth]{imagenes/NIST2005_roc.eps}}
+  }
+  \caption{ROC Results - Fully Automatic}
+  \label{fig:grafica_ice2005}
+\end{figure}
+
+\noindent A continuacin tenemos una lista con los participantes:
+
+\begin{itemize}
+    %\scriptsize
+    \item Cambridge University (Cam 1, Cam 2)
+    \item Carnegie Mellon University (CMU)
+    \item Chinese Academy of Sciences, Center for Information Science (CAS 1, CAS 2, CAS 3)
+    \item Indiana University, Purdue University, Indianapolis (IUPUI)
+    \item Iritech (IritchA, IritchB, IrtchC, IritchD)
+    \item PELCO (Pelco)
+    \item SAGEM - Iridian (SAGEM)
+    \item West Virginia University (WVU)
+    \item Yamataki Corp / Tohoku University (Tohoku)
+\end{itemize}
+
+En la edicin de ICE 2006 participacin de 8 organizaciones de 6 pases diferentes, consista en un certamen abierto a gran escala, independiente de la tecnologa de evaluacin de reconocimiento del iris. Para garantizar una evaluacin precisa, el ICE mide el rendimiento de los sistemas pero con privacidad de datos (datos no visto previamente por los investigadores o desarrolladores). Un conjunto de datos estndar y de pruebas metodolgicas son empleada a fin de que todos los participantes sean evaluados por igual. A continuacin tenemos una lista con los participantes:
+
+\begin{itemize}
+    %\scriptsize
+    \item Carnegie Mellon University
+    \item Chinese Academy of Sciences Institute of Automation (CASIA)
+    \item SAGEM and Iridian Technologies, Inc.
+    \item IriTech, Inc.
+    \item JIRIS USA
+    \item University of Cambridge
+    \item University of West Virginia
+    \item Tohoku University and Yamatake Corporation
+\end{itemize}
+
+El ICE 2006 se estableci como el primer punto de referencia para la evaluacin de algoritmos de reconocimiento del iris. Los resultados de esta evaluacin se presentan en la Fig~\ref{fig:grafica_ice2006} para algoritmos de los tres grupos: Sagem-Iridian (SG-2), Iritech (Irtch-2), y Cambridge (Cam-2). El rango entre cuartos de los tres algoritmos se superpone con la mayor cantidad de superposicin entre Iritech (Irtch-2), y Cambridge (Cam-2). Para los tres algoritmos, el cuarto mas pequeo tiene una FRR de 0,09 y una FAR de 0,001, en cambio para el cuarto ms largo la FRR es de 0,26 y la FAR de 0,001.
+
+\begin{figure}[h!]
+  \centerline{
+    \mbox{\includegraphics[width=.49\linewidth]{imag/ice.eps}}
+    \mbox{\includegraphics[width=.49\linewidth]{imagenes/NIST_exp_medidas.eps}}
+  }
+  \caption{Rendimiento de la ejecucin de 29.056 imgenes del ojo derecho y 30.502 imgenes del izquierdo de 240 sujetos con 30 particiones para cada uno de los ojos y a la derecha las claves para interpretar las grficas.}
+  \label{fig:grafica_ice2006}
+\end{figure}
+
+\subsection{Noisy Iris Challenge Evaluation (NICE)}
+El concurso de segmentacin de iris NICE.I~\cite{web:NICE} es un concurso que se evaluar la siguiente tarea: localizar las regiones que pertenecen al iris y estn libres de cualquier tipo de ruido.
+
+El objetivo principal de este concurso es evaluar la robustez de la segmentacin y deteccin del iris frente al ruido, los sistemas de reconocimiento del iris hacia dentro de menos limitadas condiciones de la captura de imgenes, a la larga encubiertas, en un futuro prximo.
+
+Hay dos factores principales que distinguen la NICE.I concurso de los dems:
+Otros concursos similares biomtricos (por ejemplo, Iris Challenge Fingerprint Evaluacin y Verificacin de la Competencia) evaluar el proceso de reconocimiento completo, de los datos brutos de preprocesamiento de identidad a la decisin final. Opuestamente, el NICE.I est centrado en la segmentacin del ruido sin iris datos. En un futuro albergan la esperanza de organizar la segunda parte del concurso (NICE.II) que comenzara a partir de la segmentacin de los datos y realizara el reconocimiento biomtrico.
+
+El NICE.I concurso funciona sobre la muy ruidosa UBIRIS.v2 datos de la base de datos. Esta base de datos tiene una caracterstica fundamental que lo distingue de las dems: aqu los factores de ruido, en lugar de evitar, son inducidos. Esto permite que la evaluacin efectiva de los algoritmos de robustez.
+
+El concurso est abierto a personas e instituciones, ya sea con acadmicos, industriales, de investigacin o de fines comerciales. Participaciones se permite desde cualquier pas del mundo. Tambin, se encuentra completamente libre de cualquier carga monetaria.
+
+El NICE.I es organizado por el Laboratorio SOCIA (Soft Computing y el Grupo de Anlisis de Imagen)~\cite{web:SociaLAB}, y que tendr lugar entre julio de 2007 (inicio del perodo de recepcin de los formularios de solicitud) y diciembre de 2008 (publicacin de los resultados y sobre los mejores mtodos de imagen en Elsevier (Image and Vision Computing Journal). La evaluacin de las participaciones concurso tendr lugar en los laboratorios SOCIA, departamento de ciencias de la computacin, Universidad de Beira Interior, Covilh, Portugal. Obviamente, como las participaciones se envan a travs de la web, no es necesaria la presencia fsica de cualquier participante concurso.
+
+
+\newpage \thispagestyle{empty} % Pgina vaca 

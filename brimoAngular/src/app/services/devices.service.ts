@@ -65,10 +65,8 @@ export class DevicesService {
     const urlDevice = 'http://' + oDevice.ip;
     const commandOBject = {
       id: oDevice.id,
-      command: command,
+      Action: command,
     };
-    console.log(urlDevice);
-    console.log(commandOBject);
     return this.http.put(urlDevice, JSON.stringify(commandOBject), httpOptions).toPromise();
 
   }
@@ -84,5 +82,5 @@ export class DevicesService {
 ip_actuador/
 {
     "id" : "33",
-    "command" : "ON", "OFF", "+", "-", "texto"
+    "Action" : "ON", "OFF", "+", "-", "texto"
 }*/

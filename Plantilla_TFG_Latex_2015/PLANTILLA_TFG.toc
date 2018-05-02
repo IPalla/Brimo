@@ -1,0 +1,68 @@
+\select@language {spanish}
+\select@language {spanish}
+\contentsline {chapter}{\IeC {\'I}ndice de Figuras}{\es@scroman {x}}
+\contentsline {chapter}{\IeC {\'I}ndice de Tablas}{\es@scroman {xii}}
+\contentsline {chapter}{\numberline {1}Introducci\IeC {\'o}n}{1}
+\contentsline {section}{\numberline {1.1}Motivaci\IeC {\'o}n del proyecto}{1}
+\contentsline {section}{\numberline {1.2}Objetivos y enfoque}{2}
+\contentsline {section}{\numberline {1.3}Metodolog\IeC {\'\i }a y plan de trabajo}{2}
+\contentsline {chapter}{\numberline {2}Reconocimiento de iris. Estado del arte}{3}
+\contentsline {section}{\numberline {2.1}Introducci\IeC {\'o}n}{3}
+\contentsline {section}{\numberline {2.2}Historia, nacimiento y evolucin.}{3}
+\contentsline {section}{\numberline {2.3}La anatoma del ojo}{3}
+\contentsline {subsection}{\numberline {2.3.1}Aspectos diferenciadores del iris}{3}
+\contentsline {section}{\numberline {2.4}Adquisicin del Iris}{3}
+\contentsline {subsection}{\numberline {2.4.1}Introduccin}{3}
+\contentsline {subsection}{\numberline {2.4.2}Esquemas de adquisicin tradicionales}{3}
+\contentsline {subsection}{\numberline {2.4.3}Consideraciones sobre la iluminacin}{3}
+\contentsline {subsection}{\numberline {2.4.4}Posicionamiento del Iris}{3}
+\contentsline {subsection}{\numberline {2.4.5}Sistemas comerciales de adquisicin}{3}
+\contentsline {section}{\numberline {2.5}Localizacin y segmentacin del Iris}{3}
+\contentsline {subsection}{\numberline {2.5.1}Introduccin}{4}
+\contentsline {subsection}{\numberline {2.5.2}Metodologa de J. Daugman y derivadas}{4}
+\contentsline {subsection}{\numberline {2.5.3}Metodologa de R. Wildes y derivadas}{4}
+\contentsline {subsection}{\numberline {2.5.4}Otras metodologas}{4}
+\contentsline {subsection}{\numberline {2.5.5}Comparativa de metodologas}{4}
+\contentsline {subsection}{\numberline {2.5.6}Deteccin de pestaas y ruido}{4}
+\contentsline {section}{\numberline {2.6}Normalizacin del tamao}{4}
+\contentsline {subsection}{\numberline {2.6.1}Daugman's Rubber Sheet Model}{4}
+\contentsline {subsection}{\numberline {2.6.2}Image Registration}{4}
+\contentsline {subsection}{\numberline {2.6.3}Normalizacin en ngulo}{4}
+\contentsline {subsection}{\numberline {2.6.4}Mejora del contraste y eliminacin de ruido}{4}
+\contentsline {section}{\numberline {2.7}Algoritmos de Codificacin}{4}
+\contentsline {subsection}{\numberline {2.7.1}Metodologa de Daugman: Filtros de Gabor}{4}
+\contentsline {subsection}{\numberline {2.7.2}Metodologas alternativas a la de Daugman}{4}
+\contentsline {subsubsection}{Filtros Log-Gabor}{4}
+\contentsline {subsubsection}{Wavelets}{4}
+\contentsline {subsubsection}{Haar Wavelet}{4}
+\contentsline {subsubsection}{Transformada Discreta del Coseno (DCT)}{4}
+\contentsline {subsection}{\numberline {2.7.3}Metodologas de Wildes. Vectores de caractersticas reales (no binarios)}{4}
+\contentsline {section}{\numberline {2.8}Algoritmos de Matching}{4}
+\contentsline {subsection}{\numberline {2.8.1}Introduccin}{4}
+\contentsline {subsection}{\numberline {2.8.2}Distancia de Hamming}{4}
+\contentsline {subsection}{\numberline {2.8.3}Distancia eucldea ponderada}{4}
+\contentsline {subsection}{\numberline {2.8.4}Correlacin normalizada}{4}
+\contentsline {section}{\numberline {2.9}Problemtica y retos futuros}{4}
+\contentsline {subsection}{\numberline {2.9.1}Segmentacin}{5}
+\contentsline {subsection}{\numberline {2.9.2}Captura ideal no invasiva}{5}
+\contentsline {section}{\numberline {2.10}Competiciones o Evaluaciones de Iris}{5}
+\contentsline {subsection}{\numberline {2.10.1}The Iris Challenge Evaluation (ICE)}{5}
+\contentsline {subsection}{\numberline {2.10.2}The Noisy Iris Challenge Evaluation (NICE)}{5}
+\contentsline {section}{\numberline {2.11}Bases de datos}{5}
+\contentsline {subsection}{\numberline {2.11.1}CASIA}{5}
+\contentsline {subsection}{\numberline {2.11.2}BioSec Baseline y BioSecurID}{5}
+\contentsline {chapter}{\numberline {3}Sistema, dise\IeC {\~n}o y desarrollo}{7}
+\contentsline {section}{\numberline {3.1}Segmentacin}{7}
+\contentsline {section}{\numberline {3.2}Normalizacin}{7}
+\contentsline {section}{\numberline {3.3}Codificacin}{7}
+\contentsline {section}{\numberline {3.4}Matching}{7}
+\contentsline {chapter}{\numberline {4}Experimentos Realizados y Resultados}{9}
+\contentsline {section}{\numberline {4.1}Bases de datos y protocolo}{9}
+\contentsline {section}{\numberline {4.2}Sistemas de referencia}{9}
+\contentsline {section}{\numberline {4.3}Escenarios de pruebas}{9}
+\contentsline {section}{\numberline {4.4}Experimentos del sistema completo}{9}
+\contentsline {chapter}{\numberline {5}Conclusiones y trabajo futuro}{11}
+\contentsline {chapter}{Glosario de acr\IeC {\'o}nimos}{13}
+\contentsline {chapter}{Bibliografa}{14}
+\contentsline {chapter}{\numberline {A}Manual de utilizaci\IeC {\'o}n}{15}
+\contentsline {chapter}{\numberline {B}Manual del programador}{17}
