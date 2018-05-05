@@ -67,7 +67,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"logged; else login_required\">\n  <app-menu (login_emitter)=\"login($event)\" [is_logged]=\"true\"></app-menu>\n  <div class=\"content\">\n    <router-outlet></router-outlet>\n  </div>\n  <app-footer class=\"footer\"></app-footer>\n</div>\n<ng-template #login_required>\n  <app-menu (login_emitter)=\"login($event)\" [is_logged]=\"false\"></app-menu>\n  <div class=\"content\">\n    <div class=\" alert alert-danger \">\n      <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.\n      <br> If is the first time you acess check manual for default user and password.\n    </div>\n  </div>\n  <app-footer class=\"footer\"></app-footer>\n</ng-template>\n"
+module.exports = "<div *ngIf=\"logged; else login_required\">\n  <app-menu (login_emitter)=\"login($event)\" [is_logged]=\"true\"></app-menu>\n  <div class=\"content\">\n    <router-outlet></router-outlet>\n  </div>\n  <app-footer class=\"footer\"></app-footer>\n</div>\n<ng-template #login_required>\n\n  <app-menu (login_emitter)=\"login($event)\" [is_logged]=\"false\"></app-menu>\n  <div class=\"content\">\n    <div class=\" alert alert-danger \">\n      <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.\n      <br> If is the first time you acess check manual for default user and password.\n    </div>\n  </div>\n  <app-footer class=\"footer\"></app-footer>\n</ng-template>\n"
 
 /***/ }),
 
@@ -95,14 +95,15 @@ var AppComponent = /** @class */ (function () {
         this.title = 'app';
     }
     AppComponent.prototype.ngOnInit = function () {
-        this.logged = false;
+        var _this = this;
+        this.login_service.isLogged().then(function (res) { _this.logged = res; }).catch(function () { _this.logged = false; });
     };
     AppComponent.prototype.logout = function () {
         this.logged = false;
     };
     AppComponent.prototype.login = function (logged) {
         if (!logged) {
-            this.login_service.logout().then().catch(console.log);
+            this.login_service.logout();
         }
         this.logged = logged;
     };
@@ -374,14 +375,14 @@ var FooterComponent = /** @class */ (function () {
 /***/ "./src/app/core/menu/menu.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "\nnav{\n  background-color:#221f2e;\n}\nul{\n  text-align: center;\n}\nnav img{\n  width:150px;\n}\ninput{\n  width: 70%;\n}\n.container{\n  padding-top: 1%;\n  padding-bottom: 3%;\n}\n.oculto2{\n  display: none; /*Oculto 2 es para todos los tamaños a diferencia de oculto*/\n}\np input{\n  font-family: 'Courier New', Courier, monospace;\n  font-style: italic;\n}\n@media only screen and (max-width: 1225px){\n  .content\n  {\n      min-height: 90%;\n      min-height: calc(100% - 200px);\n  }\n}\n@media only screen and (max-width: 1225px){\n  .content\n  {\n      min-height: 80%;\n      min-height: calc(100% - 175px);\n  }\n}\n@media only screen and (max-width: 700px){\n  nav img{\n   width: 100px;\n  }\n  .container .card-header{\n    display: none;\n  }\n  .content\n  {\n      min-height: 90%;\n      min-height: calc(100% - 100px);\n  }\n}\n@media only screen and (max-width: 620px){\n  nav img{\n    display: none;\n  }\n}\n@media only screen and (max-width: 575px){\n\n  .oculto{\n    display: none;\n  }\n  ul{\n    width: 100%;\n    -ms-flex-line-pack: center;\n        align-content: center;\n  }\n  nav {\n    -ms-flex-line-pack: center;\n        align-content: center;\n  }\n}\n"
+module.exports = "nav {\n  background-color: #221f2e;\n}\n\nul {\n  text-align: center;\n}\n\nnav img {\n  width: 150px;\n}\n\ninput[type=text],\ninput[type=password],\ninput[type=email],\ninput[type=date] {\n\n  font-family: 'Courier New', Courier, monospace;\n  width: 100%;\n  padding: 12px 20px;\n  margin: 8px 0;\n  display: inline-block;\n  border: 1px solid #ccc;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n\n.modal {\n  display: none;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  padding: 2rem;\n}\n\n.modal-content {\n  background-color: #fefefe;\n  border: 1px solid #888;\n  width: 100%;\n}\n\n.animate {\n  -webkit-animation: animatezoom 0.6s;\n  animation: animatezoom 0.6s\n}\n\n.container {\n  padding-top: 1%;\n  padding-bottom: 3%;\n}\n\n.oculto2 {\n  display: none;\n  /*Oculto 2 es para todos los tamaños a diferencia de oculto*/\n}\n\n@media only screen and (max-width: 1225px) {\n  .content {\n    min-height: 90%;\n    min-height: calc(100% - 200px);\n  }\n}\n\n@media only screen and (max-width: 1225px) {\n  .content {\n    min-height: 80%;\n    min-height: calc(100% - 175px);\n  }\n}\n\n@media only screen and (max-width: 700px) {\n  nav img {\n    width: 100px;\n  }\n  .container .card-header {\n    display: none;\n  }\n  .content {\n    min-height: 90%;\n    min-height: calc(100% - 100px);\n  }\n}\n\n@media only screen and (max-width: 620px) {\n  nav img {\n    display: none;\n  }\n}\n\n@media only screen and (max-width: 575px) {\n  .oculto {\n    display: none;\n  }\n  ul {\n    width: 100%;\n    -ms-flex-line-pack: center;\n        align-content: center;\n  }\n  nav {\n    -ms-flex-line-pack: center;\n        align-content: center;\n  }\n}\n"
 
 /***/ }),
 
 /***/ "./src/app/core/menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-sm navbar-dark\">\n  <a class=\"navbar-brand\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">\n    <img src=\"./assets/logoBrimo.png\" alt=\"logo\" class=\"rounded\">\n  </a>\n  <button class=\"navbar-toggler navbar-toggler-right\" [ngClass]=\"claseBoton\" type=\"button\" (click)=\"botonMenu()\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <!-- Links -->\n  <ul class=\"navbar-nav\" [ngClass]=\"claseUl\">\n    <li class=\"nav-item\">\n      <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" (click)=\"botonMenu()\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"devices_menu\">Devices\n        <i class=\"fa fa-thermometer-half\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"cam\">Cam\n        <i class=\"fa fa-camera\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">Settings\n        <i class=\"fa fa-cog\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">About </a>\n    </li>\n    <li class=\"nav-item\" [ngClass]=\"logOutButtonClass\">\n        <button class=\"btn btn-warning my-2 my-sm-0\" (click)=\"logout()\" type=\"button\">Log Out\n          <i class=\"fa fa-sign-out\"></i>\n        </button>\n    </li>\n    <li class=\"nav-item\" [ngClass]=\"logInButtonClass\" (click)=\"botonLogin()\">\n      <a class=\"btn btn-success my-2 my-sm-0 nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\" >Log In\n        <i class=\"fa fa-sign-in\"></i></a>\n    </li>\n  </ul>\n</nav>\n\n<div class=\"container\" [ngClass]=\"loginFormClass\">\n  <div class=\"row\">\n    <div class=\"card  text-white bg-success col-lg-3 col-md-5 offset-md-7 offset-lg-9\">\n      <div class=\"card-body\">\n          <p>\n            <label for=\"username\">User:</label>\n          </p>\n          <p>\n            <input type=\"text\" id=\"username\" name=\"username\" [(ngModel)]=\"username\">\n          </p>\n          <p>\n            <label for=\"pwd\">Password:</label>\n          </p>\n          <p>\n            <input type=\"password\" id=\"pwd\" name=\"pwd\" [(ngModel)]=\"password\">\n          </p>\n          <p>\n            <button class=\"btn btn-primary\" (click)=\"login()\">Log In\n              <i class=\"fa fa-sign-in\" ></i>\n            </button>\n          </p>\n      </div>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<nav class=\"navbar navbar-expand-sm navbar-dark\">\n  <a class=\"navbar-brand\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">\n    <img src=\"./assets/logoBrimo.png\" alt=\"logo\" class=\"rounded\">\n  </a>\n  <button class=\"navbar-toggler navbar-toggler-right\" [ngClass]=\"claseBoton\" type=\"button\" (click)=\"botonMenu()\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <!-- Links -->\n  <ul class=\"navbar-nav\" [ngClass]=\"claseUl\">\n    <li class=\"nav-item\">\n      <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" (click)=\"botonMenu()\">\n        <span class=\"navbar-toggler-icon\"></span>\n      </button>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"devices_menu\">Devices\n        <i class=\"fa fa-thermometer-half\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"cam\">Cam\n        <i class=\"fa fa-camera\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">Settings\n        <i class=\"fa fa-cog\"></i>\n      </a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">About </a>\n    </li>\n    <li class=\"nav-item\" [ngClass]=\"logOutButtonClass\">\n      <button class=\"btn btn-warning my-2 my-sm-0\" (click)=\"logout()\" type=\"button\">Log Out\n        <i class=\"fa fa-sign-out\"></i>\n      </button>\n    </li>\n    <li class=\"nav-item\" [ngClass]=\"logInButtonClass\" (click)=\"botonLogin()\">\n      <a class=\"btn btn-success my-2 my-sm-0 nav-link\" href=\"#\" routerLinkActive=\"active\" routerLink=\"\">Log In\n        <i class=\"fa fa-sign-in\"></i>\n      </a>\n    </li>\n  </ul>\n</nav>\n\n<div id=\"evento_pop_up\" class=\"modal animate\" role=\"dialog\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-body\">\n        <span (click)=\"hide()\" class=\"close\" title=\"Cerrar\">\n          <i class='fa fa-times'></i>\n        </span>\n        <div class=\"container\">\n          <label for=\"user\">\n            <b>User</b>\n          </label>\n          <input type=\"text\" placeholder=\"User\" name=\"user\" required [(ngModel)]=\"this.username\">\n          <label for=\"psw\">\n            <b>Password</b>\n          </label>\n          <input type=\"password\" placeholder=\"Contraseña\" name=\"psw\" required [(ngModel)]=\"this.password\">\n          <div class=\"alert alert-danger\" [ngClass]=\"errClass\" role=\"alert\">\n            <strong>Error!</strong> {{this.errMsg}}\n          </div>\n          <button class=\"btn btn-primary\" (click)=\"login()\">Entrar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -417,6 +418,7 @@ var MenuComponent = /** @class */ (function () {
         this.claseBoton = '';
         this.username = '';
         this.password = '';
+        this.errClass = 'oculto2';
         if (this.is_logged) {
             this.logInButtonClass = 'oculto2';
             this.logOutButtonClass = '';
@@ -442,23 +444,43 @@ var MenuComponent = /** @class */ (function () {
         if (this.is_logged) {
             return;
         }
-        (this.loginFormClass === 'oculto2') ? this.loginFormClass = '' : this.loginFormClass = 'oculto2';
+        (this.loginFormClass === 'oculto2') ? this.show(1) : this.show(0);
     };
     MenuComponent.prototype.login = function () {
         var _this = this;
         if (this.username === '' || this.password === '') {
+            this.errMsg = 'Complete all fields.';
+            this.errClass = '';
             return;
         }
         var auth_object = new __WEBPACK_IMPORTED_MODULE_2__models_authentication_model__["a" /* AuthenticationModel */](this.username, this.password);
         this.login_service.login(auth_object).then(function (res) {
-            console.log(res);
             if (res === true) {
                 _this.login_emitter.emit(true);
             }
-        }).catch(console.log);
+        }).catch(function (err) {
+            _this.errClass = '';
+            _this.errMsg = 'Incorrect credentials. Try again.';
+        });
     };
     MenuComponent.prototype.logout = function () {
         this.login_emitter.emit(false);
+        this.login_service.logout();
+    };
+    MenuComponent.prototype.show = function (id) {
+        this.errClass = 'oculto2';
+        var login = document.getElementById('evento_pop_up');
+        if (id === 1) {
+            login.style.display = 'block';
+        }
+        else {
+            login.style.display = 'none';
+        }
+    };
+    MenuComponent.prototype.hide = function (id) {
+        this.errClass = 'oculto2';
+        var login = document.getElementById('evento_pop_up');
+        login.style.display = 'none';
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
@@ -552,6 +574,14 @@ var DeviceComponent = /** @class */ (function () {
         this.deleted.emit(this.oDevice);
         this.devices_service.deleteDevice(this.oDevice).then(function () {
             console.log('borrado');
+        })
+            .catch(function (err) {
+            if (err === -1) {
+                console.error('Log In necessary');
+                return -1;
+            }
+            alert('Error while sending command: ' + err);
+            console.log(err);
         });
     };
     DeviceComponent.prototype.editDevice = function () {
@@ -579,6 +609,14 @@ var DeviceComponent = /** @class */ (function () {
         this.oDevice.location = this.new_location;
         this.devices_service.editDevice(this.oDevice).then(function () {
             console.log('editado');
+        })
+            .catch(function (err) {
+            if (err === -1) {
+                console.error('Log In necessary');
+                return -1;
+            }
+            alert('Error while sending command: ' + err);
+            console.log(err);
         });
     };
     DeviceComponent.prototype.sendCommandDevice = function (command) {
@@ -586,6 +624,10 @@ var DeviceComponent = /** @class */ (function () {
         this.devices_service.sendCommandDevice(this.oDevice, command).then(function () {
             console.log('Command sent');
         }).catch(function (err) {
+            if (err === -1) {
+                console.error('Log In necessary');
+                return -1;
+            }
             alert('Error while sending command: ' + err);
             console.log(err);
         });
@@ -703,6 +745,12 @@ var DevicesComponent = /** @class */ (function () {
         this.devicesService.getDevices().then(function (response) {
             _this.aDevices = response;
             _this.getRooms();
+        }).catch(function (err) {
+            if (err === -1) {
+                console.error('Log In necessary');
+                return -1;
+            }
+            console.log(err);
         });
         this.timer = setInterval(function () {
             _this.devicesService.getDevices().then(function (response) {
@@ -731,6 +779,12 @@ var DevicesComponent = /** @class */ (function () {
                         });
                     });
                 }
+            }).catch(function (err) {
+                if (err === -1) {
+                    console.error('Log In necessary');
+                    return -1;
+                }
+                console.log(err);
             });
         }, 5000);
     };
@@ -857,13 +911,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+var token_key = 'tknBrM';
 var URLAPI = window.location.origin;
-var httpOptions = {
-    headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
-    })
-};
 var AuthenticationService = /** @class */ (function () {
     function AuthenticationService(http) {
         this.http = http;
@@ -872,16 +921,41 @@ var AuthenticationService = /** @class */ (function () {
     AuthenticationService.prototype.login = function (auth_object) {
         var url_login = this.url + '/login';
         return this.http.post(url_login, auth_object).toPromise().then(function (response) {
+            localStorage.setItem(token_key, response.tkn_auth);
             return true;
-        });
+        }).catch(function () { return false; });
     };
     AuthenticationService.prototype.logout = function () {
-        var url_logout = this.url + '/logout';
-        return this.http.get(url_logout).toPromise().then(function (response) {
-            console.log(response);
-            console.log('logout');
-            return response;
-        });
+        localStorage.removeItem(token_key);
+    };
+    AuthenticationService.prototype.isLogged = function () {
+        var urlget = this.url + '/devices';
+        var headers = this.getHeaders();
+        if (!headers) {
+            throw -1;
+        }
+        return this.http.get(urlget, headers).toPromise().then(function (response) {
+            if (response.status === 401) {
+                return false;
+            }
+            return true;
+        }).catch(function () { return false; });
+    };
+    AuthenticationService.prototype.getToken = function () {
+        return localStorage.getItem(token_key);
+    };
+    AuthenticationService.prototype.getHeaders = function () {
+        var token = this.getToken();
+        if (!token) {
+            return undefined;
+        }
+        var httpOptions = {
+            headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+                'Content-Type': 'application/json',
+                'Authorization': token,
+            })
+        };
+        return httpOptions;
     };
     AuthenticationService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -924,13 +998,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  *
  */
 var URLAPI = window.location.origin;
-var httpOptions = {
-    headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token',
-        'CORS': 'Access-Control-Allow-Origin',
-    })
-};
+var token_key = 'tknBrM';
 var DevicesService = /** @class */ (function () {
     function DevicesService(http) {
         this.http = http;
@@ -940,43 +1008,73 @@ var DevicesService = /** @class */ (function () {
     DevicesService.prototype.getDevices = function () {
         var _this = this;
         var urlget = this.url + '/devices';
-        return this.http.get(urlget).toPromise().then(function (response) {
-            // It uses Object.values() instead of the response because of problems
-            // on the server while implementing JSON function. It returns an __proto__ object
-            // instead an array object.
+        var headers = this.getHeaders();
+        if (!headers) {
+            throw -1;
+        }
+        return this.http.get(urlget, headers).toPromise().then(function (response) {
             _this.aDevices = Object.values(response);
             return _this.aDevices;
-        }).catch(function (res) {
-            return _this.aDevices;
-        });
+        }).catch(function () { location.reload(); return _this.aDevices; });
     };
     DevicesService.prototype.deleteDevice = function (oDevice) {
         var urldelete = this.url + '/device/' + oDevice.id;
-        return this.http.delete(urldelete).toPromise();
+        var headers = this.getHeaders();
+        if (!headers) {
+            location.reload();
+            throw -1;
+        }
+        return this.http.delete(urldelete, headers).toPromise().catch(function () { location.reload(); });
     };
     DevicesService.prototype.editDevice = function (oDevice) {
         var urledit = this.url + '/device/' + oDevice.id;
         var editObject = new __WEBPACK_IMPORTED_MODULE_2__models_devices_model__["b" /* DeviceEdit */](oDevice.name, oDevice.location);
-        console.log(JSON.stringify(editObject));
-        return this.http.put(urledit, JSON.stringify(editObject), httpOptions).toPromise();
+        var headers = this.getHeaders();
+        if (!headers) {
+            location.reload();
+            throw -1;
+        }
+        return this.http.put(urledit, JSON.stringify(editObject), headers).toPromise().catch(function () { location.reload(); });
     };
     DevicesService.prototype.updateDevice = function (oDevice) {
         var _this = this;
         var urlget = this.url + '/device/' + oDevice.id;
-        return this.http.get(urlget).toPromise().then(function (response) {
+        var headers = this.getHeaders();
+        if (!headers) {
+            location.reload();
+            throw -1;
+        }
+        return this.http.get(urlget, headers).toPromise().then(function (response) {
             _this.aDevices = Object.values(response);
             return _this.aDevices;
-        });
+        }).catch(function () { location.reload(); });
     };
     DevicesService.prototype.sendCommandDevice = function (oDevice, command) {
         var urlDevice = 'http://' + oDevice.ip;
         var commandOBject = {
             id: oDevice.id,
-            command: command,
+            Action: command,
         };
-        console.log(urlDevice);
-        console.log(commandOBject);
-        return this.http.put(urlDevice, JSON.stringify(commandOBject), httpOptions).toPromise();
+        var headers = this.getHeaders();
+        if (!headers) {
+            location.reload();
+            throw -1;
+        }
+        return this.http.put(urlDevice, JSON.stringify(commandOBject), headers).toPromise().catch(function () { location.reload(); });
+    };
+    DevicesService.prototype.getHeaders = function () {
+        var token = localStorage.getItem(token_key);
+        if (!token) {
+            return undefined;
+        }
+        var httopts = {
+            headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+                'Content-Type': 'application/json',
+                'Authorization': token,
+                'CORS': 'Access-Control-Allow-Origin',
+            })
+        };
+        return httopts;
     };
     DevicesService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -989,7 +1087,7 @@ var DevicesService = /** @class */ (function () {
 ip_actuador/
 {
     "id" : "33",
-    "command" : "ON", "OFF", "+", "-", "texto"
+    "Action" : "ON", "OFF", "+", "-", "texto"
 }*/
 
 

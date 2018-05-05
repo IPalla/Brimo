@@ -10,7 +10,7 @@ from cache import Caches
 import cherrypy
 
 SSL =  False
-DEBUG_LEVEL = levels.INFO
+DEBUG_LEVEL = levels.DEBUG
 
 
 
@@ -61,7 +61,8 @@ class devices(object):
     exposed = True
     @cherrypy.tools.json_out()
     def GET(self):
-        if is_logged() == 0:
+        auth_tkn = cherrypy.request.headers['Authorization']
+        if validToken(auth_tkn) == -1:
             logging.debug('No auth user')
             cherrypy.response.status = "401 Unauthorized"
             return "LOG IN NECESSARY"
@@ -174,7 +175,8 @@ class device(object):
 
     @cherrypy.tools.json_out()
     def GET(self, device_id):
-        if is_logged() == 0:
+        auth_tkn = cherrypy.request.headers['Authorization']
+        if validToken(auth_tkn) == -1:
             logging.debug('No auth user')
             cherrypy.response.status = "401 Unauthorized"
             return "LOG IN NECESSARY"
