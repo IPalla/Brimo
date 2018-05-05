@@ -104,9 +104,10 @@ def users_login(user, pwd):
 	stmnt='SELECT * FROM users WHERE user="' + user + '" AND pass= "' + pwd + '"'
 	with sqlite3.connect(SERVER_DB) as c:
 		r = c.execute(stmnt)
-	if r.fetchone()==None:
+	user = r.fetchone()
+	if user==None:
 		return 0
-	return 1
+	return user[0]
 
 #DATABASES SETTINGS
 
@@ -122,7 +123,7 @@ def clean_devices_table():
 
 def setup_users_table():
 	with sqlite3.connect(SERVER_DB) as con:
-		con.execute("CREATE TABLE IF NOT EXISTS users (user,pass) ")
+		con.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, user,pass) ")
 		con.commit()
 	add_default_user()
 

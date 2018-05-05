@@ -3,6 +3,7 @@ import random
 import string
 import sqlite3
 import sys
+from webtokens import createToken, validToken
 from err import Logger, levels
 from model import device_add, device_edit, device_delete, device_JSON_by_id, devices_JSON, device_edit_info, users_login, setup_databases
 from cache import Caches
@@ -10,6 +11,7 @@ import cherrypy
 
 SSL =  False
 DEBUG_LEVEL = levels.INFO
+
 
 
 """
@@ -41,7 +43,6 @@ class webService(object):
 
     @cherrypy.expose
     def index(self):
-        
         return open('./dist/index.html')
 
     @cherrypy.expose
@@ -188,26 +189,24 @@ class login(object):
         input_json = cherrypy.request.json
         username = ""
         pwd = ""
-        print input_json
         for key in input_json:
             if key == "username":
                 username = input_json["username"]
             if key == "password":
                 pwd = input_json["password"]
         logging.debug('POST LOGIN/ username: ' + username)
-        ret=users_login(username, pwd)
-        if ret==1:
+        id=users_login(username, pwd)
+        if id != 0:
+            token = createToken(id)
             cherrypy.response.cookie['logged'] = 1
             cherrypy.response.cookie['logged']['expires'] = 3600
             logging.info('User logged ' + str(username))
             cherrypy.response.status = "200 Ok"
-            return 'Logged'
-            #raise cherrypy.HTTPRedirect("/")
+            return { 'tkn_auth': token }
         else:
             cherrypy.response.status = "401 Unauthorized"
             logging.debug('Bad credentials: ' + username)
             return 'Bad credentials'
-            #raise cherrypy.HTTPRedirect("/")
     
     @cherrypy.tools.json_out()
     @cherrypy.tools.json_in()
