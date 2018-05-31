@@ -31,40 +31,40 @@
       <a class="nav-link" href="#" routerLinkActive="active" routerLink="">About </a>
     </li>
     <li class="nav-item" [ngClass]="logOutButtonClass">
-        <button class="btn btn-warning my-2 my-sm-0" (click)="logout()" type="button">Log Out
-          <i class="fa fa-sign-out"></i>
-        </button>
+      <button class="btn btn-warning my-2 my-sm-0" (click)="logout()" type="button">Log Out
+        <i class="fa fa-sign-out"></i>
+      </button>
     </li>
     <li class="nav-item" [ngClass]="logInButtonClass" (click)="botonLogin()">
-      <a class="btn btn-success my-2 my-sm-0 nav-link" href="#" routerLinkActive="active" routerLink="" >Log In
-        <i class="fa fa-sign-in"></i></a>
+      <a class="btn btn-success my-2 my-sm-0 nav-link" href="#" routerLinkActive="active" routerLink="">Log In
+        <i class="fa fa-sign-in"></i>
+      </a>
     </li>
   </ul>
 </nav>
 
-<div class="container" [ngClass]="loginFormClass">
-  <div class="row">
-    <div class="card  text-white bg-success col-lg-3 col-md-5 offset-md-7 offset-lg-9">
-      <div class="card-body">
-          <p>
-            <label for="username">User:</label>
-          </p>
-          <p>
-            <input type="text" id="username" name="username" [(ngModel)]="username">
-          </p>
-          <p>
-            <label for="pwd">Password:</label>
-          </p>
-          <p>
-            <input type="password" id="pwd" name="pwd" [(ngModel)]="password">
-          </p>
-          <p>
-            <button class="btn btn-primary" (click)="login()">Log In
-              <i class="fa fa-sign-in" ></i>
-            </button>
-          </p>
+<div id="evento_pop_up" class="modal animate" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <span (click)="hide()" class="close" title="Cerrar">
+          <i class='fa fa-times'></i>
+        </span>
+        <div class="container">
+          <label for="user">
+            <b>User</b>
+          </label>
+          <input type="text" placeholder="User" name="user" required [(ngModel)]="this.username">
+          <label for="psw">
+            <b>Password</b>
+          </label>
+          <input type="password" placeholder="Contraseña" name="psw" required [(ngModel)]="this.password">
+          <div class="alert alert-danger" [ngClass]="errClass" role="alert">
+            <strong>Error!</strong> {{this.errMsg}}
+          </div>
+          <button class="btn btn-primary" (click)="login()">Entrar</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-

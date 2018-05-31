@@ -1,43 +1,13 @@
 import os, os.path
 import random
 import string
-import sqlite3
 import sys
-from webtokens import createToken, validToken
-from err import Logger, levels
-from model import device_add, device_edit, device_delete, device_JSON_by_id, devices_JSON, device_edit_info, users_login, setup_databases
-from cache import Caches
 import cherrypy
 
-SSL =  False
-DEBUG_LEVEL = levels.DEBUG
 
-
-
-"""
-
-REVISAR CAMARA
-
-
-ip_actuador/ 
-{
-    "id" : "33",
-    "command" : "ON", "OFF", "+", "-", "texto"
-}
-sudo raspistill -w 640 -h 480 -q 5 -o /home/pi/Desktop/brimoServer/dist/pic.jpg -tl 100 -t 9999999 -th 0:0:0 -n 
-"""
-
-
-class main_config(object):
-    def __init__(self, SSL=False, DEBUG_LEVEL=levels.DEBUG):
-        self.SSL = SSL
-        self.DEBUG_LEVEL =DEBUG_LEVEL
-
-
-def is_logged():
-    if 'logged' in cherrypy.request.cookie:
-        return cherrypy.request.cookie['logged']
-    return 0
+from middleware.webtokens import *
+from config.config import *
+from model.model import *
 
 class webService(object):
 
@@ -53,7 +23,7 @@ class webService(object):
     def logout(self):
         cherrypy.response.cookie['logged'] = 0
         cherrypy.response.cookie['logged']['expires'] = 0
-        logging.debug('Log Out received')
+        webservice.logging.debug('Log Out received')
         raise cherrypy.HTTPRedirect("/")
 
 @cherrypy.expose
@@ -62,22 +32,22 @@ class devices(object):
     @cherrypy.tools.json_out()
     def GET(self):
         auth_tkn = cherrypy.request.headers['Authorization']
-        if validToken(auth_tkn) == -1:
-            logging.debug('No auth user')
+        if validToken(auth_tkn, webservice.config.SECRET_KEY) == -1:
+            webservice.logging.debug('No auth user')
             cherrypy.response.status = "401 Unauthorized"
             return "LOG IN NECESSARY"
         cherrypy.response.headers['Access-Control-Allow-Origin'] = '*'
-        logging.debug('GET DEVICES')
-        res = cache.getResponse('/devices')
+        webservice.logging.debug('GET DEVICES')
+        res = webservice.cache.getResponse('/devices')
         if res:
             return res
         tocache = devices_JSON()
-        cache.setResponse('/devices', tocache)
+        webservice.cache.setResponse('/devices', tocache)
         return tocache
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def POST(self):
-        logging.debug('POST DEVICES')
+        webservice.logging.debug('POST DEVICES')
         input_json = cherrypy.request.json
         name = input_json["name"]
         freq = input_json["freq"]
@@ -89,22 +59,22 @@ class devices(object):
             camera = input_json['camera']
         ret = device_add(name, freq, commands, IP, camera )
         if ret != -1 and ret != 0:
-            logging.info('Resource created, id: ' + str(ret))
+            webservice.logging.info('Resource created, id: ' + str(ret))
             cherrypy.response.status = "201 Resource Created"
-            cache.unsetResponse('/devices')
+            webservice.cache.unsetResponse('/devices')
             result={
                 'id': ret
                 }
             return result
         if ret == 0:
-            logging.warning('Cannot create resource, bad request')
+            webservice.logging.warning('Cannot create resource, bad request')
             cherrypy.response.status = "400 Bad Request"
             result={
                 'err': 'Invalid commands'
                 }
             return result
         if ret == -1:
-            logging.critical('Internal error accessing DDBB')
+            webservice.logging.critical('Internal error accessing DDBB')
             cherrypy.response.status = "500 Internal Server Error"
             result={
                 'err': 'Internal error'
@@ -118,7 +88,7 @@ class device(object):
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def PUT(self, device_id):
-        logging.debug('PUT DEVICE/' + device_id)
+        webservice.logging.debug('PUT DEVICE/' + device_id)
         input_json = cherrypy.request.json
         info = ""
         new_location = ""
@@ -132,41 +102,41 @@ class device(object):
             if key == "new_name":
                 new_name = input_json["new_name"]
         if info != "":
-            logging.debug('EDIT DEVICE INFO')
+            webservice.logging.debug('EDIT DEVICE INFO')
             ret = device_edit_info(int(device_id), info)
             if ret == 0:
-                logging.warning('Device ' + device_id + ' not found' )
+                webservice.logging.warning('Device ' + device_id + ' not found' )
                 cherrypy.response.status = "404 Not Found"
                 return 
-            logging.info('Device ' + device_id + ' info edited')
+            webservice.logging.info('Device ' + device_id + ' info edited')
             cherrypy.response.status = "200 OK"
-            cache.unsetResponse('/devices')
+            webservice.cache.unsetResponse('/devices')
             return 
         if new_name != "" and new_location != "":
-            logging.debug('EDIT DEVICE LOCATION AND NAME: ' + new_name.upper() + ' ' + new_location.upper())
+            webservice.logging.debug('EDIT DEVICE LOCATION AND NAME: ' + new_name.upper() + ' ' + new_location.upper())
             ret = device_edit(int(device_id), new_name.upper(), new_location.upper())
             if ret == 0:
-                logging.warning('Device ' + device_id + ' not found')
+                webservice.logging.warning('Device ' + device_id + ' not found')
                 cherrypy.response.status = "404 Not Found"
                 return
-            logging.info('Device ' + device_id + ' name and location updated: ' + new_name.upper() + ' ' + new_location.upper()) 
+            webservice.logging.info('Device ' + device_id + ' name and location updated: ' + new_name.upper() + ' ' + new_location.upper()) 
             cherrypy.response.status = "200 OK"
-            cache.unsetResponse('/devices')
+            webservice.cache.unsetResponse('/devices')
             return
         
-        logging.warning('Bad request')
+        webservice.logging.warning('Bad request')
         cherrypy.response.status = "400 Bad Request"
         return
     def DELETE(self, device_id):
-        logging.debug('DELETE DEVICE/' + device_id)
+        webservice.logging.debug('DELETE DEVICE/' + device_id)
         ret = device_delete(int(device_id))
         if ret == 1:
-            logging.info('Device ' + device_id + ' deleted')
+            webservice.logging.info('Device ' + device_id + ' deleted')
             cherrypy.response.status = "200 OK"
-            cache.unsetResponse('/devices')
+            webservice.cache.unsetResponse('/devices')
             return
         if ret == 0:
-                logging.warning('Device ' + device_id + ' not found')
+                webservice.logging.warning('Device ' + device_id + ' not found')
                 cherrypy.response.status = "404 Not Found"
                 return
         return
@@ -176,8 +146,8 @@ class device(object):
     @cherrypy.tools.json_out()
     def GET(self, device_id):
         auth_tkn = cherrypy.request.headers['Authorization']
-        if validToken(auth_tkn) == -1:
-            logging.debug('No auth user')
+        if validToken(auth_tkn, webservice.config.SECRET_KEY) == -1:
+            webservice.logging.debug('No auth user')
             cherrypy.response.status = "401 Unauthorized"
             return "LOG IN NECESSARY"
         return device_JSON_by_id(device_id)
@@ -196,18 +166,18 @@ class login(object):
                 username = input_json["username"]
             if key == "password":
                 pwd = input_json["password"]
-        logging.debug('POST LOGIN/ username: ' + username)
+        webservice.logging.debug('POST LOGIN/ username: ' + username)
         id=users_login(username, pwd)
         if id != 0:
-            token = createToken(id)
+            token = createToken(id, webservice.config.SECRET_KEY)
             cherrypy.response.cookie['logged'] = 1
             cherrypy.response.cookie['logged']['expires'] = 3600
-            logging.info('User logged ' + str(username))
+            webservice.logging.info('User logged ' + str(username))
             cherrypy.response.status = "200 Ok"
             return { 'tkn_auth': token }
         else:
             cherrypy.response.status = "401 Unauthorized"
-            logging.debug('Bad credentials: ' + username)
+            webservice.logging.debug('Bad credentials: ' + username)
             return 'Bad credentials'
     
     @cherrypy.tools.json_out()
@@ -224,50 +194,17 @@ def secureheaders():
     headers = cherrypy.response.headers
     headers['X-Frame-Options'] = 'DENY'
     headers['X-XSS-Protection'] = '1; mode=block'
-    ##headers['Content-Security-Policy'] = "default-src='self'"
     headers['Access-Control-Allow-Origin'] = '*'
 
 if __name__ == '__main__':
-    conf = {
-        '/': {
-            'tools.sessions.on': True,
-            'tools.sessions.secure' : True,
-            'tools.sessions.httponly' : True,
-            'tools.secureheaders.on' : True,
-            'tools.staticdir.root': os.path.abspath(os.getcwd()),
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.abspath(os.getcwd()) + '/dist',
-            'tools.response_headers.headers': [('Access-Control-Allow-Origin', 'http://localhost')]
-        },
-        '/devices': {
-            'request.dispatch': cherrypy.dispatch.MethodDispatcher()
-        },
-        '/device': {
-            'request.dispatch': cherrypy.dispatch.MethodDispatcher()
-        },
-        '/login': {
-            'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.abspath(os.getcwd()) + '/dist/dist'
-        }
-    }
-    cherrypy.config.update({'server.socket_host': '0.0.0.0',
-                        'server.socket_port': 8080,
-                        'log.screen': False,
-                        'log.access_file': './logs/cherr.logs',
-                        'log.error_file': './logs/cherr.logs'
-                       })
-    ssl_config =   {   'server.ssl_module' : 'builtin',
-                        'server.ssl_certificate' : './cert.pem',
-                        'server.ssl_private_key' : './privkey.pem'}
-    config_object = main_config(SSL, DEBUG_LEVEL)
-    if config_object.SSL:
-        cherrypy.config.update(ssl_config)
     webservice = webService()
-    logging = Logger(config_object.DEBUG_LEVEL)
-    cache = Caches(logging)
+    webservice.config = main_config()
     webservice.devices = devices()
     webservice.device = device()
     webservice.login = login()
+    webservice.logging = Logger(webservice.config.DEBUG_LEVEL)
+    webservice.cache = Caches(webservice.logging)
+    if webservice.config.SSL:
+        cherrypy.config.update(webservice.config.ssl_config)
     cherrypy.engine.subscribe('start', setup_databases)
-    cherrypy.quickstart(webservice, '/', conf)
+    cherrypy.quickstart(webservice, '/', webservice.config.conf)

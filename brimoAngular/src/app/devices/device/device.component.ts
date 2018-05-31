@@ -48,7 +48,6 @@ export class DeviceComponent implements OnInit {
     this.shown = !this.shown;
     (this.shown) ? this.arrowClass = 'fa fa-sort-up' : this.arrowClass = 'fa fa-sort-down';
     (this.shown) ? this.contentClass = '' : this.contentClass = 'oculto';
-
   }
   deleteDevice() {
     this.deleted.emit(this.oDevice);
@@ -56,7 +55,15 @@ export class DeviceComponent implements OnInit {
       () => {
         console.log('borrado');
       }
-    );
+    )
+    .catch( err => {
+      if (err === -1) {
+        console.error('Log In necessary');
+        return -1;
+      }
+      alert('Error while sending command: ' + err);
+      console.log(err);
+    });
   }
   editDevice() {
     if (this.editClass === '') {
@@ -85,7 +92,15 @@ export class DeviceComponent implements OnInit {
       () => {
         console.log('editado');
       }
-    );
+    )
+    .catch( err => {
+      if (err === -1) {
+        console.error('Log In necessary');
+        return -1;
+      }
+      alert('Error while sending command: ' + err);
+      console.log(err);
+    });
   }
   sendCommandDevice(command) {
     console.log(command);
@@ -94,6 +109,10 @@ export class DeviceComponent implements OnInit {
         console.log('Command sent');
       }
     ).catch( err => {
+      if (err === -1) {
+        console.error('Log In necessary');
+        return -1;
+      }
       alert('Error while sending command: ' + err);
       console.log(err);
     });

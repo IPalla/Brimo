@@ -6,6 +6,7 @@
   <app-footer class="footer"></app-footer>
 </div>
 <ng-template #login_required>
+
   <app-menu (login_emitter)="login($event)" [is_logged]="false"></app-menu>
   <div class="content">
     <div class=" alert alert-danger ">

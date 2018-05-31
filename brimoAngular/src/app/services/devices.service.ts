@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Device, DeviceEdit } from '../models/devices.model';
-
+import { AuthenticationService } from './authentication.service';
 
 
 /**
@@ -13,14 +13,8 @@ import { Device, DeviceEdit } from '../models/devices.model';
  * device's data using httpclient methods (post, get and delete).
  *
  */
-const URLAPI = window.location.origin;
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-    'Authorization': 'my-auth-token',
-    'CORS': 'Access-Control-Allow-Origin',
-  })
-};
+const URLAPI = 'http://localhost:8080'; // window.location.origin;
+const token_key = 'tknBrM';
 @Injectable()
 export class DevicesService {
 
@@ -33,33 +27,35 @@ export class DevicesService {
   }
   getDevices() {
     const urlget = this.url + '/devices';
-    return this.http.get(urlget).toPromise().then( (response: any) => {
-      // It uses Object.values() instead of the response because of problems
-      // on the server while implementing JSON function. It returns an __proto__ object
-      // instead an array object.
+    const headers = this.getHeaders();
+    if (!headers) { throw -1; }
+    return this.http.get(urlget, headers).toPromise().then( (response: any) => {
       this.aDevices =  Object.values(response);
       return this.aDevices;
-    }).catch( res => {
-      return this.aDevices;
-    });
+    }).catch(() => {location.reload(); return this.aDevices; });
   }
   deleteDevice(oDevice: Device) {
     const urldelete = this.url + '/device/' + oDevice.id;
-    return this.http.delete(urldelete).toPromise();
+    const headers = this.getHeaders();
+    if (!headers) {  location.reload(); throw -1; }
+    return this.http.delete(urldelete, headers).toPromise().catch(() => {location.reload(); });
 
   }
   editDevice(oDevice: Device) {
     const urledit = this.url + '/device/' + oDevice.id;
     const editObject = new DeviceEdit(oDevice.name, oDevice.location);
-    console.log(JSON.stringify(editObject));
-    return this.http.put(urledit, JSON.stringify(editObject), httpOptions).toPromise();
+    const headers = this.getHeaders();
+    if (!headers) {  location.reload(); throw -1; }
+    return this.http.put(urledit, JSON.stringify(editObject), headers).toPromise().catch(() => {location.reload(); });
   }
   updateDevice(oDevice: Device) {
     const urlget = this.url + '/device/' + oDevice.id;
-    return this.http.get(urlget).toPromise().then( (response: any) => {
+    const headers = this.getHeaders();
+    if (!headers) {  location.reload(); throw -1; }
+    return this.http.get(urlget, headers).toPromise().then( (response: any) => {
       this.aDevices =  Object.values(response);
       return this.aDevices;
-    });
+    }).catch(() => {location.reload(); });
   }
   sendCommandDevice(oDevice: Device, command: string) {
     const urlDevice = 'http://' + oDevice.ip;
@@ -67,16 +63,23 @@ export class DevicesService {
       id: oDevice.id,
       Action: command,
     };
-    return this.http.put(urlDevice, JSON.stringify(commandOBject), httpOptions).toPromise();
+    const headers = this.getHeaders();
+    if (!headers) {  location.reload(); throw -1; }
+    return this.http.put(urlDevice, JSON.stringify(commandOBject), headers).toPromise().catch(() => {location.reload(); });
 
   }
-  /* devicesTrigger() {
-    const urlget = this.url + '/trigger';
-    return this.http.get(urlget).toPromise().then( (response: any) => {
-      this.aDevices =  Object.values(response);
-      return this.aDevices;
-    });
-  } */
+  getHeaders() {
+    const token = localStorage.getItem(token_key);
+    if (!token) { return undefined; }
+    const httopts = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token,
+        'CORS': 'Access-Control-Allow-Origin',
+      })
+    };
+    return httopts;
+  }
 }
 /*
 ip_actuador/

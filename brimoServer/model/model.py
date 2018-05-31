@@ -3,9 +3,9 @@ import os, os.path
 import sqlite3
 import json
 
-SERVER_DB= "rooms.bd"
+SERVER_DB = "rooms.bd"
 
-class device:
+class device_model:
 	def __init__(self, name, tyype, freq, commands, IP):
 		self.name = name
 		self.type = tyype

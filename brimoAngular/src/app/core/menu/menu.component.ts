@@ -22,7 +22,8 @@ export class MenuComponent implements OnInit {
   logOutButtonClass: string;
   username: string;
   password: string;
-
+  errMsg: string;
+  errClass: string;
   constructor(public login_service: AuthenticationService) {
     this.login_emitter = new EventEmitter();
   }
@@ -33,6 +34,7 @@ export class MenuComponent implements OnInit {
     this.claseBoton = '';
     this.username = '';
     this.password = '';
+    this.errClass = 'oculto2';
     if (this.is_logged) {
       this.logInButtonClass = 'oculto2';
       this.logOutButtonClass = '';
@@ -55,22 +57,42 @@ export class MenuComponent implements OnInit {
   }
   botonLogin() {
     if (this.is_logged) { return; }
-    (this.loginFormClass === 'oculto2') ? this.loginFormClass = '' : this.loginFormClass = 'oculto2';
+    (this.loginFormClass === 'oculto2') ? this.show(1) : this.show(0);
   }
 
   login() {
     if (this.username === '' || this.password === '') {
+      this.errMsg = 'Complete all fields.';
+      this.errClass = '';
       return;
     }
     const auth_object = new AuthenticationModel(this.username, this.password);
     this.login_service.login(auth_object).then( res => {
-      console.log(res);
       if (res === true) {
         this.login_emitter.emit(true);
       }
-    }).catch(console.log);
+    }).catch( (err) => {
+
+      this.errClass = '';
+      this.errMsg = 'Incorrect credentials. Try again.';
+    });
   }
   logout() {
     this.login_emitter.emit(false);
+    this.login_service.logout();
+  }
+  show(id) {
+    this.errClass = 'oculto2';
+    const login = document.getElementById('evento_pop_up');
+    if (id === 1) {
+      login.style.display = 'block';
+    } else {
+      login.style.display = 'none';
+    }
+  }
+  hide(id) {
+    this.errClass = 'oculto2';
+    const login = document.getElementById('evento_pop_up');
+    login.style.display = 'none';
   }
 }

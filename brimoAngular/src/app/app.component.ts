@@ -13,14 +13,14 @@ export class AppComponent implements OnInit {
   logged: boolean;
   constructor(public login_service: AuthenticationService) {  }
   ngOnInit() {
-    this.logged = false;
+    this.login_service.isLogged().then( (res) => { this.logged = res; }).catch(() => { this.logged = false; });
   }
   logout() {
     this.logged = false;
   }
   login(logged: boolean) {
     if (!logged) {
-      this.login_service.logout().then().catch(console.log);
+      this.login_service.logout();
     }
     this.logged = logged;
   }

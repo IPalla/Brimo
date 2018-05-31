@@ -14,11 +14,13 @@ from jwcrypto import jwt, jwk
 from datetime import datetime, timedelta
 import jwt
 
-JWT_SECRET = 'bbrrIII'
+#JWT_SECRET = 'bbrrIII'
 JWT_ALGORITHM = 'HS256'
 JWT_EXP_DELTA_SECONDS = 3600
 
-def createToken(id):
+def createToken(id, JWT_SECRET = ''):
+  if JWT_SECRET == '':
+    JWT_SECRET = 'INTRODUCEAKEY'
   payload = {
     'user_id': id,
     'exp': datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
@@ -26,7 +28,9 @@ def createToken(id):
   jwt_token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
   return jwt_token
 
-def validToken(token):
+def validToken(token, JWT_SECRET = ''):
+  if JWT_SECRET == '':
+    JWT_SECRET = 'INTRODUCEAKEY'
   try:
     payload = jwt.decode(token, JWT_SECRET,algorithms=[JWT_ALGORITHM])
     return payload

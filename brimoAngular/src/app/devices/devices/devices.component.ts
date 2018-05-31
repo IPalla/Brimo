@@ -24,7 +24,13 @@ export class DevicesComponent implements OnInit {
         this.aDevices = response;
         this.getRooms();
       }
-    );
+    ).catch( err => {
+      if (err === -1 ) {
+        console.error('Log In necessary');
+        return -1;
+      }
+      console.log(err);
+    });
     this.timer = setInterval( () => {
       this.devicesService.getDevices().then(
         response => {
@@ -54,7 +60,13 @@ export class DevicesComponent implements OnInit {
             });
           }
         }
-      );
+      ).catch( err => {
+        if (err === -1 ) {
+          console.error('Log In necessary');
+          return -1;
+        }
+        console.log(err);
+      });
     }, 5000);
   }
   // tslint:disable-next-line:use-life-cycle-interface
