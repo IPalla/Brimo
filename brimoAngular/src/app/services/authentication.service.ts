@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 const token_key = 'tknBrM';
-const URLAPI = 'http://localhost:8080'; // window.location.origin;
+const URLAPI = environment.urlApi; // 'http://localhost:8080'; // window.location.origin;
 
 
 @Injectable()

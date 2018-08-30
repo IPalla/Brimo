@@ -1,0 +1,27 @@
+\chapter{Protocolos}
+\label{chap:experimentos}
+
+Este capítulo esta dedicado a describir los protocolos utilizados en este proyecto, apoyados sobre HTTP e implementados con un servidor CherryPy.
+El back-end de nuestro bridge va a diferenciar entre dos tipos de comunicación: comunicación directa con los dispositivos y comunicación con el front-end de la interfaz.
+
+\lsection{Comunicación con los dispositivos} \label{sec:ProtocolosDispositivos}
+
+En esta sección se describirá la comunicación con los dispositivos: registro de dispositivos y actualización de la información. El sentido de la comunicación es dispositivo -> bridge, y todos los tipos de dispositivos 
+siguen este protocolo.
+
+\begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+        MÉTODO & ENDPOINT    & DESCRIPCION                                                & SEGURIDAD \\ \hline
+        POST    & /devices/register    & Registra un nuevo dispositivo.            & NO     \\ \hline
+        PUT    & /device/:id & Edita la información de un dispositivo.                              & NO     \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Registro de nuevos dispositivos} \label{sec:RegistroDispositivos}
+
+La primera vez que un dispositivo se conecta al bridge es necesario que realice una primera llamada de registro. De esta manera, el bridge dará de alta el dispositivo
+y sabrá de qué tipo de dispositivo se trata.
+

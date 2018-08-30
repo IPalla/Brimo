@@ -6,13 +6,5 @@
   <app-footer class="footer"></app-footer>
 </div>
 <ng-template #login_required>
-
-  <app-menu (login_emitter)="login($event)" [is_logged]="false"></app-menu>
-  <div class="content">
-    <div class=" alert alert-danger ">
-      <strong>Log In necessary</strong> Welcome to BRIMO. Log In is necessary to manage devices and rooms.
-      <br> If is the first time you acess check manual for default user and password.
-    </div>
-  </div>
-  <app-footer class="footer"></app-footer>
+  <router-outlet></router-outlet>
 </ng-template>

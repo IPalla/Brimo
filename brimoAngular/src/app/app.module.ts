@@ -7,18 +7,22 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { DevicesModule } from './devices/devices.module';
 import { CameraModule } from './camera/camera.module';
+import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CoreModule,
     DevicesModule,
-    CameraModule
+    CameraModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

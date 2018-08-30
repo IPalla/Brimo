@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Device, DeviceEdit } from '../models/devices.model';
 import { AuthenticationService } from './authentication.service';
+import { environment } from '../../environments/environment';
 
 
 /**
@@ -13,8 +14,9 @@ import { AuthenticationService } from './authentication.service';
  * device's data using httpclient methods (post, get and delete).
  *
  */
-const URLAPI = 'http://localhost:8080'; // window.location.origin;
+const URLAPI = environment.urlApi;
 const token_key = 'tknBrM';
+
 @Injectable()
 export class DevicesService {
 

@@ -56,13 +56,16 @@
 \contentsline {section}{\numberline {3.2}Normalizacin}{7}
 \contentsline {section}{\numberline {3.3}Codificacin}{7}
 \contentsline {section}{\numberline {3.4}Matching}{7}
-\contentsline {chapter}{\numberline {4}Experimentos Realizados y Resultados}{9}
-\contentsline {section}{\numberline {4.1}Bases de datos y protocolo}{9}
-\contentsline {section}{\numberline {4.2}Sistemas de referencia}{9}
-\contentsline {section}{\numberline {4.3}Escenarios de pruebas}{9}
-\contentsline {section}{\numberline {4.4}Experimentos del sistema completo}{9}
-\contentsline {chapter}{\numberline {5}Conclusiones y trabajo futuro}{11}
-\contentsline {chapter}{Glosario de acr\IeC {\'o}nimos}{13}
-\contentsline {chapter}{Bibliografa}{14}
-\contentsline {chapter}{\numberline {A}Manual de utilizaci\IeC {\'o}n}{15}
-\contentsline {chapter}{\numberline {B}Manual del programador}{17}
+\contentsline {chapter}{\numberline {4}Protocolos}{9}
+\contentsline {section}{\numberline {4.1}Comunicaci\IeC {\'o}n con los dispositivos}{9}
+\contentsline {subsection}{\numberline {4.1.1}Registro de nuevos dispositivos}{9}
+\contentsline {chapter}{\numberline {5}Experimentos Realizados y Resultados}{11}
+\contentsline {section}{\numberline {5.1}Bases de datos y protocolo}{11}
+\contentsline {section}{\numberline {5.2}Sistemas de referencia}{11}
+\contentsline {section}{\numberline {5.3}Escenarios de pruebas}{11}
+\contentsline {section}{\numberline {5.4}Experimentos del sistema completo}{11}
+\contentsline {chapter}{\numberline {6}Conclusiones y trabajo futuro}{13}
+\contentsline {chapter}{Glosario de acr\IeC {\'o}nimos}{15}
+\contentsline {chapter}{Bibliografa}{16}
+\contentsline {chapter}{\numberline {A}Manual de utilizaci\IeC {\'o}n}{19}
+\contentsline {chapter}{\numberline {B}Manual del programador}{21}

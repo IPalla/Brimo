@@ -1,0 +1,37 @@
+<body class="align">
+
+  <div class="grid">
+    <img class="login_image" src="./assets/logoBrimo.png" alt="logo" class="rounded">
+    <form class="form login">
+
+      <div class="form__field">
+        <label for="login__username">
+          <i class="fa fa-user"></i>
+          <span class="hidden">Username</span>
+        </label>
+        <input id="login__username" type="text" name="username" class="form__input" placeholder="Username" required [(ngModel)]="this.username">
+      </div>
+
+      <div class="form__field">
+        <label for="login__password">
+          <i class="fa fa-lock"></i>
+          <span class="hidden">Password</span>
+        </label>
+        <input id="login__password" type="password" name="password" class="form__input" placeholder="Password" required [(ngModel)]="this.password">
+      </div>
+
+      <div class="form__field">
+        <input type="button" value="Sign In" (click)="login()">
+      </div>
+
+    </form>
+
+    <p class="text--center">Need help?
+      <a href="#">Help page</a>
+      <svg class="icon">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="assets/images/icons.svg#arrow-right"></use>
+      </svg>
+    </p>
+
+  </div>
+</body>
