@@ -15,8 +15,7 @@ class main_config(object):
             'tools.secureheaders.on' : True,
             'tools.staticdir.root': os.path.abspath(os.getcwd()),
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.abspath(os.getcwd()) + '/dist',
-            'tools.response_headers.headers': [('Access-Control-Allow-Origin', 'http://localhost')]
+            'tools.staticdir.dir': os.path.abspath(os.getcwd()) + '/dist'
         },
         '/devices': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher()
