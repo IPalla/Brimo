@@ -1,0 +1,138 @@
+{
+	"variables": [],
+	"info": {
+		"name": "BRIMO",
+		"_postman_id": "006c0664-c110-25f0-8c92-864c05df8304",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"url": "{{SERVER_LOCAL}}/brimo/api/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "dev-auth",
+						"value": "bRm",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"root\",\n\t\"password\": \"root\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete device",
+			"request": {
+				"url": "{{SERVER_LOCAL}}/brimo/api/devices/31",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "dev-auth",
+						"value": "bRm",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add device",
+			"request": {
+				"url": "{{SERVER_LOCAL}}/brimo/api/devices",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "dev-auth",
+						"value": "bRm",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"new_device\",\n\t\"camera\": false,\n\t\"freq\": 12,\n\t\"commands\": [\"ON\", \"OFF\", \"+\", \"-\"]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "List devices",
+			"request": {
+				"url": "{{SERVER_LOCAL}}/brimo/api/devices",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "dev-auth",
+						"value": "bRm",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"info\": \"23C\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit device info",
+			"request": {
+				"url": "{{SERVER_LOCAL}}/brimo/api/devices/1",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "dev-auth",
+						"value": "bRm",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"info\": \"23C\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

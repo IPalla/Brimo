@@ -27,6 +27,20 @@ function insertCommand(device_id, command) {
   });
 }
 
+function deleteCommands(device_id) {
+  return new Promise((resolve, reject)=>{
+    db.run("DELETE FROM commands WHERE device_id = ?1",
+    {
+      1: device_id
+    }, function (err, rows) {
+      if (err) {
+        reject(err);
+      }
+      resolve({ id: this.lastID});
+    });
+  });
+}
+
 function addComand(device, command) {
   //TODO
   device.commands.push(command);
@@ -35,5 +49,6 @@ function addComand(device, command) {
 
 module.exports = {
   connect,
-  insertCommand
+  insertCommand,
+  deleteCommands
 }

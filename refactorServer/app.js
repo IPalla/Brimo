@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routing
 app.use( context + '/login', devAuth.devProtected, loginRouter);
 app.use( context + '/users', jwtAuth.protected, usersRouter);
-app.use( context + '/devices', debugReq.debug, devAuth.devProtected, devicesRouter);
+app.use( context + '/devices', devAuth.devProtected, devicesRouter);
 // Error control
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -36,7 +36,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   res.status( err.status || 500);
-  res.json( err.message || 'Unknown error' );
+  res.json( {error: err.message || 'Unknown error' });
 });
 
 module.exports = app;
