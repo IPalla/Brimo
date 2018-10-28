@@ -1,3 +1,7 @@
+
+
+
+
 <div class="row" (click)="setContent()">
   <div class="col-sm-5">
       <i [className]="this.arrowClass"></i>
@@ -20,20 +24,20 @@
           <i alt="as" (click)="showInstructions()" class="fa fa-question-circle"></i>
         </label>
       </div>
-      <div *ngIf="this.oDevice.commands == 'NNN';" class="col-sm-9">
+      <div *ngIf="false" class="col-sm-9">
         <p>This device does not accept commands.</p>
       </div>
-      <div *ngIf="(this.oDevice.commands[2] == 'Y' && this.oDevice.commands != 'NNN');" class="col-sm-9">
+      <div *ngIf="true" class="col-sm-9">
         <div class="col-sm-7">
           <input type="text" class="form-control" name="command" id="command" placeholder="" [(value)]="commandText">
         </div>
         <div class="col-sm-2 col-6">
-          <button type="button" class="btn btn-primary" (click)="sendCommandDevice(commandText)">SEND</button>
+          <button type="button" class="btn btn-primary" >SEND</button>
         </div>
       </div>
 
     </div>
-    <div class="row " [ngClass]='editClass'>
+    <!-- <div class="row " [ngClass]='editClass'>
       <div *ngIf="this.oDevice.commands[0] == 'Y';" class="command-buttons col-6">
         <button type="button" class="btn btn-success col-4" (click)="sendCommandDevice('ON')">ON</button>
         <button type="button" class="btn btn-danger col-4" (click)="sendCommandDevice('OFF')">OFF</button>
@@ -42,7 +46,7 @@
         <button type="button" class="btn btn-warning col-4" (click)="sendCommandDevice('+')">+</button>
         <button type="button" class="btn btn-warning col-4" (click)="sendCommandDevice('-')">-</button>
       </div>
-    </div>
+    </div> -->
     <div class="card-body">
       <div class="row" [ngClass]='editClass2'>
         <div class="col-sm-5">

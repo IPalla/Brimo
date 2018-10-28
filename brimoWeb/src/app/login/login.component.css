@@ -1,0 +1,163 @@
+img {
+  width: 100%;
+}
+
+.align {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grid {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 20rem;
+  width: 90%;
+}
+
+.hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.icons {
+  display: none;
+}
+
+.icon {
+  display: inline-block;
+  fill: #606468;
+  font-size: 1rem;
+  height: 1em;
+  vertical-align: middle;
+  width: 1em;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+body {
+  background-color: #221f2e;
+  color: #606468;
+  height: 100%;
+  margin: 0;
+  min-height: 100vh;
+}
+a {
+  color: #eee;
+  outline: 0;
+  text-decoration: none;
+}
+
+a:focus,
+a:hover {
+  text-decoration: underline;
+}
+
+:root {
+  --formFieldMargin: 0.875rem;
+}
+
+input {
+  background-image: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  transition: background-color 0.3s;
+}
+
+input[type='button'] {
+  cursor: pointer;
+}
+
+.form {
+  margin: calc(0.875rem * -1);
+}
+
+.form input[type='password'],
+.form input[type='text'],
+.form input[type='button'] {
+  width: 100%;
+}
+
+.form__field {
+  display: flex;
+  margin: 0.875rem;
+}
+
+
+.form__input {
+  flex: 1;
+}
+
+.login {
+  color: #eee;
+}
+
+.login label,
+.login input[type='text'],
+.login input[type='password'],
+.login input[type='button'] {
+  border-radius: 0.25rem;
+  padding: 1rem;
+}
+
+.login label {
+  background-color: #363b41;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  margin-bottom: 0px;
+}
+
+.login input[type='password'],
+.login input[type='text'] {
+  background-color: #3b4148;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.login input[type='password']:focus,
+.login input[type='password']:hover,
+.login input[type='text']:focus,
+.login input[type='text']:hover {
+  background-color: #434a52;
+}
+
+.login input[type='button'] {
+  background-color: #ea4c88;
+  color: #eee;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.login input[type='button']:focus,
+.login input[type='button']:hover {
+  background-color: #d44179;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.text--center {
+  text-align: center;
+}

@@ -1,0 +1,50 @@
+
+
+.container-fluid{
+  max-width: 760px;
+}
+ul {
+  padding-top: 22px;
+}
+ul li{
+  margin:10px;
+  background-color: #6b47e1;
+  border-radius: 5px;
+}
+.card{
+  background-color: #d7d1ea;
+}
+label i{
+  cursor: pointer;
+  color: blue;
+}
+.command-buttons{
+  padding-top: 7px;
+}
+.command-buttons button{
+  margin-left: 5%;
+}
+.card-footer button{
+  margin-left: 5%;
+}
+
+li .col-1{
+  cursor: pointer;
+}
+.oculto{
+  display: none;
+}
+@media only screen and (max-width: 660px){
+  *{
+    font-size: 12px;
+  }
+  .card-footer button span{
+    visibility: hidden; display: none;
+    display: none;
+  }
+}
+
+
+ul .offline{
+  background-color:#727272;
+}

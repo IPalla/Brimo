@@ -31,48 +31,9 @@ export class DevicesComponent implements OnInit {
       }
       console.log(err);
     });
-    this.timer = setInterval( () => {
-      this.devicesService.getDevices().then(
-        response => {
-          if (JSON.stringify(this.aDevices) !== JSON.stringify(response)) {
-            if (this.aDevices.length !== response.length) {
-              this.aDevices = response;
-              return;
-            }
-            response.forEach( (item) => {
-             this.aDevices.forEach ( (item2) => {
-              let flag = 0;
-              if ( Number(item.id).valueOf() === Number(item2.id).valueOf()) {
-                flag = 1;
-                this.aDevices[this.aDevices.indexOf(item2)].info = item.info;
-                this.aDevices[this.aDevices.indexOf(item2)].name = item.name;
-                this.aDevices[this.aDevices.indexOf(item2)].freq = item.freq;
-                this.aDevices[this.aDevices.indexOf(item2)].lastupdate = item.lastupdate;
-                this.aDevices[this.aDevices.indexOf(item2)].location = item.location;
-              }
-              if (flag === 0) {
-                if (this.aDevices.indexOf(item) < 0) {
-                  console.log(item);
-                  this.aDevices.push(item);
-                }
-              }
-             });
-            });
-          }
-        }
-      ).catch( err => {
-        if (err === -1 ) {
-          console.error('Log In necessary');
-          return -1;
-        }
-        console.log(err);
-      });
-    }, 5000);
   }
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnDestroy() {
-    clearInterval(this.timer);
-
   }
   showInstructions() {
     alert('Different commands are avalaible depending on your device type. Check instructions to know more.');

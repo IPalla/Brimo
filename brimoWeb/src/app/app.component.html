@@ -1,0 +1,10 @@
+<div *ngIf="logged; else login_required">
+  <app-menu (login_emitter)="login($event)" [is_logged]="true"></app-menu>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer class="footer"></app-footer>
+</div>
+<ng-template #login_required>
+  <router-outlet></router-outlet>
+</ng-template>

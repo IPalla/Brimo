@@ -1,0 +1,12 @@
+.row{
+  padding-top: 3%;
+  align-content: center;
+}
+.img-fluid{
+  height: 25rem;
+}
+@media (min-height: 600px) {
+  .row{
+    padding-top: 5%;
+  }
+}

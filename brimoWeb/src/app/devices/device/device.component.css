@@ -1,0 +1,80 @@
+.row{
+  cursor: pointer;
+}
+.offline{
+  color: red;
+}
+.online{
+  color: green;
+  animation-name: parpadeo;
+  animation-duration: 1.8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-name:parpadeo;
+  -webkit-animation-duration: 1.8s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+
+}
+
+@-moz-keyframes parpadeo{
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes parpadeo {
+  50% { opacity: 0.0; }
+   100% { opacity: 1.0; }
+}
+
+@keyframes parpadeo {
+   50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+.oculto{
+  display: none;
+}
+.container-fluid{
+  max-width: 760px;
+}
+ul {
+  padding-top: 22px;
+}
+ul li{
+  margin:10px;
+  background-color: #6b47e1;
+  border-radius: 5px;
+}
+.card{
+  background-color: #d7d1ea;
+}
+label i{
+  cursor: pointer;
+  color: blue;
+}
+.command-buttons{
+  padding-top: 7px;
+}
+.command-buttons button{
+  margin-left: 5%;
+}
+.card-footer button{
+  margin-left: 5%;
+}
+
+li .col-1{
+  cursor: pointer;
+}
+.oculto{
+  display: none;
+}
+@media only screen and (max-width: 660px){
+  *{
+    font-size: 12px;
+  }
+  .card-footer button span{
+    visibility: hidden; display: none;
+    display: none;
+  }
+}

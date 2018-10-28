@@ -33,6 +33,7 @@ export class DevicesService {
     if (!headers) { throw -1; }
     return this.http.get(urlget, headers).toPromise().then( (response: any) => {
       this.aDevices =  Object.values(response);
+      console.log(response);
       return this.aDevices;
     }).catch(() => {location.reload(); return this.aDevices; });
   }
@@ -60,7 +61,7 @@ export class DevicesService {
     }).catch(() => {location.reload(); });
   }
   sendCommandDevice(oDevice: Device, command: string) {
-    const urlDevice = 'http://' + oDevice.ip;
+    const urlDevice = 'http://' + oDevice.IP;
     const commandOBject = {
       id: oDevice.id,
       Action: command,
@@ -83,9 +84,3 @@ export class DevicesService {
     return httopts;
   }
 }
-/*
-ip_actuador/
-{
-    "id" : "33",
-    "Action" : "ON", "OFF", "+", "-", "texto"
-}*/

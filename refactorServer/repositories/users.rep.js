@@ -31,7 +31,23 @@
 	  });
 	}
 
+	function edit(userId, userInfo) {
+	  return new Promise((resolve, reject) => {
+	    db.get("UPDATE USERS SET USER = ?1, PASS =?2  WHERE ID = ?3", {
+	      1: userInfo.user,
+				2: userInfo.pwd,
+				3: userId
+	    }, (err, rows) => {
+				if (err) {
+					reject(err);
+				}
+				resolve({ id: this.lastID});
+	    });
+	  });
+	}
+
 	module.exports = {
 	  connect,
-	  login
+		login,
+		edit
 	}

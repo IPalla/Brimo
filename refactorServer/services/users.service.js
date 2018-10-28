@@ -9,6 +9,16 @@ function login(user, pwd) {
   });
 }
 
+function edit(userId, userInfo) {
+  return usersRep.edit(userId, userInfo).then( res => {
+    if ( res != undefined ) {
+      return res;
+    }
+    throw {status: 400, message: 'Error editing user info.'}
+  });
+}
+
 module.exports = {
-  login
+  login,
+  edit
 }

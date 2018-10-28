@@ -1,0 +1,32 @@
+<div class="container-fluid">
+  <!-- <div *ngIf="aRooms.length > 0" class="row">
+    <div class="col-sm-5">
+      <label for="sel1">Filter by room:</label>
+    </div>
+    <div class="col-sm-7 ">
+      <select class="form-control" id="sel1" [(ngModel)]="filtered_room">
+        <option>None</option>
+        <ng-container *ngFor="let item of aRooms; index as i;">
+          <option>{{item}}</option>
+        </ng-container>
+      </select>
+    </div>
+  </div> -->
+  <ul class="list-group row">
+    <div *ngIf="filtered_room == 'None'; else filtered">
+      <ng-container *ngFor="let item of aDevices; index as i;">
+        <li class="list-group-item row" [ngClass]="getStatus(item)">
+          <app-device class="col-10" [oDevice]="item" (deleted)="deleteDevice($event)"></app-device>
+        </li>
+      </ng-container>
+    </div>
+
+  </ul>
+</div>
+<ng-template #filtered>
+  <ng-container *ngFor="let item of aDevices; index as i;">
+    <li *ngIf="item.location === filtered_room" class="list-group-item row" [ngClass]="getStatus(item)">
+      <app-device class="col-10" [oDevice]="item" (deleted)="deleteDevice($event)"></app-device>
+    </li>
+  </ng-container>
+</ng-template>

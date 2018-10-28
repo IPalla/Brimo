@@ -9,7 +9,6 @@ var devicesService = require('../services/devices.service');
  */
 router.get('/', function (req, res, next) {
   devicesService.list().then(response => {
-    console.log(response.length);
     if (response.length == 0) {
       res.status(204);
       res.json();
@@ -24,8 +23,13 @@ router.get('/', function (req, res, next) {
  * Return 201 if success.
  */
 router.post('/', function (req, res, next) {
-  console.log(req.body);
-  devicesService.create( req.body ).then(response => {
+  let device = req.body;
+  if (!device.name) return next({status: 400, message:'Missing name.'});
+  if (!device.freq) return next({status: 400, message:'Missing freq.'});
+  if (!device.camera) {
+    device.camera = false;
+  }
+  devicesService.create( device ).then(response => {
     res.status(201);
     res.json(response);
   }).catch(err => next(err)); 
@@ -36,11 +40,18 @@ router.post('/', function (req, res, next) {
  * Return 201 if success.
  */
 router.put('/:id', function (req, res, next) {
-  console.log(req.body);
-  devicesService.editInfo( req.body, req.params.id ).then(response => {
-    res.status = 201;
-    res.json(response);
-  }).catch(err => next(err)); 
+  let deviceInfo = req.body;
+  console.log(deviceInfo);
+  if( deviceInfo.new_name !== undefined && deviceInfo.new_location !== undefined ) {
+    devicesService.editLocation( deviceInfo, req.params.id );
+  } else if ( deviceInfo.info !== undefined ) {
+    devicesService.editInfo( deviceInfo, req.params.id ).then(response => {
+      res.status = 201;
+      res.json(response);
+    }).catch(err => next(err)); 
+  } else {
+    return next({status: 400, message:'Info field or new_name and new_location are required.'});
+  }
 });
 
 /**

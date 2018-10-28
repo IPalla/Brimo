@@ -11,6 +11,7 @@ var devicesRouter = require('./routes/devices');
 var jwtAuth = require('./middleware/auth.token');
 var devAuth = require('./middleware/auth.dev');
 var debugReq = require('./middleware/debug');
+var cors = require('cors');
 // Databases
 var dbConfig = require('./repositories/config');
 // Api init
@@ -19,15 +20,16 @@ const context = '/brimo/api'
 // Database connection
 dbConfig.connect();
 //Directories & default middleware
+app.use(cors()); // DESACTIVAR
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // Routing
-app.use( context + '/login', devAuth.devProtected, loginRouter);
+app.use( context + '/login', loginRouter);
 app.use( context + '/users', jwtAuth.protected, usersRouter);
-app.use( context + '/devices', devAuth.devProtected, devicesRouter);
+app.use( context + '/devices', devicesRouter);
 // Error control
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

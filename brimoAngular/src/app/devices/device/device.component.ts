@@ -32,7 +32,7 @@ export class DeviceComponent implements OnInit {
   ngOnInit() {
   }
   showInstructions() {
-    console.log('cam' + this.oDevice.commands);
+    console.log('cam' + this.oDevice.command_list);
     alert('Different commands are avalaible depending on your device type. Check instructions to know more.');
   }
   getStatus() {
