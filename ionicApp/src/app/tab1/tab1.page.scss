@@ -2,3 +2,19 @@
   max-height: 35vh;
   overflow: hidden;
 }
+
+ion-card{
+  width: 100%;
+  //--background: #eeee;
+}
+
+ion-item{
+ // --background: rgb(208, 211, 218);
+}
+ion-item-option{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}

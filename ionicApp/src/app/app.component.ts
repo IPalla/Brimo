@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
@@ -9,10 +10,14 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
+
+  isLogged: boolean;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -22,5 +27,15 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+    this.isLogged = true;
+  }
+
+  logout() {
+    this.isLogged = false;
+    this.router.navigate(['login-page']);
+  }
+
+  login() {
+    this.isLogged = true;
   }
 }
