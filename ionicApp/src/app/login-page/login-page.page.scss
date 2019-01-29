@@ -1,0 +1,50 @@
+$bg-color: #221f2e;
+$height100: 100%;
+
+ion-grid {
+    width:100%;
+    height: $height100;
+}
+
+ion-row {
+    height: $height100;
+}
+
+.user-form, .pass-form{
+    --border-radius: 0.252rem;
+}
+
+.user-form{
+    margin-bottom: 0.9rem;
+}
+
+ion-button{
+    --background: #ea4c88;
+    --color: #eee;
+}
+
+ion-col {
+    background: $bg-color;
+    border-radius: 0.252rem;
+}
+
+ion-button {
+    font-weight: 300;
+}
+
+ion-img{
+    width: 70%;
+    height: 70%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 240px) and (max-width: 768px) {
+    ion-grid {
+        background: $bg-color;
+    }
+    ion-col {
+        border: none;
+    }
+}
