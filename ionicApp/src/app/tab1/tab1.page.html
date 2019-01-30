@@ -1,8 +1,21 @@
+<ion-header *ngIf="1==1">
+  <ion-toolbar>
+    <ion-img src="../../assets/logoBrimo.png"></ion-img>
+    <ion-button slot="end" href="/login-page">
+      <ion-icon slot="icon-only" name="exit"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
+  <ion-item>
+            <ion-label>Room</ion-label>
+            <ion-select placeholder="Select One">
+              <ion-select-option value="f">Dining room</ion-select-option>
+              <ion-select-option value="m">Kitchen</ion-select-option>
+              <ion-select-option value="m">Garden</ion-select-option>
+            </ion-select>
+    </ion-item>
   <ion-list lines="none">
-    <ion-list-header>
-      <ion-label>Items</ion-label>
-    </ion-list-header>
     <ion-item-sliding *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
       <ion-item href="/login-page">
         <ion-card>

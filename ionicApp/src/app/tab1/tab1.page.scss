@@ -18,3 +18,19 @@ ion-item-option{
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
+
+ion-img{
+  width: 70%;
+  height: 70%;
+}
+
+ion-button {
+  height: 80%;
+}
+
+ion-toolbar, ion-header{
+  background:  #221f2e;
+  background-color: #221f2e;
+  color: #221f2e;
+  --background: #221f2e;
+}
