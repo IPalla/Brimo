@@ -7,13 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { TabsPageRoutingModule } from './tabs.router.module';
 
 import { TabsPage } from './tabs.page';
+import {DeviceInfoPageModule} from '../device-info/device-info.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    TabsPageRoutingModule
+    TabsPageRoutingModule,
+    DeviceInfoPageModule
   ],
   declarations: [TabsPage]
 })

@@ -8,19 +8,36 @@
 </ion-header>
 <ion-content>
   <ion-item>
-            <ion-label>Room</ion-label>
-            <ion-select placeholder="All">
-              <ion-select-option value="f">Dining room</ion-select-option>
-              <ion-select-option value="m">Kitchen</ion-select-option>
-              <ion-select-option value="m">Garden</ion-select-option>
+      <ion-button (click)="presentAlert()" slot="start"><ion-icon name="add-circle"></ion-icon>&nbsp;New room</ion-button>
+      <ion-button (click)="this.selectRef.open()" color="light" round slot="end"><ion-icon name="list"></ion-icon>&nbsp;{{this.selectRef.value}}</ion-button>
+      <ion-label style="visibility: hidden;">Select room</ion-label>
+            <ion-select value="All rooms" style="visibility: hidden;" #filterSelect>
+              <ion-select-option value="All rooms">All Rooms</ion-select-option>
+              <ion-select-option value="Dining room">Dining room</ion-select-option>
+              <ion-select-option value="Kitchen">Kitchen</ion-select-option>
+              <ion-select-option value="Garden">Garden</ion-select-option>
             </ion-select>
     </ion-item>
   <ion-list lines="none">
-    <ion-item-sliding *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]">
-      <ion-item >
-        <ion-card>
+    <ion-item-sliding *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" >
+      <ion-item href="/device-info/{{i}}/Device">
+        <ion-card [ngClass]="{'disabled' : i>8}">
           <ion-card-header>
-            <ion-card-title>Termostate {{i}}</ion-card-title>
+            <ion-card-title *ngIf="i>8">
+              <ion-row>
+                <ion-col size="9">
+                  <ion-text>Termostate {{i}}</ion-text>
+                </ion-col>
+                <ion-col size="3">
+                  <ion-icon name="flash-off" style="color: danger"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-card-title>
+            
+            <ion-card-title *ngIf="!(i>8)">
+                    <ion-text>Termostate {{i}}</ion-text>
+              </ion-card-title>
+
             <ion-row>
               <ion-col size="9">
                 <ion-card-subtitle side="start">Dinning room</ion-card-subtitle>

@@ -49,3 +49,21 @@ ion-toolbar, ion-header{
 ion-toolbar, ion-header, toolbar-container{
   height: 60px;
 }*/
+
+.disabled{
+  background-color: #dddddd;
+}
+
+.hidden-label{
+  position: absolute;
+  visibility: hidden;
+  width: 0px !important;
+  height: 0px !important;
+  margin: 0px;
+  padding: 0px;
+}
+
+button{
+  margin-left: 50%;
+  width: 50%;
+}

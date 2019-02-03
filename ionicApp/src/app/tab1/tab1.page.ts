@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-
+import { Component, ViewChild } from '@angular/core';
+import { AlertController, IonSelect } from '@ionic/angular';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -8,6 +7,9 @@ import { AlertController } from '@ionic/angular';
 })
 export class Tab1Page {
   constructor(public alertController: AlertController){}
+
+  @ViewChild('filterSelect') selectRef: IonSelect;
+
   async presentAlert() {
     const alert = await this.alertController.create({
       header: 'Confirm',

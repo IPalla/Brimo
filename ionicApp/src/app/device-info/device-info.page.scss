@@ -1,0 +1,16 @@
+ion-card-header{
+    border-bottom: 1px solid;
+    width: 100%;
+    border-color: var(--ion-item-border-color,var(--ion-border-color,var(--ion-color-step-150,rgba(0,0,0,0.13))));
+}
+
+ion-text{
+    color: rgb(115, 115, 115);
+}
+
+.information-text{
+    text-align: right;
+}
+ion-row{
+    width: 100%;
+}
