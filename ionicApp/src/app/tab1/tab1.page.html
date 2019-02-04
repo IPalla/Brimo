@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content>
   <ion-item>
-      <ion-button (click)="presentAlert()" slot="start"><ion-icon name="add-circle"></ion-icon>&nbsp;New room</ion-button>
+      <ion-button (click)="presentAlertPrompt()" slot="start"><ion-icon name="add-circle"></ion-icon>&nbsp;New room</ion-button>
       <ion-button (click)="this.selectRef.open()" color="light" round slot="end"><ion-icon name="list"></ion-icon>&nbsp;{{this.selectRef.value}}</ion-button>
       <ion-label style="visibility: hidden;">Select room</ion-label>
             <ion-select value="All rooms" style="visibility: hidden;" #filterSelect>

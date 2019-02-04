@@ -4,7 +4,7 @@ var db = null;
 // Create DB & insert default user
 function connect(database) {
   db = database;
-  db.run("CREATE TABLE IF NOT EXISTS rooms (id INTEGER PRIMARY KEY AUTOINCREMENT, device_id INTEGER, room text NOT NULL, FOREIGN KEY (device_id) REFERENCES devices(id))", (err) => {
+  db.run("CREATE TABLE IF NOT EXISTS rooms (id INTEGER PRIMARY KEY AUTOINCREMENT, device_id INTEGER, room text NOT NULL)", (err) => {
     if (err) {
       console.error(err.message);
       throw err;

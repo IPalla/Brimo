@@ -19,4 +19,35 @@ export class Tab1Page {
 
     await alert.present();
   }
+  
+
+  async presentAlertPrompt() {
+    const alert = await this.alertController.create({
+      header: 'New room',
+      inputs: [
+        {
+          name: 'Room name',
+          type: 'text',
+          placeholder: 'Room name'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: () => {
+            console.log('Confirm Ok');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 }

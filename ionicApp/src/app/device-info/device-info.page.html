@@ -11,80 +11,106 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
+  <ion-card *ngIf="!this.edit">
     <ion-card-content>
-        <ion-card-header>
-          <ion-card-title >{{this.deviceName}}</ion-card-title>
-        </ion-card-header>
-    <ion-list lines = "inset">
-      <ion-item>
-        <ion-row>
-          <ion-col size="4">
+      <ion-card-header>
+        <ion-card-title>{{this.deviceName}}</ion-card-title>
+      </ion-card-header>
+      <ion-list lines="inset">
+        <ion-item>
+          <ion-row>
+            <ion-col size="4">
               <ion-text>Location:</ion-text>
-          </ion-col>
-          <ion-col size="8" class="information-text">
-              <ion-text >Dinning room</ion-text>
-          </ion-col>
-        </ion-row>
-    </ion-item>
-    
-    <ion-item>
-        <ion-row>
-          <ion-col size="4">
+            </ion-col>
+            <ion-col size="8" class="information-text">
+              <ion-text>Dinning room</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+
+        <ion-item>
+          <ion-row>
+            <ion-col size="4">
               <ion-text>Info:</ion-text>
-          </ion-col>
-          <ion-col size="8" class="information-text">
-              <ion-text >Dinning room</ion-text>
-          </ion-col>
-        </ion-row>
-    </ion-item>
-    
-    <ion-item>
-        <ion-row>
-          <ion-col size="4">
+            </ion-col>
+            <ion-col size="8" class="information-text">
+              <ion-text>Dinning room</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+
+        <ion-item>
+          <ion-row>
+            <ion-col size="4">
               <ion-text>Last update:</ion-text>
-          </ion-col>
-          <ion-col size="8" class="information-text">
-              <ion-text >20/10/19 00:23</ion-text>
-          </ion-col>
-        </ion-row>
-    </ion-item>
-    
-    <ion-item>
-        <ion-row>
-          <ion-col size="4">
+            </ion-col>
+            <ion-col size="8" class="information-text">
+              <ion-text>20/10/19 00:23</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+
+        <ion-item>
+          <ion-row>
+            <ion-col size="4">
               <ion-text>Update freq.:</ion-text>
-          </ion-col>
-          <ion-col size="8" class="information-text">
-              <ion-text >20s</ion-text>
-          </ion-col>
-        </ion-row>
-    </ion-item>
-    </ion-list>
+            </ion-col>
+            <ion-col size="8" class="information-text">
+              <ion-text>20s</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
 
-    <ion-buttons >
+      <ion-buttons>
 
-        <ion-tab-button>
+        <ion-tab-button style="width: 25%;" (click)="this.edit = !this.edit">
           <ion-icon name="create"></ion-icon>
           <ion-label>Edit</ion-label>
         </ion-tab-button>
-    
-        <ion-tab-button>
+        <ion-tab-button style="width: 25%;">
           <ion-icon name="send"></ion-icon>
           <ion-label>Send command</ion-label>
         </ion-tab-button>
-    
-        <ion-tab-button>
+        <ion-tab-button style="width: 25%;">
           <ion-icon name="add-circle"></ion-icon>
-          <ion-label>Add schedule</ion-label>
+          <ion-label>
+            <p>Add schedule</p>
+          </ion-label>
         </ion-tab-button>
-    
-        <ion-tab-button>
+        <ion-tab-button style="width: 25%;" (click)="presentAlert()">
           <ion-icon name="trash"></ion-icon>
-          <ion-label>Dlete</ion-label>
+          <ion-label>Delete</ion-label>
         </ion-tab-button>
       </ion-buttons>
+    </ion-card-content>
+  </ion-card>
 
-  </ion-card-content>
+  <ion-card *ngIf="this.edit">
+    <ion-card-content>
+        <ion-item>
+          <ion-label style="color: #737373" position="fixed">Name</ion-label>
+            <ion-input style="text-align: right;"value="{{this.deviceName}}"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label style="color: #737373">Location</ion-label>
+            <ion-select value="None" okText="Okay" cancelText="Dismiss">
+              <ion-select-option value="None">None</ion-select-option>
+              <ion-select-option value="Kitchen">Kitchen</ion-select-option>
+              <ion-select-option value="Dinning rom">Dinning rom</ion-select-option>
+              <ion-select-option value="Garden">Garden</ion-select-option>
+            </ion-select>
+        </ion-item>
+      <ion-buttons>
+        <ion-tab-button style="width: 50%;">
+          <ion-icon name="close-circle"></ion-icon>
+          <ion-label>Cancel</ion-label>
+        </ion-tab-button>
+        <ion-tab-button style="width: 50%;" (click)="this.edit = !this.edit">
+          <ion-icon name="checkmark-circle"></ion-icon>
+          <ion-label>Save</ion-label>
+        </ion-tab-button>
+      </ion-buttons>
+      </ion-card-content>
   </ion-card>
 </ion-content>

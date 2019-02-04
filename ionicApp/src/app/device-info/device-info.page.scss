@@ -14,3 +14,12 @@ ion-text{
 ion-row{
     width: 100%;
 }
+
+ion-tab-button{
+    width: 25%;
+    text-align: justify;
+  flex-flow: column;
+}
+.button-inner {
+    flex-flow: column;
+  }
