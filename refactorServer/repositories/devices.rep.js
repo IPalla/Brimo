@@ -18,13 +18,16 @@
 	  },
 	  "freq": {
 	    "type": "number"
-	  }
+		},
+		"room_id": {
+			"type": "number"
+		}
 	}
 
 	// Create table
 	function connect(database) {
 	  db = database;
-	  db.run("CREATE TABLE IF NOT EXISTS devices (id INTEGER PRIMARY KEY AUTOINCREMENT,name, freq, info,location ,lastupdate, commands, IP, camera BIT, room_id INTEGER, FOREIGN KEY (room_id) REFERENCES rooms(id)) ", (err) => {
+	  db.run("CREATE TABLE IF NOT EXISTS devices (id INTEGER PRIMARY KEY AUTOINCREMENT,name, freq, info ,lastupdate, commands, IP, camera BIT, room_id INTEGER, FOREIGN KEY (room_id) REFERENCES rooms(id)) ", (err) => {
 	    if (err) {
 	      console.error(err.message);
 	      throw err;

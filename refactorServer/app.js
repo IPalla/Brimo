@@ -7,6 +7,8 @@ var logger = require('morgan');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var devicesRouter = require('./routes/devices');
+var locationsRouter = require('./routes/locations');
+
 // Middleware
 var jwtAuth = require('./middleware/auth.token');
 var devAuth = require('./middleware/auth.dev');
@@ -30,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use( context + '/login', loginRouter);
 app.use( context + '/users', jwtAuth.protected, usersRouter);
 app.use( context + '/devices', devicesRouter);
+app.use( context + '/locations', locationsRouter);
 // Error control
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
