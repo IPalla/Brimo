@@ -64,4 +64,15 @@ router.delete('/:id', function (req, res, next) {
   }).catch(err => next(err)); 
 });
 
+
+/**
+ * Route GET /devices/{id}. Obtain device.
+ * Return 404 if not found.
+ */
+router.get('/:id', function (req, res, next) {
+  devicesService.getDevice( req.params.id ).then(response => {
+    res.json(response);
+  }).catch(err => next(err)); 
+});
+
 module.exports = router;

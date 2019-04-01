@@ -4,7 +4,6 @@ var usersDb = require('./users.rep');
 var devicesDb = require('./devices.rep');
 var commandsDb = require('./commands.rep');
 var roomsDb = require('./rooms.rep');
-var devicesCommandsDb = require('./devices_commands.rep');
 var db;
 function connect() {
   db = new sqlite3.Database("./db/users.db", sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
@@ -16,7 +15,6 @@ function connect() {
     devicesDb.connect(db);
     commandsDb.connect(db);
     roomsDb.connect(db);
-    devicesCommandsDb.connect(db);
   });
 }
 

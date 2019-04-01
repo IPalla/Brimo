@@ -1,20 +1,18 @@
 const devicesRep = require('../repositories/devices.rep');
 const commandsRep = require('../repositories/commands.rep');
+const locationsRep = require('../repositories/rooms.rep');
 
 /**
  * Retrieves all devices from database. Split commands_list.
  */
 function list() {
   devices_list = [];
-  return devicesRep.list().then(devices => {
-    devices.forEach(dev => {
-      if (dev.command_list != null) {
-        dev.command_list = dev.command_list.split(",");
-      } else {
-        dev.command_list = undefined;
-      }
+  return devicesRep.list().then( response => {
+    response.forEach( device => {
+      if (device.room_id == null)
+        device.descr = null;
     });
-    return devices;
+    return response;
   });
 }
 /**
@@ -23,22 +21,22 @@ function list() {
  * @param {Object} device 
  */
 function create(device) {
-  return devicesRep.create(device).then(response => {
-    promises = [];
-    if (!device.commands) {
-      return response;
+  var room = null;
+  if (device.room != null && device.room.room_id != null) {
+    return locationsRep.findById(device.room.room_id).then( room => {
+      return devicesRep.create(device, room).then(dev => {
+        if (device.commands != null){
+          device.commands.forEach(command => commandsRep.insertCommand(dev.device_id, command).catch(err=>console.log(err)));
+        }
+        return dev;
+      });
+    });
+  }
+  return devicesRep.create(device, null).then(dev => {
+    if (device.commands != null){
+      device.commands.forEach(command => commandsRep.insertCommand(dev.device_id, command).catch(err=>console.log(err)));
     }
-    device.commands.forEach(command => {
-      promises.push(commandsRep.insertCommand(response.id, command));
-    });
-    return Promise.all(promises).then(res => {
-      return response;
-    }).catch(err => {
-      throw {
-        status: 500,
-        message: `Error while inserting device ${response.id} commands.`
-      }
-    });
+    return dev;
   });
 }
 
@@ -91,23 +89,16 @@ function deleteDevice(id) {
   });
 }
 
-function validateDevice(device) {
-  return new Promise((resolve, reject) => {
-    if (device.commands.length != 3) {
-      reject({
-        status: 400,
-        message: 'Invalid device format: commands.'
+
+function getDevice(device_id) {
+  return devicesRep.getDevice(device_id).then( device => {
+    return commandsRep.getDeviceCommands(device_id).then( commands => {
+      device.commands = commands;
+      return locationsRep.findById(device.room_id).then(location => {
+        device.descr = (location != null) ? location.descr : null;
+        return device;
       });
-    } else if ((device.commands[0] != 'Y' && device.commands[0] != 'N') ||
-      (device.commands[1] != 'Y' && device.commands[1] != 'N') ||
-      (device.commands[2] != 'Y' && device.commands[2] != 'N')
-    ) {
-      reject({
-        status: 400,
-        message: 'Invalid device input. Commands must be Y or N.'
-      });
-    }
-    resolve(device);
+    });
   });
 }
 
@@ -116,5 +107,6 @@ module.exports = {
   create,
   editInfo,
   editLocation,
-  deleteDevice
+  deleteDevice,
+  getDevice
 }

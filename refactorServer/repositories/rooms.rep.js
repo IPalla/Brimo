@@ -4,7 +4,7 @@ var db = null;
 // Create DB & insert default user
 function connect(database) {
   db = database;
-  db.run("CREATE TABLE IF NOT EXISTS rooms (id INTEGER PRIMARY KEY AUTOINCREMENT, descr text NOT NULL)", (err) => {
+  db.run("CREATE TABLE IF NOT EXISTS rooms (room_id INTEGER PRIMARY KEY AUTOINCREMENT, descr text NOT NULL)", (err) => {
     if (err) {
       console.error(err.message);
       throw err;
@@ -43,13 +43,13 @@ function editName(room) {
   return new Promise((resolve, reject) => {
     db.run("UPDATE rooms SET descr = ?1 WHERE id = ?2", {
       1: room.descr,
-      2: room.id
+      2: room.room_id
     }, function (err, rows) {
       if (err || this.changes < 1) {
-        reject(`Error updating room ${room.id} name.`);
+        reject(`Error updating room ${room.room_id} name.`);
       }
       resolve({
-        id: this.lastID
+        room_id: this.lastID
       });
     });
   });
@@ -57,7 +57,7 @@ function editName(room) {
 
 function deleteLocation(id) {
   return new Promise((resolve, reject) => {
-    db.run("DELETE FROM rooms WHERE id = ?1", {
+    db.run("DELETE FROM rooms WHERE room_id = ?1", {
       1: id
     }, function (err, rows) {
       if (err || this.changes < 1) {
@@ -70,10 +70,24 @@ function deleteLocation(id) {
   });
 }
 
+function findById(id) {
+  return new Promise((resolve, reject) => {
+    db.run("SELECT * FROM rooms WHERE room_id = ?1", {
+      1: id
+    }, (err, rows) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(rows);
+    });
+  });
+}
+
 module.exports = {
   connect,
   create,
   list,
   editName,
-  deleteLocation
+  deleteLocation,
+  findById
 }
