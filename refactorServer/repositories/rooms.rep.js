@@ -72,13 +72,13 @@ function deleteLocation(id) {
 
 function findById(id) {
   return new Promise((resolve, reject) => {
-    db.run("SELECT * FROM rooms WHERE room_id = ?1", {
+    db.all("SELECT * FROM rooms WHERE room_id = ?1", {
       1: id
     }, (err, rows) => {
       if (err) {
         reject(err);
       }
-      resolve(rows);
+      resolve(rows[0]);
     });
   });
 }

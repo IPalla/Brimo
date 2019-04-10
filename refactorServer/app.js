@@ -8,6 +8,7 @@ var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var devicesRouter = require('./routes/devices');
 var locationsRouter = require('./routes/locations');
+var commandsRouter = require('./routes/commands');
 
 // Middleware
 var jwtAuth = require('./middleware/auth.token');
@@ -33,6 +34,7 @@ app.use( context + '/login', loginRouter);
 app.use( context + '/users', jwtAuth.protected, usersRouter);
 app.use( context + '/devices', devicesRouter);
 app.use( context + '/locations', locationsRouter);
+app.use( context + '/commands', commandsRouter);
 // Error control
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

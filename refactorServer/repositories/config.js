@@ -12,9 +12,9 @@ function connect() {
       throw err;
     }
     usersDb.connect(db);
+    roomsDb.connect(db);
     devicesDb.connect(db);
     commandsDb.connect(db);
-    roomsDb.connect(db);
   });
 }
 

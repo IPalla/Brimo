@@ -40,13 +40,20 @@ router.post('/', function (req, res, next) {
  * Return 201 if success.
  */
 router.put('/:id', function (req, res, next) {
-  let deviceInfo = req.body;
-  console.log(deviceInfo);
-  if( deviceInfo.new_name !== undefined && deviceInfo.new_location !== undefined ) {
-    devicesService.editLocation( deviceInfo, req.params.id );
-  } else if ( deviceInfo.info !== undefined ) {
-    devicesService.editInfo( deviceInfo, req.params.id ).then(response => {
-      res.status = 201;
+  let name = req.query.name;
+  let room_id = req.query.room_id;
+  let info = req.query.info;
+  let deviceId = req.params.id;
+  if ( deviceId == null)  return next({status: 400, message:'Missing device id.'});
+  if (info != null){
+    devicesService.editInfo( info, deviceId ).then(response => {
+      res.status = 200;
+      res.json(response);
+    }).catch(err => next(err)); 
+  }
+  else if (name != null || room_id != null){
+    devicesService.editNameAndLocation( room_id, name, deviceId ).then(response => {
+      res.status = 200;
       res.json(response);
     }).catch(err => next(err)); 
   } else {
