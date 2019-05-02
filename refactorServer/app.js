@@ -32,9 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routing
 app.use( context + '/login', loginRouter);
 app.use( context + '/users', jwtAuth.protected, usersRouter);
-app.use( context + '/devices', devicesRouter);
-app.use( context + '/locations', locationsRouter);
-app.use( context + '/commands', commandsRouter);
+app.use( context + '/devices', jwtAuth.protected, devicesRouter);
+app.use( context + '/locations', jwtAuth.protected, locationsRouter);
+app.use( context + '/commands', jwtAuth.protected, commandsRouter);
 // Error control
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
