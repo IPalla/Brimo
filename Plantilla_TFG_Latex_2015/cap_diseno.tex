@@ -58,7 +58,7 @@ En esta sección se describirá el protocolo que se utilizará en las comunicaci
 El protocolo elegido para la comunicación entre dispositivos, hub e interfaz es el protocolo HTTPS (Hypertext Transfer Protocol Secure).
 \newline
 Este protocolo nos da la posibilidad de implementar una API REST consumible por parte de los dispositivos y por parte de la interfaz,
-sin necesidad de utilizar diferentes protocolos para los diferentes canales. 
+sin necesidad de utilizar diferentes protocolos para los diferentes canales.
 \newline
 Además, de estar muy estandarizadas a día de hoy, las APIs REST nos dan la capacidad de separar entre cliente y servidor y de ser capaces
 de utilizar diferentes lenguajes y tecnologías para cada lado. Es decir, podemos tener un servidor escrito en Express.js (javascript), una interfaz 
@@ -73,11 +73,20 @@ dispositivos sensores y el propio hub.
 Teniendo en cuenta las necesidades de nuestro sistema realizaremos una arquitectura similar a las arquitecturas de microservicios,
 en la que el hub y los actuadores serán los hosts de un servidor REST y serán capaces de recibir y procesar peticiones.
 \newline
-El hub recibirá peticiones de parte de la interfaz y de los dispositivos, y lanzará peticiones a los actuadores. Para ello se establecerá una API consumible por ambas partes (dispositivos e interfaz).
-Los sensores lanzarán peticiones al hub informando de su estado.
+El hub recibirá peticiones de parte de la interfaz de usuario y de los dispositivos, y lanzará peticiones a los actuadores.
+Para ello se establecerán dos APIS publicadas por el HUB y consumibles por la interfaz de usuario y los dispositivos:
+\begin{itemize}
+\item \underline{Interface API:} será consumida por la interfaz de usuario. Se encargará de enviar la información de los dispositivos al usuario: número
+ de dispositivos, localización, etc... Además, permitirá al usuario gestionar dispositivos y enviarles comandos.
+\item \underline{Sensors API:} será consumida por actuadores y sensores por igual. Permitirá a los dispositivos darse de alta en el sistema y actualizar
+periódicamente su información.
+\end{itemize}
 Los actuadores, además de lanzar peticiones al hub para informar de su estado, deberán ser capaces de recibir peticiones del hub con
-diferentes comandos.
-
+diferentes comandos. Para ello se establecerá otra API que todos los dispositivos deberán seguir, para que así el HUB consuma la misma API
+en los diferentes dispositivos. Será denominada en adelante como \underline{Actuators API}.
+\newline
+Estableceremos y explicaremos estas APIs en los capítulos siguientes.
+\newline
 Todas las peticiones deben ser securizadas, y debemos asegurar que ningún intruso pueda acceder y/o modificar la información de nuestro sistema.
 
 Esquema de la arquitecura a seguir:
@@ -88,7 +97,38 @@ Esquema de la arquitecura a seguir:
 \label{fig:descripcion_dispositivos}
 \end{figure}
 
-\subsection{API}
+\subsection{APIS}
+En esta sección se definirán y explicarán las diferentes APIS que se utilizarán en el sistema. Al tratarse de APIS REST, en la definición
+de cada método hay que informar: ruta del método, verbo (GET, POST, PUT, PATCH, DELETE), cuerpo de la petición (si existiera) y variables
+de la ruta (si existieran). A no ser que se indique lo contrario, el cuerpo de todas las peticiones debe estar en formato JSON, y debe ser
+informada la cabecera \textbf{x-access-token}
+\newline
+Como hemos descrito anteriormente todas las peticiones deberán ser securizadas, para lo que se utilizarán tokens JWT. Es imprescindible que el
+token vaya en la cabecera \textbf{x-access-token} de cada petición, o de lo contrario la petición será denegada. Al final de esta sección se explicará cómo generar los tokens de autenticación.
+\newline
+Todos los métodos de estas APIs están enumerados y definidos en un proyecto de Postman desde el cual se pueden probar.
+\newline
+\subsubsection{Sensors API}
+Esta API será consumida tanto por sensores como por actuadores, y les permitirá registrarse en el sistema y actualizar su información.
+
+\begin{itemize}
+\item \underline{Registrar dispositivo:} \textbf{POST /brimo/sensors-api/devices} En el cuerpo de la petición se debe informar un JSON con 
+la información del dispositivo que se quiere registrar: un nombre descriptivo (podrá ser modificado por el usuario más adelante), frecuencia
+de actualización de la información \footnote{si el dispositivo pasa más de los segundos informados sin actualizar información, entonces
+el HUB lo considera desconectado.}. Opcionalmente, en el caso de ser un actuador el dispositivo informará de los comandos que es capaz
+de recibir. Estos comandos vendrán en forma de array y deben contener descripción y código de comando.
+\end{itemize}
+
+\subsubsection{Interface API}
+Como hemos explicado anteriormente, esta API será consumida por la interfaz de usuario y permitirá al usuario obtener información de los dispositivos,
+gestionarlos y mandarles comandos:
+
+\begin{itemize}
+\item \underline{Listar dispositivos:} \textbf{GET /brimo/interface-api/devices} Esta petición nos devolverá información de todos los dispositivos
+dados de alta en el sistema. Se devolverá la información
+\item \underline{Sensors API:} será consumida por actuadores y sensores por igual. Permitirá a los dispositivos darse de alta en el sistema y actualizar
+periódicamente su información.
+\end{itemize}
 
 \lsection{Arquitectura del hub}
 \subsection{Módulos}
