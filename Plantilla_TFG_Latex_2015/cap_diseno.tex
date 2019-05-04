@@ -97,14 +97,24 @@ Esquema de la arquitecura a seguir:
 \label{fig:descripcion_dispositivos}
 \end{figure}
 
+\subsection{Modelo de datos}
+En esta sección se describirán los modelos de datos a utilizar. Todos los datos residirán en el HUB, que será el encargado de orquestarlos,
+organizarlos y mantenerlos.
+\newline
+
 \subsection{APIS}
 En esta sección se definirán y explicarán las diferentes APIS que se utilizarán en el sistema. Al tratarse de APIS REST, en la definición
 de cada método hay que informar: ruta del método, verbo (GET, POST, PUT, PATCH, DELETE), cuerpo de la petición (si existiera) y variables
 de la ruta (si existieran). A no ser que se indique lo contrario, el cuerpo de todas las peticiones debe estar en formato JSON, y debe ser
-informada la cabecera \textbf{x-access-token}
+informada la cabecera \textbf{Content-Type} con valor \textbf{application/json}.
 \newline
-Como hemos descrito anteriormente todas las peticiones deberán ser securizadas, para lo que se utilizarán tokens JWT. Es imprescindible que el
-token vaya en la cabecera \textbf{x-access-token} de cada petición, o de lo contrario la petición será denegada. Al final de esta sección se explicará cómo generar los tokens de autenticación.
+Como se ha descrito anteriormente todas las peticiones deberán ir securizadas, para lo que se utilizarán tokens JWT. Es imprescindible que el
+token vaya en la cabecera \textbf{x-access-token} de cada petición, o de lo contrario la petición será denegada. La generación de tokens y la gestión
+de usuarios es descrita por la API \textbf{login-api}.
+\newline
+Estas APIS funcionan como contratos entre publicador y consumidor, y es imprescindible que ambas partes consuman y publiquen de la 
+manera acordada para que el sistema completo funcione. El cambio de uno de estos contratos debe ser indicado a todas las partes para que se tenga
+en cuenta en los desarrollos futuros.
 \newline
 Todos los métodos de estas APIs están enumerados y definidos en un proyecto de Postman desde el cual se pueden probar.
 \newline
@@ -112,11 +122,42 @@ Todos los métodos de estas APIs están enumerados y definidos en un proyecto de
 Esta API será consumida tanto por sensores como por actuadores, y les permitirá registrarse en el sistema y actualizar su información.
 
 \begin{itemize}
-\item \underline{Registrar dispositivo:} \textbf{POST /brimo/sensors-api/devices} En el cuerpo de la petición se debe informar un JSON con 
-la información del dispositivo que se quiere registrar: un nombre descriptivo (podrá ser modificado por el usuario más adelante), frecuencia
-de actualización de la información \footnote{si el dispositivo pasa más de los segundos informados sin actualizar información, entonces
-el HUB lo considera desconectado.}. Opcionalmente, en el caso de ser un actuador el dispositivo informará de los comandos que es capaz
+\item \textbf{POST /brimo/sensors-api/devices}: se utilizará para el registro de dispositivos. En el cuerpo de la petición se informarán
+ un nombre descriptivo (podrá ser modificado por el usuario más adelante) y frecuencia
+de actualización de la información \footnote{ Si el dispositivo pasa más de los segundos informados sin actualizar información, entonces
+el HUB lo considera desconectado.}. Opcionalmente, en el caso de ser un actuador, el dispositivo informará de los comandos que es capaz
 de recibir. Estos comandos vendrán en forma de array y deben contener descripción y código de comando.
+Si el registro es correcto el HUB responderá con un 201 CREATED y un id de dispositivo. Este id será utilizado por el dispositivo más adelante
+para enviar información al HUB.
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+	"name": "new_devices",
+	"freq": 12,
+	"commands": [
+		{
+			"command_descr": "ENCENDER",
+			"command_code": "ON"
+		}
+	]
+}
+\end{lstlisting}
+\item \textbf{PUT /brimo/sensors-api/devices/\{device-id\}/info}: se utilizará para actualizar la información del dispositivo. El parámetro
+device-id indicará el id del dispositivo, proveniente del registro. Si la información se actualiza correctamente el HUB devolverá 200 OK.
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+	"info": "23 C"
+}
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection{Actuators API}
+Esta API será consumida por el HUB, y permitirá al HUB enviar comandos a los dispositivos.
+
+\begin{itemize}
+
+\item \textbf{POST /brimo/actuators-api/commands?command\_code=ON}: es el único método de la API. El HUB enviará esta petición para enviar
+comandos al dispositivo. El código de comando debe haber sido informado previamente en la fase de registro.
+
 \end{itemize}
 
 \subsubsection{Interface API}
@@ -124,13 +165,47 @@ Como hemos explicado anteriormente, esta API será consumida por la interfaz de 
 gestionarlos y mandarles comandos:
 
 \begin{itemize}
-\item \underline{Listar dispositivos:} \textbf{GET /brimo/interface-api/devices} Esta petición nos devolverá información de todos los dispositivos
-dados de alta en el sistema. Se devolverá la información
-\item \underline{Sensors API:} será consumida por actuadores y sensores por igual. Permitirá a los dispositivos darse de alta en el sistema y actualizar
-periódicamente su información.
+\item \textbf{GET /brimo/interface-api/devices}: esta petición nos devolverá información de todos los dispositivos
+dados de alta en el sistema. Al tratarse de una lista no se poblarán todos los campos del dispositivo, sólo los comunes: id del dispositivo, nombre,
+frecuencia, fecha de última actualización de la información, id de habitación y descripción de la habitación.
+\item \textbf{GET /brimo/interface-api/devices/\{device-id\}}: a diferencia de la petición anterior, se obtiene únicamente la información
+del dispositivo indicado con el parámetro device-id. Esta información es más completa, y además de la información de la petición anterior
+se obtiene la lista de comandos que acepta el dispositivo y su IP.
+\item \textbf{DELETE /brimo/interface-api/devices/\{device-id\}}: a través de esta petición el usuario podrá eliminar el dispositivo indicado. A partir
+de este momento el sistema denegará al dispositivo la comunicación con el mismo.
+\item \textbf{PATCH /brimo/interface-api/devices/\{device-id\}/?room-id=12\&name=sensor-habitacion}: esta petición permitirá editar la habitación
+en la que se encuentra el dispositivo y su nombre. Ambos parámetros room-id y name son opcionales, aunque al menos uno debe estar presente.
+\item \textbf{DELETE /brimo/interface-api/devices/\{device-id\}}: a través de esta petición el usuario podrá eliminar el dispositivo indicado. A partir
+de este momento el sistema denegará al dispositivo la comunicación con el mismo.
+\item \textbf{PATCH /brimo/interface-api/devices/\{device-id\}/?room-id=12\&name=sensor-habitacion}: esta petición permitirá editar la habitación
+en la que se encuentra el dispositivo y su nombre. Ambos parámetros room-id y name son opcionales, aunque al menos uno debe estar presente.
+\item \textbf{POST /brimo/interface-api/devices/\{device-id\}/commands?command-code=ON}: se utilizará para enviar comandos al dispositivo informado.
+La petición irá al HUB, que será el encargado de enviar otra solicitud al dispositivo correspondiente. Para ello, utilizará la IP del dispositivo.
+\item \textbf{GET /brimo/interface-api/devices/rooms}: devolverá la lista actual de habtiaciones registradas. Se devolverán en forma de 
+array y en cada una de ellas vendrán informadas descripción e identificador.
+\item \textbf{POST /brimo/interface-api/devices/rooms}: se utilizará por el usuario para añadir habitaciones. Únicamente es necesario informar
+el nombre de la nueva habitación. Si el registro de la habitación es correcto, entonces el HUB devolverá 201 CREATED con el id de la nueva habitación.
+
+\end{itemize}
+
+
+\subsubsection{Login API}
+Esta API será utilizada para la generación de los JWT, que necesariamente, deben ir informados en las cabeceras de cada petición. Además, gestionará
+los usuarios con acceso al sistema.
+\begin{itemize}
+\item \textbf{POST /brimo/login-api}: se deberán informar los campos usuario y contraseña para la correcta generación del token. En el caso
+de introducir credenciales inválidas el HUB devolverá 401 Unauthorized. En caso de éxito el HUB devolverá el token generado, que será válido
+para las siguientes dos horas.
+\item \textbf{POST /brimo/login-api/users}: servirá para añadir nuevos usuarios al sistema. Deberán informarse nombre de usuario y contraseña.
+\item \textbf{PUT /brimo/login-api/users}: servirá para modificar la contraseña y/o el nombre de usuario actuales. Deberán ir informados en el
+cuerpo de la petición al menos uno de los dos parámetros.
 \end{itemize}
 
 \lsection{Arquitectura del hub}
 \subsection{Módulos}
-\subsection{Bases de datos}
+\subsubsection{Enrutador}
+\subsubsection{Servicios}
+\subsubsection{Repositorios}
+\subsubsection{Middleware}
+
 
