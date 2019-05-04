@@ -9,14 +9,12 @@ En esta sección se analizarán las necesidades de nuestro sistema y los disposi
 Antes de empezar a diseñar el sistema y elegir el protocolo que se utilizará y el medio físico por el que se comunicarán 
 nuestros dispositivos es necesario analizar los dispositivos que podrán conectarse a nuestro HUB así como sus necesidades. 
 Una vez determinados los requisitos del protocolo se estudiará el medio físico de comunicación.
-\newline
-\newline
+\par
 Los principales dispositivos domóticos que hemos encontrado son: sensores de temperatura, sensores de humedad, 
 sensores de luz, sensores de movimiento, medidores de distancia, sensores de humo, sensores magnéticos, cámaras, 
-bombillas, enchufes, termostatos, motores, aires acondicionados, interruptores y altavoces.
-\newline
-Estos dispositivos pueden ser divididos en dos grupos: sensores y actuadores. 
-\newline
+bombillas, enchufes, termostatos, motores, aires acondicionados, interruptores y altavoces. Estos dispositivos
+ pueden ser divididos en dos grupos: sensores y actuadores. 
+\par
 Los sensores solamente envían determinada información a nuestro HUB (comunicación unidireccional), 
 mientras que los actuadores reciben mensajes con determinados comandos a parte de enviar información del estado 
 en el que se encuentran (comunicación bidireccional).
@@ -56,14 +54,14 @@ es necesario diseñar un sistema escalable que el día de mañana pueda funciona
 En esta sección se describirá el protocolo que se utilizará en las comunicaciones entre los dispositivos y el HUB.
 \subsection{Protocolo HTTPS}
 El protocolo elegido para la comunicación entre dispositivos, hub e interfaz es el protocolo HTTPS (Hypertext Transfer Protocol Secure).
-\newline
+\par
 Este protocolo nos da la posibilidad de implementar una API REST consumible por parte de los dispositivos y por parte de la interfaz,
 sin necesidad de utilizar diferentes protocolos para los diferentes canales.
-\newline
-Además, de estar muy estandarizadas a día de hoy, las APIs REST nos dan la capacidad de separar entre cliente y servidor y de ser capaces
-de utilizar diferentes lenguajes y tecnologías para cada lado. Es decir, podemos tener un servidor escrito en Express.js (javascript), una interfaz 
+\par
+Las APIs REST están muy estandarizadas a día de hoy y nos dan la capacidad de separar lógica y funcionalidad entre cliente y servidor y de ser capaces
+de utilizar diferentes lenguajes y tecnologías para cada lado. Es decir, podemos tener un servidor escrito en Express.js (JavaScript), una interfaz 
 gráfica utilizando Angular5 (TypeScript), y unos actuadores/sensores que utilicen CherryPy (Python).
-\newline
+\par
 Además, utilizar HTTPS nos ofrece la posibilidad de crear un canal de comunicación cifrado, de manera que la información que circula en dicho 
 canal no pueda ser descifrada por ningún intermediario ni se pueda sufrir un ataque Man-In-The-Middle*.
 \lsection{Arquitectura del sistema}
@@ -72,7 +70,7 @@ dispositivos sensores y el propio hub.
 \subsection{Arquitectura del sistema}
 Teniendo en cuenta las necesidades de nuestro sistema realizaremos una arquitectura similar a las arquitecturas de microservicios,
 en la que el hub y los actuadores serán los hosts de un servidor REST y serán capaces de recibir y procesar peticiones.
-\newline
+\par
 El hub recibirá peticiones de parte de la interfaz de usuario y de los dispositivos, y lanzará peticiones a los actuadores.
 Para ello se establecerán dos APIS publicadas por el HUB y consumibles por la interfaz de usuario y los dispositivos:
 \begin{itemize}
@@ -83,10 +81,8 @@ periódicamente su información.
 \end{itemize}
 Los actuadores, además de lanzar peticiones al hub para informar de su estado, deberán ser capaces de recibir peticiones del hub con
 diferentes comandos. Para ello se establecerá otra API que todos los dispositivos deberán seguir, para que así el HUB consuma la misma API
-en los diferentes dispositivos. Será denominada en adelante como \underline{Actuators API}.
-\newline
-Estableceremos y explicaremos estas APIs en los capítulos siguientes.
-\newline
+en los diferentes dispositivos. Será denominada en adelante como \underline{Actuators API}. Estableceremos y explicaremos estas APIs en los capítulos siguientes.
+\par
 Todas las peticiones deben ser securizadas, y debemos asegurar que ningún intruso pueda acceder y/o modificar la información de nuestro sistema.
 
 Esquema de la arquitecura a seguir:
@@ -100,24 +96,45 @@ Esquema de la arquitecura a seguir:
 \subsection{Modelo de datos}
 En esta sección se describirán los modelos de datos a utilizar. Todos los datos residirán en el HUB, que será el encargado de orquestarlos,
 organizarlos y mantenerlos.
-\newline
+\par
+Analizando las necesidades del sistema nos encontramos con cuatro entidades a definir:
+\begin{itemize}
+\item \underline{Dispositivos}: esta entidad se utilizará para almacenar la información de los actuadores/sensores. En el caso de los actuadores,
+será necesario guardar su dirección IP, para poder enviarles comandos.
+\item \underline{Comandos}: entidad para almacenar los comandos de los diferentes dispositivos. Cada comando tendrá un código y una descripción.
+\item \underline{Habitaciones}: esta entidad nace de la necesidad de organizar los dispositivos de una casa en grupos más pequeños. Una manera lógica 
+y muy común es por habitaciones, cada dispositivo podrá o no pertenecer a una habitación.
+\item \underline{Usuarios}: es necesario restringir los usuarios que pueden tener acceso a nuestro sistema. Para ello existirán distintos usuarios, pudiendo
+dar de alta nuevos usuarios y modificar los existentes. Todos los usuarios tendrán permisos en el sistema, sin existir roles de usuario. 
+\par
+Diagrama entidad-relación modelo de datos:
+\begin{figure}[H]
+\centering
+\includegraphics[width=6.00in]{images/er_brimo.png}
+\caption{Diagrama ER}
+\label{fig:diagrama-er}
+\end{figure}
 
+\end{itemize}
 \subsection{APIS}
-En esta sección se definirán y explicarán las diferentes APIS que se utilizarán en el sistema. Al tratarse de APIS REST, en la definición
-de cada método hay que informar: ruta del método, verbo (GET, POST, PUT, PATCH, DELETE), cuerpo de la petición (si existiera) y variables
-de la ruta (si existieran). A no ser que se indique lo contrario, el cuerpo de todas las peticiones debe estar en formato JSON, y debe ser
+Una vez numeradas las diferentes APIS a utilizar y definido el modelo de datos podemos comenzar a definir detalladamente cada una de las APIS.
+Al tratarse de APIS REST, en la definición
+de cada método es necesario informar: ruta del método, verbo (GET, POST, PUT, PATCH, DELETE), cuerpo de la petición (si existiera) y variables
+de la ruta (si existieran).
+\par
+A no ser que se indique lo contrario, el cuerpo de todas las peticiones debe estar en formato JSON, y debe ser
 informada la cabecera \textbf{Content-Type} con valor \textbf{application/json}.
-\newline
+\par
 Como se ha descrito anteriormente todas las peticiones deberán ir securizadas, para lo que se utilizarán tokens JWT. Es imprescindible que el
 token vaya en la cabecera \textbf{x-access-token} de cada petición, o de lo contrario la petición será denegada. La generación de tokens y la gestión
-de usuarios es descrita por la API \textbf{login-api}.
-\newline
+de usuarios es descrita por la API de login.
+\par
 Estas APIS funcionan como contratos entre publicador y consumidor, y es imprescindible que ambas partes consuman y publiquen de la 
 manera acordada para que el sistema completo funcione. El cambio de uno de estos contratos debe ser indicado a todas las partes para que se tenga
 en cuenta en los desarrollos futuros.
-\newline
+\par
 Todos los métodos de estas APIs están enumerados y definidos en un proyecto de Postman desde el cual se pueden probar.
-\newline
+\par
 \subsubsection{Sensors API}
 Esta API será consumida tanto por sensores como por actuadores, y les permitirá registrarse en el sistema y actualizar su información.
 
@@ -125,29 +142,13 @@ Esta API será consumida tanto por sensores como por actuadores, y les permitir�
 \item \textbf{POST /brimo/sensors-api/devices}: se utilizará para el registro de dispositivos. En el cuerpo de la petición se informarán
  un nombre descriptivo (podrá ser modificado por el usuario más adelante) y frecuencia
 de actualización de la información \footnote{ Si el dispositivo pasa más de los segundos informados sin actualizar información, entonces
-el HUB lo considera desconectado.}. Opcionalmente, en el caso de ser un actuador, el dispositivo informará de los comandos que es capaz
+el HUB lo considerará desconectado.}. Opcionalmente, en el caso de ser un actuador, el dispositivo informará de los comandos que es capaz
 de recibir. Estos comandos vendrán en forma de array y deben contener descripción y código de comando.
 Si el registro es correcto el HUB responderá con un 201 CREATED y un id de dispositivo. Este id será utilizado por el dispositivo más adelante
 para enviar información al HUB.
-\begin{lstlisting}[language=json,firstnumber=1]
-{
-	"name": "new_devices",
-	"freq": 12,
-	"commands": [
-		{
-			"command_descr": "ENCENDER",
-			"command_code": "ON"
-		}
-	]
-}
-\end{lstlisting}
 \item \textbf{PUT /brimo/sensors-api/devices/\{device-id\}/info}: se utilizará para actualizar la información del dispositivo. El parámetro
-device-id indicará el id del dispositivo, proveniente del registro. Si la información se actualiza correctamente el HUB devolverá 200 OK.
-\begin{lstlisting}[language=json,firstnumber=1]
-{
-	"info": "23 C"
-}
-\end{lstlisting}
+device-id indicará el id del dispositivo, proveniente del registro. Si la información se actualiza correctamente el HUB devolverá 200 OK. Una vez
+actualizada la información del dispositivo se actualizará la hora de última actualización \textbf{(lastupdate)}.
 \end{itemize}
 
 \subsubsection{Actuators API}
@@ -202,10 +203,41 @@ cuerpo de la petición al menos uno de los dos parámetros.
 \end{itemize}
 
 \lsection{Arquitectura del hub}
-\subsection{Módulos}
-\subsubsection{Enrutador}
-\subsubsection{Servicios}
-\subsubsection{Repositorios}
-\subsubsection{Middleware}
+En esta sección definiremos los módulos que nuestro HUB deberá tener y las funciones que cada uno debe cumplir. La organización por módulos, además
+de permitirnos organizar nuestro software de una manera clara, nos ayudará a añadir nuevos módulos y funcionalidad el día de mañana.
+\par
+Por ejemplo, en el módulo de servicios residirá toda la lógica interna, mientras que el enrutadors será el módulo encargado de "traducir" los datos
+provenientes de la red a un modelo de datos conocido e invocar a los diferentes servicios. De esta forma, si en un trabajo futuro queremos añadir
+dispositivos bluetooth crearemos un módulo bluetooth que reutilice nuestros servicios.
+\par
+Otro ejemplo sería la migración de nuestra base de datos a otro motor diferente; sólo necesitaríamos cambiar el módulo repositorio, el resto del sistema
+se mantendría intacto.
+\par
+Cada módulo
+debe ser independiente del resto, y la modificación interna de un módulo no debería requerir la modificación del resto de módulos.
+\subsection{Módulo enrutador}
+Este módulo será el encargado de gestionar las conexiones entrantes y de manejar la información proveniente del exterior. Para nuestro caso, que utilizaremos
+el protocolo HTTPS, en este módulo residirán las implementaciones de las APIS anteriormente definidas. Se encargará de implementar todas las rutas, encapsular
+los diferentes parámetros en objetos de nuestro modelo y enviar las respuestas y códigos necesarios tras la invocación al módulo de servicios.
+\subsection{Módulo middleware}
+A pesar de haber separado este módulo del módulo enrutador, este módulo está totalmente ligado a la utilización del protocolo HTTPS. 
+Se trata de un módulo totalmente independiente del módulo enrutador, y tendrá dos funciones principales: 
+interceptar las peticiones antes de que lleguen al
+\begin{itemize}
+\item Interceptar todas las peticiones antes de que lleguen al enrutador y validar las cabeceras y el token JWT. Si el token no es válido entonces
+se envía un 401 Unauthorized sin llegar al enrutador.
+\item Interceptar los errores que se provoquen durante la ejecución del programa (independientemente del módulo) y traducirlos a respuestas HTTPS. Para esto 
+será necesario utilizar un modelo común de error, que pueda ser interceptado por este módulo.
+\end{itemize}
+\subsection{Módulo de servicios}
+En este módulo residirá la totalidad de nuestra lógica de negocio. A este módulo ya llegan objetos modelados con nuestro modelo de datos, y es totalmente
+independiente del protocolo utilizado. Se encargará de hacer llamadas a los repositorios correspondientes y de aplicar la lógica correspondiente.
+\par
+Un ejemplo de lógica sería el registro de dispositivos; una vez recibido un dispositivo y sus correspondientes comandos y el servicio se encargará de hacer
+las comprobaciones correspondientes y guardar primeramente el dispositivo y más adelante los comandos.
+\par
+Además, el módulo de servicios transformará los posibles errores provenientes de los repositorios para encapsularlos en errores internos. Un ejemplo sería
+transformar un error 14 SQLITE_CANT_OPEN en el siguiente error: "Error 01: no se ha podido acceder a la base de datos sqlite".
+\subsection{Módulo repositorio}
 
 
