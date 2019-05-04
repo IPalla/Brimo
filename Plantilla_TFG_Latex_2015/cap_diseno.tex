@@ -237,7 +237,21 @@ Un ejemplo de lógica sería el registro de dispositivos; una vez recibido un di
 las comprobaciones correspondientes y guardar primeramente el dispositivo y más adelante los comandos.
 \par
 Además, el módulo de servicios transformará los posibles errores provenientes de los repositorios para encapsularlos en errores internos. Un ejemplo sería
-transformar un error 14 SQLITE_CANT_OPEN en el siguiente error: "Error 01: no se ha podido acceder a la base de datos sqlite".
+transformar un error 14 SQLITE\_CANT\_OPEN en el siguiente error: ``Error 01: no se ha podido acceder a la base de datos sqlite``.
+\par
+Tanto la entrada como la salida de datos de los métodos de nuestros servicios seguirán el modelo de datos del HUB.
 \subsection{Módulo repositorio}
-
-
+Este módulo contendrá toda la gestión de los datos del HUB. Será invocado por el módulo de servicios, y 
+será el encargado de gestionar las conexiones con la base de datos e insertar/obtener datos de la misma.
+Este módulo recibe datos modelados con nuestro modelo de datos, pero no necesariamente la manera de enviarlos/guardarlos tiene que coincidir con nuestro modelo 
+de datos. Sin embargo, el retorno de los métodos de este módulo si serán datos modelados.
+\par
+Si en un futuro se realizasen llamadas a terceros, una API de Google por ejemplo, las llamadas a esa API se realizarían desde este módulo.
+\subsection{Vista general}
+Por lo tanto, el diseño esquemático de la arquitectura interna del hub sería el siguiente:
+\begin{figure}[H]
+\centering
+\includegraphics[width=6.00in]{images/arquitectura_hub.png}
+\caption{Arquitectura interna del hub}
+\label{fig:arquitectura_hub}
+\end{figure}
