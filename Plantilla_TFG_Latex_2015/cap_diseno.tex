@@ -54,8 +54,9 @@ acceder a nuestra información.
 es necesario diseñar un sistema escalable que el día de mañana pueda funcionar con diferentes protocolos y dispositivos.
 \end{itemize}
 \lsection{Casos de uso}
-Para ayudarnos en la fase de toma de requisitos del sistema, es de gran utilidad un diagrama de casos de uso. En el diagrama de casos de uso se describirán
-todas las acciones que pueden ser llevadas a cabo por parte del usuario.
+Para ayudarnos a diseñar nuestro software, es de gran utilidad un diagrama de casos de uso. En el diagrama de casos de uso se describirán
+todas las acciones que pueden ser llevadas a cabo por parte del usuario. Este diagrama de casos de uso es de gran utilidad a la hora de diseñar
+la interfaz de nuestra aplicación, por lo que estas acciones serán mencionadas en el apartado \textbf{3.6 Diseño de la interfaz gráfica}.
 \subsection{Actores}
 Debido a que el usuario podrá interactuar totalmente con el sistema y podrá llevar a cabo acciones irreversibles (como borrar un dispositivo), es necesario
 que nuestro sistema cuente con funcinalidad para la gestión de usuarios basada en roles, de tal manera que los usuarios puedan llevar a cabo sólo las acciones
@@ -79,7 +80,48 @@ nuevos usuarios, cambiar el rol de los usuarios y eliminar usuarios.
 \label{fig:casos_uso}
 \end{figure}
 
-\lsection{Requisitos del sistema}
+\lsection{Diagramas de secuencia}
+Como hemos descrito anteriormente, en nuestro sistema participarán diferentes ``partes`` o subsistemas, por lo que es necesario definir la interacción entre cada
+una de ellas. Así como en el diagrama de casos de uso hemos descrito cómo el usuario interactuará con el sistema, en los diagramas de secuencia describiremos
+cómo interactuarán todos nuestros subsistemas.
+\par
+Debido a que en la mayoría de casos de uso sólo interactúan el HUB y la interfaz, se realizarán dos diagramas de casos de uso: uno común para todas las acciones
+en las que participan HUB e interfaz, y otro con los dos casos en los que es necesaria la interacción de todos nuestros subsistemas.
+\subsection{Subsistemas}
+Los subsistemas que participarán en el diagrama de secuencia son:
+\begin{itemize}
+\item{HUB}: es la parte central o bridge de nuestro sistema. Se encarga de comunicarse con los dispositivos y con la interfaz de usuario. Única ejecución, contiene también
+el servidor de datos.
+\item{Interfaz de usuario:} a través de esta interfaz el usuario podrá interactuar con el HUB y los dispositivos. Se ejecuta en el dispositivo móvil del usuario, por lo 
+que existirá una ejecución por cada usuario utilizando la aplicación.
+\item{Dispositivos:} son los encargados de informar al usuario de su estado y, en el caso de los actuadores, ejecutar una acción a partir de un comando.
+\end{itemize}
+\subsection{Diagrama de secuencia Usuario-Interfaz-Hub}
+Este flujo es el que seguirán todos los casos de uso a excepción de los casos \textbf{3.2 Enviar comando a dispositivo} y \textbf{4.1 Visualizar información dispositivo}.
+Es el flujo habitual que siguen los frameworks web que utilizan el modelo MVC:
+\par
+\begin{figure}[H]
+\centering
+\includegraphics[width=6.00in]{images/diagrama_secuencia_1.png}
+\caption{Diagrama de secuencia Usuario-Interfaz-Hub}
+\label{fig:diagrama_secuencia_1}
+\end{figure}
+
+\subsection{Diagrama secuencia Usuario-Interfaz-Hub-Dispositivos}
+En este diagrama se explican dos flujos: 
+\begin{itemize}
+\item{\textbf{4.1 Visualizar información dispositivo:}} la interfaz, por defecto, muestra la información actualizada de los dispositivos. Los dispositivos mandan su
+información al HUB de manera constante, y la interfaz se encarga de pedir el estado de los dispositivos al HUB. 
+\item{\textbf{3.2 Enviar comando a dispositivo:}} un usuario desea enviar un comando a un dispositivo. La interfaz envía el comando al HUB, que es el encargado de 
+enviárselo al dispositivo.
+\end{itemize}
+\par
+\begin{figure}[H]
+\centering
+\includegraphics[width=6.00in]{images/diagrama_secuencia_2.png}
+\caption{Diagrama de secuencia Usuario-Interfaz-Hub-Dispositivos}
+\label{fig:diagrama_secuencia_2}
+\end{figure}
 
 \lsection{Requisitos del sistema}
 \lsection{Protocolos}
