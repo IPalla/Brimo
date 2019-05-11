@@ -30,6 +30,7 @@ Agrupación de los dispositivos encontrados:
 
 Para la definición del protocolo dividiremos los dispositivos en tres tipos:
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 \item Tipo 1 (sensores): el hub sólo recibe información de los sensores. El hub no necesita saber qué tipo de información recoge (número decimal, SÍ/NO...etc), simplemente la actualiza y la muestra al usuario.
 \item Tipo 2 (actuadores): estos dispositivos envían información al HUB y son capaces de recibir comandos del tipo: ON/OFF, +/-, número decimal...etc.
 \item Tipo 3: cámaras IP. Este sensor recibirá un tratamiento especial debido a la necesidad de una comunicación constante y rápida.
@@ -38,6 +39,7 @@ Para la definición del protocolo dividiremos los dispositivos en tres tipos:
 Una vez analizadas las necesidades de los dispositivos podemos analizar las necesidades de nuestro sistema.
 Para el desarrollo de nuestro sistema necesitaremos una arquitectura que nos permita:
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 \item Comunicación bidireccional entre los dispositivos y el hub: es necesario que el hub conozca información de los dispositivos, 
 registre dispositivos y gestione dispositivos; así como también es necesario que los dispositivos puedan recibir comandos provenientes
 del hub.
@@ -51,6 +53,35 @@ acceder a nuestra información.
 \item Escalabilidad: aunque durante la realización de nuestro proyecto nos centraremos únicamente en la comunicación mediante protocolo HTTPS, 
 es necesario diseñar un sistema escalable que el día de mañana pueda funcionar con diferentes protocolos y dispositivos.
 \end{itemize}
+\lsection{Casos de uso}
+Para ayudarnos en la fase de toma de requisitos del sistema, es de gran utilidad un diagrama de casos de uso. En el diagrama de casos de uso se describirán
+todas las acciones que pueden ser llevadas a cabo por parte del usuario.
+\subsection{Actores}
+Debido a que el usuario podrá interactuar totalmente con el sistema y podrá llevar a cabo acciones irreversibles (como borrar un dispositivo), es necesario
+que nuestro sistema cuente con funcinalidad para la gestión de usuarios basada en roles, de tal manera que los usuarios puedan llevar a cabo sólo las acciones
+que su rol les permite.
+\par
+Distinguiremos tres roles de usuario, y por lo tanto, tres actores en nuestro sistema:
+\begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
+\item \textbf{Usuario lurker:} este usuario sólo es capaz de ver el estado actual de los diferentes dispositivos, así como su localización.
+\item \textbf{Usuario común:} este usuario, además de ser capaz de ver el estado de los dispositivos, puede enviar comandos a los actuadores y gestionar
+los dispositivos: elimarlos, cambiar su nombre, modificar su localización, añadir nuevas localizaciones...etc.
+\item \textbf{Usuario administrador:} la única diferencia de este usuario con el usuario común es que este usuario es capaz de gestionar usuarios: dar de alta
+nuevos usuarios, cambiar el rol de los usuarios y eliminar usuarios.
+\end{itemize}
+\subsection{Diagrama de casos de uso}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7.00in]{images/casos_uso.png}
+\caption{Diagrama de casos de uso}
+\label{fig:casos_uso}
+\end{figure}
+
+\lsection{Requisitos del sistema}
+
+\lsection{Requisitos del sistema}
 \lsection{Protocolos}
 En esta sección se describirá el protocolo que se utilizará en las comunicaciones entre los dispositivos y el HUB.
 \subsection{Protocolo HTTPS}
@@ -76,6 +107,7 @@ Esto requerirá n + 1 servidores REST, siendo n el número de dispositivos actua
 El hub recibirá peticiones de parte de la interfaz de usuario y de los dispositivos, y lanzará peticiones a los actuadores.
 Para ello se establecerán dos APIS que serán publicadas por el HUB y consumidas por la interfaz de usuario y los dispositivos:
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 \item \underline{Interface API:} será consumida por la interfaz de usuario. Se encargará de enviar la información de los dispositivos al usuario: número
  de dispositivos, información, localización, etc... Además, permitirá al usuario gestionar dispositivos y enviarles comandos.
 \item \underline{Sensors API:} será consumida por actuadores y sensores por igual. Permitirá a los dispositivos darse de alta en el sistema y actualizar
@@ -104,14 +136,15 @@ organizarlos y mantenerlos.
 \par
 Analizando las necesidades del sistema nos encontramos con cuatro entidades a definir:
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 \item \underline{Dispositivos}: esta entidad se utilizará para almacenar la información de los actuadores/sensores. En el caso de los actuadores
 será necesario guardar su dirección IP para poder enviarles comandos.
 \item \underline{Comandos}: entidad para almacenar los comandos de los diferentes dispositivos. Cada comando tendrá un código y una descripción.
 \item \underline{Habitaciones}: esta entidad nace de la necesidad de organizar los dispositivos de una casa en grupos más pequeños. Una manera lógica 
 y muy común es por habitaciones, cada dispositivo podrá o no pertenecer a una habitación.
-\item \underline{Usuarios}: es necesario restringir los usuarios que pueden tener acceso a nuestro sistema. Para ello existirán distintos usuarios, pudiendo
-dar de alta nuevos usuarios y modificar los existentes. Todos los usuarios tendrán permisos en el sistema, sin existir roles de usuario. 
-\par
+\item \underline{Usuarios}: es necesario restringir los usuarios que pueden tener acceso a nuestro sistema. Las credenciales de cada usuario se guardarán en esta tabla,
+así como su rol.
+\end{itemize}
 Diagrama entidad-relación modelo de datos:
 \begin{figure}[H]
 \centering
@@ -119,8 +152,6 @@ Diagrama entidad-relación modelo de datos:
 \caption{Diagrama ER}
 \label{fig:diagrama-er}
 \end{figure}
-
-\end{itemize}
 \subsection{APIS}
 Una vez numeradas las diferentes APIS a utilizar y definido el modelo de datos podemos comenzar a definir detalladamente cada una de las APIS.
 Al tratarse de APIS REST, en la definición
@@ -144,6 +175,7 @@ Todos los métodos de estas APIs están enumerados y definidos en un proyecto de
 Esta API será consumida tanto por sensores como por actuadores, y les permitirá registrarse en el sistema y actualizar su información.
 
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 \item \textbf{POST /brimo/sensors-api/devices}: se utilizará para el registro de dispositivos. En el cuerpo de la petición se informarán
  un nombre descriptivo (podrá ser modificado por el usuario más adelante) y frecuencia
 de actualización de la información \footnote{ Si el dispositivo pasa más de los segundos informados sin actualizar información, entonces
@@ -160,6 +192,7 @@ actualizada la información del dispositivo se actualizará la hora de última a
 Esta API será consumida por el HUB, y permitirá al HUB enviar comandos a los dispositivos.
 
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 
 \item \textbf{POST /brimo/actuators-api/commands?command\_code=ON}: es el único método de la API. El HUB enviará esta petición para enviar
 comandos al dispositivo. El código de comando debe haber sido informado previamente en la fase de registro del actuador.
@@ -171,6 +204,7 @@ Como hemos explicado anteriormente, esta API será consumida por la interfaz de 
 gestionarlos y mandarles comandos:
 
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 \item \textbf{GET /brimo/interface-api/devices}: esta petición nos devolverá información de todos los dispositivos
 dados de alta en el sistema. Al tratarse de una lista no se poblarán todos los campos del dispositivo, sólo los comunes: id del dispositivo, nombre,
 frecuencia, fecha de última actualización de la información, id de habitación y descripción de la habitación.
@@ -199,6 +233,7 @@ el nombre de la nueva habitación. Si el registro de la habitación es correcto,
 Esta API será utilizada para la generación de los JWT, que necesariamente, deben ir informados en las cabeceras de cada petición. Además, gestionará
 los usuarios con acceso al sistema.
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 \item \textbf{POST /brimo/login-api}: se deberán informar los campos usuario y contraseña para la correcta generación del token. En el caso
 de introducir credenciales inválidas el HUB devolverá 401 Unauthorized. En caso de éxito el HUB devolverá el token generado, que será válido
 para las siguientes dos horas.
@@ -206,6 +241,11 @@ para las siguientes dos horas.
 \item \textbf{PUT /brimo/login-api/users}: servirá para modificar la contraseña y/o el nombre de usuario actuales. Deberán ir informados en el
 cuerpo de la petición al menos uno de los dos parámetros.
 \end{itemize}
+
+\lsection{Diseño de la interfaz gráfica}
+
+Una vez analizados los requisitos de nuestro sistema y diseñado los flujos de datos, podemos pasar a diseñar nuestra interfaz gráfica. Antes de
+enumerar las pantallas que tendrá nuestra aplicación y definir el diagrama de actividades, debemos enumerar los requisitos funcionales 
 
 \lsection{Arquitectura del hub}
 En esta sección definiremos los módulos que nuestro HUB deberá tener y las funciones que cada uno debe cumplir. La organización por módulos, además
@@ -228,6 +268,7 @@ los diferentes parámetros en objetos de nuestro modelo y enviar las respuestas 
 A pesar de haber separado este módulo del módulo enrutador, este módulo está totalmente ligado a la utilización del protocolo HTTPS. 
 Se trata de un módulo totalmente independiente del módulo enrutador, y tendrá dos funciones principales:
 \begin{itemize}
+\setlength\itemsep{6pt plus 1pt minus 1pt}
 \item Interceptar todas las peticiones antes de que lleguen al enrutador y validar las cabeceras y el token JWT. Si el token no es válido entonces
 se envía un 401 Unauthorized sin llegar al enrutador.
 \item Interceptar los errores que se provoquen durante la ejecución del programa (independientemente del módulo) y traducirlos a respuestas HTTPS. Para esto 
