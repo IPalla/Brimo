@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 
+import { ActivatedRoute } from '@angular/router';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { AlertController, IonSelect } from '@ionic/angular';
 @Component({
   selector: 'app-device-info',
   templateUrl: './device-info.page.html',
@@ -12,6 +12,8 @@ export class DeviceInfoPage implements OnInit {
   deviceName: String;
   edit: boolean;
   constructor(private activatedRouter: ActivatedRoute, public alertController: AlertController) { }
+
+  @ViewChild('filterSelect') selectRef: IonSelect;
 
   ionViewWillEnter() {
     this.deviceId = this.activatedRouter.snapshot.paramMap.get('deviceId');

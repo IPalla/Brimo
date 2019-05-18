@@ -1,1 +1,18 @@
-<ion-content></ion-content>
+<ion-header *ngIf="1==1">
+        <ion-toolbar>
+      <img slot="start" src="../../assets/logoBrimo.png">
+          <ion-button slot="end" href="/login-page">
+            <ion-icon slot="icon-only" name="exit"></ion-icon>
+          </ion-button>
+          <ion-title>
+           Settings
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+<ion-content>
+    <ion-list>
+        <ion-item lines="none" (click)="presentNewUsername()"><ion-button class="list-button">Add new user<ion-icon slot="start" name="add-circle"></ion-icon></ion-button></ion-item>
+        <ion-item lines="none" (click)="presentChangeUsername()"><ion-button class="list-button">Change user credentials<ion-icon slot="start" name="create"></ion-icon></ion-button></ion-item>
+        <ion-item lines="none" (click)="presentFactoryReset()"><ion-button color="danger" class="list-button">Factory reset<ion-icon slot="start" name="trash"></ion-icon></ion-button></ion-item>
+    </ion-list>
+</ion-content>

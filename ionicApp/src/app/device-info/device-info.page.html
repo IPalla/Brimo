@@ -11,10 +11,18 @@
 </ion-header>
 
 <ion-content padding>
+  
+    <ion-item>
+         <ion-label style="visibility: hidden;">Select command</ion-label>
+              <ion-select value="All rooms" style="visibility: hidden;" #filterSelect>
+                <ion-select-option value="Dining room">ON</ion-select-option>
+                <ion-select-option value="Kitchen">OFF</ion-select-option>
+              </ion-select>
+      </ion-item>
   <ion-card *ngIf="!this.edit">
     <ion-card-content>
       <ion-card-header>
-        <ion-card-title>{{this.deviceName}}</ion-card-title>
+        <ion-card-title>Table light</ion-card-title>
       </ion-card-header>
       <ion-list lines="inset">
         <ion-item>
@@ -23,7 +31,7 @@
               <ion-text>Location:</ion-text>
             </ion-col>
             <ion-col size="8" class="information-text">
-              <ion-text>Dinning room</ion-text>
+              <ion-text>Kitchen</ion-text>
             </ion-col>
           </ion-row>
         </ion-item>
@@ -34,7 +42,7 @@
               <ion-text>Info:</ion-text>
             </ion-col>
             <ion-col size="8" class="information-text">
-              <ion-text>Dinning room</ion-text>
+              <ion-text>OFF</ion-text>
             </ion-col>
           </ion-row>
         </ion-item>
@@ -45,7 +53,7 @@
               <ion-text>Last update:</ion-text>
             </ion-col>
             <ion-col size="8" class="information-text">
-              <ion-text>20/10/19 00:23</ion-text>
+              <ion-text>20/03/19 00:23</ion-text>
             </ion-col>
           </ion-row>
         </ion-item>
@@ -64,21 +72,15 @@
 
       <ion-buttons>
 
-        <ion-tab-button style="width: 25%;" (click)="this.edit = !this.edit">
+        <ion-tab-button style="width: 33%;" (click)="this.edit = !this.edit">
           <ion-icon name="create"></ion-icon>
           <ion-label>Edit</ion-label>
         </ion-tab-button>
-        <ion-tab-button style="width: 25%;">
+        <ion-tab-button style="width: 33%;" (click)="this.selectRef.open()">
           <ion-icon name="send"></ion-icon>
-          <ion-label>Send command</ion-label>
+          <ion-label>Commands</ion-label>
         </ion-tab-button>
-        <ion-tab-button style="width: 25%;">
-          <ion-icon name="add-circle"></ion-icon>
-          <ion-label>
-            <p>Add schedule</p>
-          </ion-label>
-        </ion-tab-button>
-        <ion-tab-button style="width: 25%;" (click)="presentAlert()">
+        <ion-tab-button style="width: 33%;" (click)="presentAlert()">
           <ion-icon name="trash"></ion-icon>
           <ion-label>Delete</ion-label>
         </ion-tab-button>
@@ -90,7 +92,7 @@
     <ion-card-content>
         <ion-item>
           <ion-label style="color: #737373" position="fixed">Name</ion-label>
-            <ion-input style="text-align: right;"value="{{this.deviceName}}"></ion-input>
+            <ion-input style="text-align: right;"value="Table light"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="color: #737373">Location</ion-label>

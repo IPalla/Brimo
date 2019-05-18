@@ -19,11 +19,11 @@
             </ion-select>
     </ion-item>
   <ion-list lines="none">
-    <ion-item-sliding *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" >
+    <ion-item-sliding *ngFor="let i of [1,2,3,4]" >
       <ion-item href="/device-info/{{i}}/Device">
-        <ion-card [ngClass]="{'disabled' : i>8}">
+        <ion-card [ngClass]="{'disabled' : i>3}">
           <ion-card-header>
-            <ion-card-title *ngIf="i>8">
+            <ion-card-title *ngIf="i>3">
               <ion-row>
                 <ion-col size="9">
                   <ion-text>Termostate {{i}}</ion-text>
@@ -34,7 +34,7 @@
               </ion-row>
             </ion-card-title>
             
-            <ion-card-title *ngIf="!(i>8)">
+            <ion-card-title *ngIf="!(i>3)">
                     <ion-text>Termostate {{i}}</ion-text>
               </ion-card-title>
 
