@@ -2,3 +2,56 @@
 \label{chap:estadodelarte}
 
 \lsection{Introducción}
+La domótica, \textbf{\textit{domus}} (casa en latín) \textbf{\textit{autónomo}} (autogobernado en griego), se refiere a todos los sistemas
+que son capaces de automatizar un hogar (o cualquier otro edificio). La automatización del hogar nos puede ayudar con tareas del día a día,
+y tienen multitud de aplicaciones. Explicaremos algunas aplicaciones prácticas de la domótica en la siguiente sección, y se hará un breve
+resumen de la domótica en la actualidad para terminar con el capítulo.
+
+\lsection{Aplicaciones}
+
+La domótica tiene infinidad de aplicaciones que nos pueden ayudar en nuestro hogar. Los ámbitos principales en los que la domótica nos puede
+ser de gran ayuda se encuentran:
+
+\begin{itemize}
+\item\underline{Seguridad}: la domótica nos puede ayudar a mantener nuestro hogar seguro de diferentes maneras. Las alarmas, por ejemplo, automatizan 
+la acción de llamar a la policía si un intruso es detectado por un sensor. Además, las alarmas antifuego son capaces de detectar humo y hacer sonar 
+sirenas e incluso ayudar a la extinción del fuego mediante la expulsión de agua.
+\item\underline{Eficiencia energética}: los sistemas domóticos nos pueden facilitar el ahorro energético en nuestros hogares. Es una de las aplicaciones
+más utilizadas, sobre todo en grandes edificios (hoteles, fábricas, hospitales...), ya que el ahorro energético supone un ahorro económico. Como ejemplo
+de esta aplicación existen: luces encendidas a través de sensores de movimiento, termostatos automatizados que regulan la temperatura en función de la
+temperatura ambiente y la franja horaria, enchufes inteligentes que se encienden o se apagan según las necesidades pre programadas.
+\item\underline{Comodidad}: la domótica puede ahorrarnos mucho tiempo automatizando acciones cotidianas. Ejemplos de estas acciones son: apagado de luces,
+programación de alarmas, control multimedia de los dispositivos, etc.
+\item\underline{Accesibilidad}: esta aplicación de la domótica ayuda a las personas con limitaciones a tener más autonomía y seguridad en su día a día. Ya
+existen dispositivos como la teleasistencia de la Cruz Roja \cite{CruzRoja:teleasistencia}, que permiten a las personas avisar a emergencias tan sólo pulsando un botón.
+Además, existen sistemas de vigilancia remota, timbres lumínicos para personas con problemas de audición...etc.
+\end{itemize}
+
+\lsection{La domótica en la actualidad}
+
+Actualmente existen multitud de dispositivos domóticos, fabricantes y protocolos de comunicación. Cerraduras inteligentes, cámaras de seguridad, altavoces
+termostatos son algunos de los dispositivos que nos podemos encontrar en la actualidad.
+\par
+Existen instalaciones domóticas de tres tipos:
+\begin{itemize}
+\item\underline{Cableadas}: los dispositivos se comunican entre ellos por cable. Una instalación cableada requiere un gran coste, y en edificios antiguos 
+son menos factibles.
+\item\underline{Inalámbricas}: los dispositivos se comunican entre sí utilizando medios inalámbricos como WiFi, Bluetooth o infrarrojos.
+\item\underline{Mixtas}: se trata de una instalación en la que existen tanto dispositivos cableados como dispositivos inalámbricos. Debido a la diversidad
+de medios y protocolos utilizados en estas instalaciones, se requiere un ``bridge`` que gestione todas estas conexiones.
+\end{itemize}
+
+Además, existen diferentes arquitecturas de sistemas domóticos:
+\begin{itemize}
+\item\underline{Centralizados}: en estas arquitecturas existe un dispositivo central, también conocido como \textbf{bridge}, que es el encargado
+de comunicarse con el resto de dispositivos: actuadores y sensores. La ventaja de estas arquitecturas es que pueden albergar dispositivos que utilicen
+diferentes protocolos y medios físicos de comunicación (instalación mixta). Un inconveniente de este tipo de arquitectura es la necesidad del
+ propio bridge, suele suponer costes elevados y la rotura o desconexión del dispositivo central supone la caída total del sistema.
+\item\underline{Descentralizados}: en esta arquitectura existen varios dispositivos centrales. Los dispositivos se conectan a estos dispsoitivos centrales, 
+y pueden existir diferentes tipos de dispositivos centrales. Estos dispositivos son más complejos, pero también son más ampliables, ya que puede que si existe
+un número elevado de dispositivos la arquitectura centralizada puede colapsarse.
+\item\underline{Distribuidos}: en esta arquitectura todos los dispositivos son a su vez controladores. Son capaces de enviar la información al sistema y actuar 
+en consecuencia a información recibida de otros dispositivos. Estos sistemas son más fiables, ya que la desconexión de un dispositivo no significa 
+la caída del sistema, pero son más complejos y requieren más programación.
+\end{itemize}
+
