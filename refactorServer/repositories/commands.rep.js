@@ -1,7 +1,10 @@
 const sqlite3 = require('sqlite3').verbose();
 var db = null;
 
-// Create DB & insert default user
+/**
+ *  Creates DB connection. Throws error if connections fails.
+ * @param {*} database the database from settings.
+ */
 function connect(database) {
   db = database;
   db.run("CREATE TABLE IF NOT EXISTS commands (command_id INTEGER PRIMARY KEY AUTOINCREMENT, command_descr text NOT NULL, command_code TEXT NOT NULL, device_id INTEGER, CONSTRAINT fk_devices FOREIGN KEY (device_id) REFERENCES devices(device_id))", (err) => {
@@ -12,6 +15,11 @@ function connect(database) {
   });
 }
 
+/**
+ * Insert a command into commands table.
+ * @param {*} device_id the device that command refereneces.
+ * @param {*} command the command object.
+ */
 function insertCommand(device_id, command) {
   if ( device_id == null || command == null || command.command_code == null || command.command_descr == null){
     throw {
