@@ -4,7 +4,7 @@
 	// Create DB & insert default user
 	function connect(database) {
 		db = database;
-		db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, user UNIQUE,pass) ", (err) => {
+		db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, user UNIQUE,pass, role INTEGER) ", (err) => {
 			if (err) {
 				console.error(err.message);
 				throw err;
@@ -33,10 +33,11 @@
 
 	function edit(userId, userInfo) {
 	  return new Promise((resolve, reject) => {
-	    db.get("UPDATE USERS SET USER = ?1, PASS =?2  WHERE ID = ?3", {
+	    db.get("UPDATE USERS SET USER = ?1, PASS =?2, ROLE = ?3 WHERE ID = ?4", {
 	      1: userInfo.user,
 				2: userInfo.pwd,
-				3: userId
+				3: userInfo.role,
+				4: userId
 	    }, (err, rows) => {
 				if (err) {
 					reject(err);
@@ -46,8 +47,42 @@
 	  });
 	}
 
+	
+function addUser(user) {
+  return new Promise((resolve, reject)=>{
+    db.run("INSERT INTO USERS (USER, PASS, ROLE) VALUES (?1, ?2, ?3)",
+    {
+			1: user.user,
+			2: user.pass,
+			3: user.role
+    }, function (err, rows) {
+      if (err) {
+        reject(err);
+      }
+      resolve({ id: this.lastID});
+    });
+  });
+}
+
+	function deleteUser(userId) {
+		return new Promise((resolve, reject) => {
+			db.run("DELETE FROM USERS WHERE id = ?1", {
+				1: userId
+			}, function (err, rows) {
+				if (err || this.changes < 1) {
+					reject(`Error deleting user ${userId}.`);
+				}
+				resolve({
+					id: this.lastID
+				});
+			});
+		});
+	}
+
 	module.exports = {
 	  connect,
 		login,
-		edit
+		edit,
+		deleteUser,
+		addUser
 	}

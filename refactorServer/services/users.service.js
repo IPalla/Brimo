@@ -9,6 +9,10 @@ function login(user, pwd) {
   });
 }
 
+function add(user) {
+  return usersRep.addUser(user);
+}
+
 function edit(userId, userInfo) {
   return usersRep.edit(userId, userInfo).then( res => {
     if ( res != undefined ) {

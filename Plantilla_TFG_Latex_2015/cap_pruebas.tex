@@ -1,12 +1,37 @@
 \chapter{Pruebas}
 \label{chap:pruebas}
 
-\lsection{Bases de datos y protocolo}
+\lsection{Introducción}
+En este capítulo se describirán las pruebas realizadas para la verificación del correcto funcionamiento del sistema.
 
-\lsection{Sistemas de referencia}
+Antes de comenzar a describir las pruebas realizadas es necesario diferenciar entre diferentes tipos de tests:
+\begin{itemize}
+\item\underline{Tests unitarios}: este tipos de tests sólo prueban una clase o método del sistema. El resto de componentes del sistema se
+maquetan para simular su comportamiento. Este tipo de tests verifica el correcto comportamiento de una parte del sistema, no del sistema
+completo. Son muy interesantes para testear métodos complejos con mucha casuística.
+\item\underline{Tests de integración}: este tipo de tests prueban la totalidad del sistema. A diferencia que en los tests unitarios, no se
+maquetan elementos internos del sistema, se prueban todos los elementos juntos.
+\end{itemize}
+
+Durante la realización del proyecto se ha decidido hacer únicamente tests de integración, debido a los siguientes motivos:
+\begin{itemize}
+\item\underline{Nivel de verificación}: los tests unitarios por sí mismos no verifican el correcto funcionamiento del sistema, mientras que los tests de integración sí.
+\item\underline{Mantenimiento}: los tests unitarios son muy costosos de mantener. Por lo general la refactorización de un método/clase, implica la 
+modificación o realización de sus tests unitarios. Sin embargo, la refactorización de un método/clase no requiere cambiar los tests de integración. Además,
+los tests de integración nos aseguran hacer una refactorización correcta, si al hacer una refactorización los tests de integración fallan, entonces hemos 
+refactorizado mal. 
+
+\end{itemize}
+
+\lsection{Tests de integración (back-end)}
 \label{sect:sistemasreferencia}
 
-\lsection{Escenarios de pruebas}
+Para los tests de integración del back-end hemos creado una colección de Postman, donde se prueba cada uno de los métodos de la API expuesta. Además, para 
+comprobar el correcto funcionamiento de los accesos a base de datos se ha utilizado ``DB Browser for SQLite``.
+
+
+Se han hecho pruebas forzando el error, 
+
+\lsection{Tests de integración completos}
 \label{sect:escenarios_pruebas}
  
-\lsection{Experimentos del sistema completo}

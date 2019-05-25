@@ -3,39 +3,40 @@
 
 \lsection{Introducción}
 La domótica, \textbf{\textit{domus}} (casa en latín) \textbf{\textit{autónomo}} (autogobernado en griego), se refiere a todos los sistemas
-que son capaces de automatizar un hogar (o cualquier otro edificio). La automatización del hogar nos puede ayudar con tareas del día a día,
+que son capaces de automatizar un hogar (o cualquier otro edificio). Actualmente existen multitud de dispositivos domóticos, fabricantes y protocolos de comunicación.
+Cerraduras inteligentes, cámaras de seguridad, altavoces o termostatos son algunos de los dispositivos que nos podemos encontrar en la actualidad.
+\par
+La automatización del hogar nos puede ayudar con tareas del día a día,
 y tienen multitud de aplicaciones. Explicaremos algunas aplicaciones prácticas de la domótica en la siguiente sección, y se hará un breve
 resumen de la domótica en la actualidad para terminar con el capítulo.
 
 \lsection{Aplicaciones}
 
-La domótica tiene infinidad de aplicaciones que nos pueden ayudar en nuestro hogar. Los ámbitos principales en los que la domótica nos puede
-ser de gran ayuda se encuentran:
+La domótica tiene infinidad de aplicaciones que nos pueden ayudar en nuestro hogar. Algunos de los ámbitos principales en los que la domótica nos puede
+ser de gran ayuda son:
 
 \begin{itemize}
 \item\underline{Seguridad}: la domótica nos puede ayudar a mantener nuestro hogar seguro de diferentes maneras. Las alarmas, por ejemplo, automatizan 
-la acción de llamar a la policía si un intruso es detectado por un sensor. Además, las alarmas antifuego son capaces de detectar humo y hacer sonar 
+la acción de llamar a la policía si un intruso es detectado por un sensor. Además, las alarmas antifuego son capaces de detectar humo, hacer sonar 
 sirenas e incluso ayudar a la extinción del fuego mediante la expulsión de agua.
 \item\underline{Eficiencia energética}: los sistemas domóticos nos pueden facilitar el ahorro energético en nuestros hogares. Es una de las aplicaciones
-más utilizadas, sobre todo en grandes edificios (hoteles, fábricas, hospitales...), ya que el ahorro energético supone un ahorro económico. Como ejemplo
-de esta aplicación existen: luces encendidas a través de sensores de movimiento, termostatos automatizados que regulan la temperatura en función de la
-temperatura ambiente y la franja horaria, enchufes inteligentes que se encienden o se apagan según las necesidades pre programadas.
-\item\underline{Comodidad}: la domótica puede ahorrarnos mucho tiempo automatizando acciones cotidianas. Ejemplos de estas acciones son: apagado de luces,
-programación de alarmas, control multimedia de los dispositivos, etc.
+más utilizadas, sobre todo en grandes edificios (hoteles, fábricas, hospitales...), ya que el ahorro energético supone también un ahorro económico. Como ejemplos
+de esta aplicación tenemos: luces encendidas a través de sensores de movimiento, termostatos automatizados que regulan la temperatura en función de la
+temperatura ambiente y la franja horaria o enchufes inteligentes que se encienden o se apagan según las necesidades pre programadas.
+\item\underline{Comodidad}: la domótica puede ahorrarnos mucho tiempo, y hacer nuestro hogar más confortable, automatizando acciones cotidianas. Ejemplos de estas acciones son: apagado de luces,
+programación de alarmas, control de dispositivos multimedia, etc.
 \item\underline{Accesibilidad}: esta aplicación de la domótica ayuda a las personas con limitaciones a tener más autonomía y seguridad en su día a día. Ya
 existen dispositivos como la teleasistencia de la Cruz Roja \cite{CruzRoja:teleasistencia}, que permiten a las personas avisar a emergencias tan sólo pulsando un botón.
 Además, existen sistemas de vigilancia remota, timbres lumínicos para personas con problemas de audición...etc.
 \end{itemize}
 
-\lsection{La domótica en la actualidad}
+\lsection{Instalaciones domóticas}
 
-Actualmente existen multitud de dispositivos domóticos, fabricantes y protocolos de comunicación. Cerraduras inteligentes, cámaras de seguridad, altavoces
-termostatos son algunos de los dispositivos que nos podemos encontrar en la actualidad.
 \par
 Existen instalaciones domóticas de tres tipos:
 \begin{itemize}
 \item\underline{Cableadas}: los dispositivos se comunican entre ellos por cable. Una instalación cableada requiere un gran coste, y en edificios antiguos 
-son menos factibles.
+son menos factibles, sin embargo, son instalaciones más fiables.
 \item\underline{Inalámbricas}: los dispositivos se comunican entre sí utilizando medios inalámbricos como WiFi, Bluetooth o infrarrojos.
 \item\underline{Mixtas}: se trata de una instalación en la que existen tanto dispositivos cableados como dispositivos inalámbricos. Debido a la diversidad
 de medios y protocolos utilizados en estas instalaciones, se requiere un ``bridge`` que gestione todas estas conexiones.
@@ -48,10 +49,88 @@ de comunicarse con el resto de dispositivos: actuadores y sensores. La ventaja d
 diferentes protocolos y medios físicos de comunicación (instalación mixta). Un inconveniente de este tipo de arquitectura es la necesidad del
  propio bridge, suele suponer costes elevados y la rotura o desconexión del dispositivo central supone la caída total del sistema.
 \item\underline{Descentralizados}: en esta arquitectura existen varios dispositivos centrales. Los dispositivos se conectan a estos dispsoitivos centrales, 
-y pueden existir diferentes tipos de dispositivos centrales. Estos dispositivos son más complejos, pero también son más ampliables, ya que puede que si existe
+y pueden existir diferentes tipos de dispositivos centrales. Estos dispositivos son más complejos, pero también son más ampliables, ya que si existe
 un número elevado de dispositivos la arquitectura centralizada puede colapsarse.
 \item\underline{Distribuidos}: en esta arquitectura todos los dispositivos son a su vez controladores. Son capaces de enviar la información al sistema y actuar 
 en consecuencia a información recibida de otros dispositivos. Estos sistemas son más fiables, ya que la desconexión de un dispositivo no significa 
 la caída del sistema, pero son más complejos y requieren más programación.
 \end{itemize}
 
+
+\lsection{Comunicación en sistemas domóticos}
+
+Existen multitud de protocolos para la comunicación entre dispositivos domóticos, y podemos diferenciar entre protocolos para instalaciones cableadas o
+protocolos para instalaciones inalámbricas.
+
+\subsection{Comunicación por cable}
+
+Los sistemas domóticos que se comunican por cable suelen utilizar, por lo general, estos tipos de conexiones:
+
+\begin{itemize}
+\item\underline{Cable bus (KNX)}: este tipo de cable BUS es utilizado exclusivamente por los dispositivos de la instalación domótica. Estas instalaciones
+son costosas, pero son muy fiables: la instalación no está expuesta a interferencias, saturación...etc.
+\item\underline{Cable PLC(X10)}: este tipo de conexión utiliza el cableado de alimentación doméstico para la comunicación entre los dispositivos. No se requiere
+instalación adicional, ya que los hogares se fabrican con instalación eléctrica, pero este tipo de conexiones está muy expuesta a interferencias. Este tipo de conexión,
+a pesar de lo fácil que es de instalar, no es recomendable a excepción de no poder utilizar otros medios.
+\end{itemize}
+
+\subsection{Comunicación inalámbrica}
+
+En la comunicación inalámbrica, sin embargo, existen multitud de tipos de conexión. Las más concoidas son, comunicación via Wi-Fi, Bluetooth, Infrarrojos...etc.
+\par
+No obstante, existen protocolos destinados exclusivamente a la Domótica. Los más famosos, y de los que hablaremos en las siguientes subsecciones son: Insteon, 
+Z-Wave y ZigBee.
+
+\subsubsection{ZigBee}
+
+ZigBee es un mecanismo de conexión inalámbrica (como Bluetooth o WiFi) que se caracteriza por su bajo consumo energético, y está orientado a la domotización.
+Al contrario que en Bluetooth los dispositivos se encuentran “dormidos” la mayor parte del tiempo, ya que está destinado a dispositivos como bombillas, persianas, 
+detectores de humo...etc, que no requieren una comunicación constante.
+\par
+Un inconveniente de ZigBee es que no puede conectarse directamente con móviles u otros dispositivos, ya que usualmente estos dispositivos no tienen
+ esta tecnología, al contrario que con Bluetooth y WiFi. Por lo tanto, es necesario un “bridge” para poder controlar los dispositivos ZigBee desde el resto de 
+ dispositivos (móviles, tablets, ordenadores...etc).
+Otro inconveniente de la tecnología ZigBee es su velocidad de transmisión, de 250 kbits/s frente a los 32 Mb/s de Bluetooth, lo que limita a ZigBee a dispositivos
+ destinados a domótica y lo excluye de dispositivos de audio, cámaras, móviles...etc.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+                       & \textbf{Bluetooth} & \textbf{ZigBee} \\ \hline
+\textbf{Transmitiendo} & 40 mA              & 30 mA           \\ \hline
+\textbf{Reposo}        & 0,2 mA             & 3 \si{\micro}A            \\ \hline
+\end{tabular}
+\caption{Comparativa de consumo ZigBee vs Bluetooth}
+\label{tab:comparativaZigBeeBluetooth}
+\end{table}
+
+
+
+\subsubsection{Insteon}
+Insteon es una tecnología orientada a la domótica. Está orientada a objetos conectados a la corriente eléctrica y utiliza la red eléctrica y/o la radio para comunicar
+ todos los objetos.
+ \par
+La tecnología Insteon utiliza una arquitectura “peer to peer” en la que todos los dispositivos sirven como repetidores, repitiendo los mensajes recibidos, de forma que 
+cuantos más nodos haya más alta es la probabilidad de que el nodo destino reciba el mensaje.
+\par
+En la arquitectura INSTEON existen tres tipos de dispositivos:
+\begin{itemize}
+\item\underline{RF-only}: comunicación vía radio únicamente.
+\item\underline{Powerline-only}: comunicación vía PLC únicamente.
+\item\underline{Dual-Band}: comunicación PLC y radio.
+\end{itemize}
+
+\subsection{Z-Wave}
+
+Z-Wave es un protocolo para la comunicación inalámbrica orientado a la domótica. Z-Wave trabaja en el rango de frecuencias MHZ, a diferencia de Wi-Fi 
+y otros sistemas, que operan en frecuencias de 2.4 GHz. De esta manera, Z-Wave evita interferencias y hace que sus conexiones sean más fiables.
+\par
+Z-Wave está orientada al bajo consumo, y sus dispositivos pueden permanecer en modo ahorro hasta el 99\% del tiempo total. Esto hace que Z-Wave sea 
+la tecnología ideal para dispositivos que operan con batería.
+\par
+En los sistemas Z-Wave existen dos tipos de dispositivos:
+\begin{itemize}
+\item\underline{Controladores}: son los encargados de enviar comandos e inicar la comunicación con los diferentes esclavos.
+\item\underline{Esclavos}: reciben los comandos por parte de los controladores y actúan en consecuencia.
+\end{itemize}

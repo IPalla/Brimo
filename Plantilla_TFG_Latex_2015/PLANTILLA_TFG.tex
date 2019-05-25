@@ -28,7 +28,7 @@
 \usepackage{marvosym}   %Para imprimir el simbolo de \EUR euro
 %\usepackage{eurosym}   %Para imprimir el simbolo de \euro euro
 \usepackage{fancybox}   %Para tablas con bordes redondeados
-
+\usepackage{siunitx}
 
 %% Modificación de la plantilla para adaptarla a los requisitos de PFC
 \usepackage{fancyhdr}
@@ -115,7 +115,7 @@
 \newcommand{\vocalsup}{Nombre Apellido1 Apellido2}
 \newcommand{\presidente}{Nombre Apellido1 Apellido2}
 \newcommand{\presidentesup}{Nombre Apellido1 Apellido2}
-\newcommand{\fecha}{JULIO 2018}
+\newcommand{\fecha}{JULIO 2019}
 \newcommand{\carrera}{Grado en Ingeniería Informática}
 
 \begin{document}
@@ -168,11 +168,20 @@
 
 \input{glosario}
 
-\nocite{OCR:ModeloCascada,
+\nocite{
+    WikiPedia:domotica,
+    OCR:ModeloCascada,
     Express:Docs,
     HGT:SistemasDomoticos,
     MarkCoppock:UnderstandingSmartHomeProtocols,
-    DI:InstalacionesDomoticas}
+    DI:InstalacionesDomoticas,
+    AL:ZigBee,
+    Wiki:Bluetooth,
+    Inst:InstTech,
+    ED:Insteon,
+    ZW:ZWave,
+    RV:ZWave
+    }
 
 \bibliographystyle{unsrt}   %plain pero ordenado en orden de aparacicion en documento principal
 \bibliography{bibliografia}

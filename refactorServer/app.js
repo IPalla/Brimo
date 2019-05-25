@@ -19,7 +19,7 @@ var cors = require('cors');
 var dbConfig = require('./repositories/config');
 // Api init
 var app = express();
-const context = '/brimo/api'
+const context = '/brimo'
 // Database connection
 dbConfig.connect();
 //Directories & default middleware
@@ -30,11 +30,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // Routing
-app.use( context + '/login', loginRouter);
+app.use( context + '/login-api', loginRouter);
 app.use( context + '/users', jwtAuth.protected, usersRouter);
-app.use( context + '/devices', jwtAuth.protected, devicesRouter);
-app.use( context + '/locations', jwtAuth.protected, locationsRouter);
-app.use( context + '/commands', jwtAuth.protected, commandsRouter);
+app.use( context + '/interface-api/devices', jwtAuth.protected, devicesRouter);
+app.use( context + '/interface-api/locations', jwtAuth.protected, locationsRouter);
+app.use( context + '/interface-api/commands', jwtAuth.protected, commandsRouter);
 // Error control
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
