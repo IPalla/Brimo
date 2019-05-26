@@ -9,7 +9,7 @@
 				console.error(err.message);
 				throw err;
 			}
-			db.run("INSERT INTO users (user, pass) VALUES (\"root\", \"root\")", (err) => {
+			db.run("INSERT INTO users (user, pass, role) VALUES (\"root\", \"root\", 1)", (err) => {
 				if (err) {
 					console.error(err);
 				}
@@ -19,9 +19,9 @@
 
 	function login(user, pwd) {
 	  return new Promise((resolve, reject) => {
-	    db.get("SELECT * FROM users WHERE user = $user AND pass = $pass", {
-	      $pass: pwd,
-	      $user: user
+	    db.get("SELECT * FROM users WHERE user = ?1 AND pass = ?2", {
+	      1: user,
+	      2: pwd
 	    }, (err, rows) => {
 	      if (err) {
 	        reject(err);
@@ -33,16 +33,19 @@
 
 	function edit(userId, userInfo) {
 	  return new Promise((resolve, reject) => {
-	    db.get("UPDATE USERS SET USER = ?1, PASS =?2, ROLE = ?3 WHERE ID = ?4", {
-	      1: userInfo.user,
-				2: userInfo.pwd,
+	    db.run("UPDATE USERS SET USER = ?1, PASS =?2, ROLE = ?3 WHERE ID = ?4", {
+	      1: userInfo.username,
+				2: userInfo.password,
 				3: userInfo.role,
 				4: userId
-	    }, (err, rows) => {
-				if (err) {
-					reject(err);
+	    }, function (err, rows) {
+				if (err || this.changes < 1) {
+					console.log(err);
+					reject(`Error updating user info.`);
 				}
-				resolve({ id: this.lastID});
+				resolve({
+					id: this.lastID
+				});
 	    });
 	  });
 	}
@@ -52,8 +55,8 @@ function addUser(user) {
   return new Promise((resolve, reject)=>{
     db.run("INSERT INTO USERS (USER, PASS, ROLE) VALUES (?1, ?2, ?3)",
     {
-			1: user.user,
-			2: user.pass,
+			1: user.username,
+			2: user.password,
 			3: user.role
     }, function (err, rows) {
       if (err) {

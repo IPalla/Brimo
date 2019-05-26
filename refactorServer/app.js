@@ -30,8 +30,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // Routing
-app.use( context + '/login-api', loginRouter);
-app.use( context + '/users', jwtAuth.protected, usersRouter);
+app.use( context + '/login-api/login', loginRouter);
+app.use( context + '/login-api/users', jwtAuth.protected, usersRouter);
 app.use( context + '/interface-api/devices', jwtAuth.protected, devicesRouter);
 app.use( context + '/interface-api/locations', jwtAuth.protected, locationsRouter);
 app.use( context + '/interface-api/commands', jwtAuth.protected, commandsRouter);

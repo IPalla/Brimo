@@ -22,7 +22,18 @@ function edit(userId, userInfo) {
   });
 }
 
+function deleteUser(userId) {
+  return usersRep.deleteUser(userId).then( res => {
+    if ( res != undefined ) {
+      return res;
+    }
+    throw {status: 400, message: 'Error deleting user.'}
+  });
+}
+
 module.exports = {
   login,
-  edit
+  edit,
+  add,
+  deleteUser
 }
