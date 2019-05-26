@@ -38,18 +38,18 @@ router.post('/', function (req, res, next) {
 router.put('/:id', function (req, res, next) {
     let locationInfo = req.body;
     if (!locationInfo.descr) return next({status: 400, message:'Missing descr.'});
-        locationsService.editLocation( locationInfo, req.params.id ).then(response => {
+    locationsService.editLocation( locationInfo, req.params.id ).then(response => {
         res.status = 201;
         res.json(response);
     }).catch(err => next(err));
 });
 
 /**
- * Route DELETE /locations/{id}. Delete location.
+ * Route DELETE /locations/{room_id}. Delete location.
  * Return 201 if success.
  */
-router.delete('/:id', function (req, res, next) {
-  locationsService.deletelocation( req.params.id ).then(response => {
+router.delete('/:room_id', function (req, res, next) {
+  locationsService.deletelocation( req.params.room_id ).then(response => {
     res.json(response);
   }).catch(err => next(err)); 
 });

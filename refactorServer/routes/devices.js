@@ -31,7 +31,8 @@ router.post('/', function (req, res, next) {
   }
   devicesService.create( device ).then(response => {
     res.status(201);
-    res.json(response);
+    device.device_id = response.device_id;
+    res.json(device);
   }).catch(err => next(err)); 
 });
 
@@ -48,10 +49,26 @@ router.put('/:id', function (req, res, next) {
   if (info != null){
     devicesService.editInfo( info, deviceId ).then(response => {
       res.status = 200;
-      res.json(response);
+      res.json();
     }).catch(err => next(err)); 
   }
   else if (name != null || room_id != null){
+    devicesService.editNameAndLocation( room_id, name, deviceId ).then(response => {
+      res.status = 200;
+      res.json(response);
+    }).catch(err => next(err)); 
+  } else {
+    return next({status: 400, message:'Info field or new_name and new_location are required.'});
+  }
+});
+
+
+router.patch('/:id', function (req, res, next) {
+  let name = req.query.name;
+  let room_id = req.query.room_id;
+  let deviceId = req.params.id;
+  if ( deviceId == null)  return next({status: 400, message:'Missing device id.'});
+  if (name != null || room_id != null){
     devicesService.editNameAndLocation( room_id, name, deviceId ).then(response => {
       res.status = 200;
       res.json(response);
@@ -67,7 +84,7 @@ router.put('/:id', function (req, res, next) {
  */
 router.delete('/:id', function (req, res, next) {
   devicesService.deleteDevice( req.params.id ).then(response => {
-    res.json(response);
+    res.json();
   }).catch(err => next(err)); 
 });
 
@@ -82,4 +99,18 @@ router.get('/:id', function (req, res, next) {
   }).catch(err => next(err)); 
 });
 
+/**
+ * Route POST /devices/{device_id}/commands. Send command to device
+ * Return 201 if success.
+ */
+router.post('/:device_id/commands', function (req, res, next) {
+  let device_id = req.params.device_id;
+  let command_code = req.query.command_code;
+  if (command_code == null) return next({status: 400, message:'Missing command code.'});
+  devicesService.sendCommand(device_id, command_code).then(response => {
+      res.status(200);
+      res.json(response);
+    }).catch(err => next(err));
+  });
+  
 module.exports = router;

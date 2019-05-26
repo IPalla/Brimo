@@ -41,7 +41,7 @@ function create(room) {
 
 function editName(room) {
   return new Promise((resolve, reject) => {
-    db.run("UPDATE rooms SET descr = ?1 WHERE id = ?2", {
+    db.run("UPDATE rooms SET descr = ?1 WHERE room_id = ?2", {
       1: room.descr,
       2: room.room_id
     }, function (err, rows) {

@@ -19,8 +19,8 @@ function create(location) {
  * @param {Object} room descr 
  * @param {int} id 
  */
-function editLocation( location, id) {
-    location.id = id;
+function editLocation( location, room_id) {
+    location.room_id = room_id;
   return locationsRep.editName(location);
 }
 
