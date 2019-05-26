@@ -1,138 +1,576 @@
 {
-	"variables": [],
 	"info": {
-		"name": "BRIMO",
 		"_postman_id": "006c0664-c110-25f0-8c92-864c05df8304",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"name": "BRIMO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Login",
-			"request": {
-				"url": "{{SERVER_LOCAL}}/brimo/api/login",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+			"name": "Login API",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6c82679-701e-448a-996f-d8bb14f49a0c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"root\",\n\t\"password\": \"root\"\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/login-api/login",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"login-api",
+								"login"
+							]
+						}
 					},
-					{
-						"key": "dev-auth",
-						"value": "bRm",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"username\": \"root\",\n\t\"password\": \"root\"\n}"
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "Add new user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"user\",\n\t\"username\": \"user8\",\n\t\"role\": 1\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/login-api/users",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"login-api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"editeduser\",\n\t\"username\": \"editeduser\",\n\t\"role\": 2\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/login-api/users/2",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"login-api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pwd\": \"user\",\n\t\"user\": \"user\"\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/login-api/users/2",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"login-api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"name": "Delete device",
-			"request": {
-				"url": "{{SERVER_LOCAL}}/brimo/api/devices/31",
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": "",
-						"disabled": true
+			"name": "Sensors API",
+			"item": [
+				{
+					"name": "Add device",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"new_device\",\n\t\"camera\": false,\n\t\"IP\": \"localhost:3010\",\n\t\"freq\": 12,\n\t\"room\" :{\n\t\t\"id\": 1\n\t},\n\t\"commands\": [\n\t\t{\n\t\t\t\"command_descr\": \"ENCENDER\",\n\t\t\t\"command_code\": \"ON\"\n\t\t},\n\t\t{\n\t\t\t\"command_descr\": \"APAGAR\",\n\t\t\t\"command_code\": \"OFF\"\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/sensors-api/devices",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"sensors-api",
+								"devices"
+							]
+						}
 					},
-					{
-						"key": "dev-auth",
-						"value": "bRm",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "Edit device info",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/sensors-api/devices/1?info=updatedinfo",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"sensors-api",
+								"devices",
+								"1"
+							],
+							"query": [
+								{
+									"key": "info",
+									"value": "updatedinfo"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"name": "Add device",
-			"request": {
-				"url": "{{SERVER_LOCAL}}/brimo/api/devices",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+			"name": "Interface API",
+			"item": [
+				{
+					"name": "List devices",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"devices",
+								""
+							]
+						}
 					},
-					{
-						"key": "dev-auth",
-						"value": "bRm",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"new_device\",\n\t\"camera\": false,\n\t\"freq\": 12,\n\t\"commands\": [\"ON\", \"OFF\", \"+\", \"-\"]\n}"
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "Get device info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/1",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"devices",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List locations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/locations",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add room",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"descr\": \"new_room\"\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/locations",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit room",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"descr\": \"new_room_updated\"\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/locations/1",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"locations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit device",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/1?room_id=1&name=updated_device_name",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"devices",
+								"1"
+							],
+							"query": [
+								{
+									"key": "room_id",
+									"value": "1"
+								},
+								{
+									"key": "name",
+									"value": "updated_device_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete device",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/1",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"devices",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send comand to device",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{INFIN_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/1/commands?command_code=ON",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"devices",
+								"1",
+								"commands"
+							],
+							"query": [
+								{
+									"key": "command_code",
+									"value": "ON"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5e2d80a5-2110-4baa-9baf-eb243acc68aa",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "List devices",
-			"request": {
-				"url": "{{SERVER_LOCAL}}/brimo/api/devices",
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": "",
-						"disabled": true
-					},
-					{
-						"key": "dev-auth",
-						"value": "bRm",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"info\": \"23C\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Edit device info",
-			"request": {
-				"url": "{{SERVER_LOCAL}}/brimo/api/devices/1",
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					},
-					{
-						"key": "dev-auth",
-						"value": "bRm",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"info\": \"23C\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
+			"listen": "test",
+			"script": {
+				"id": "f92ddaa3-b766-454b-95e6-9d4e5938786b",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"responseShouldBeOk\"] = _.inRange(responseCode.code, 200, 299);"
+				]
+			}
 		}
 	]
 }
