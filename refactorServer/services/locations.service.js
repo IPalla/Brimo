@@ -29,7 +29,7 @@ function editLocation( location, room_id) {
  * @param {int} id 
  */
 function deletelocation(id) {
-  return locationsRep.deletelocation(id);
+  return locationsRep.deleteLocation(id);
 }
 
 module.exports = {

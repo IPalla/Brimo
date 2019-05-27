@@ -16,7 +16,9 @@
 							"script": {
 								"id": "e6c82679-701e-448a-996f-d8bb14f49a0c",
 								"exec": [
-									""
+									"pm.test(\"Login should response a valid tkn_auth token\", function() {",
+									"    pm.environment.set(\"ACCESS_TOKEN\", pm.response.json()[\"tkn_auth\"]);",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -54,6 +56,20 @@
 				},
 				{
 					"name": "Add new user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "efa33ca1-d36e-4d24-ab93-b4478315ffef",
+								"exec": [
+									"pm.test(\"Adding a user should create a new user with new id.\", function() {",
+									"    pm.environment.set(\"USER_ID\", pm.response.json()[\"id\"]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -67,12 +83,12 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}"
+								"value": "{{ACCESS_TOKEN}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"password\": \"user\",\n\t\"username\": \"user8\",\n\t\"role\": 1\n}"
+							"raw": "{\n\t\"password\": \"user\",\n\t\"username\": \"user\",\n\t\"role\": 1\n}"
 						},
 						"url": {
 							"raw": "{{SERVER_LOCAL}}/brimo/login-api/users",
@@ -103,7 +119,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}"
+								"value": "{{ACCESS_TOKEN}}"
 							}
 						],
 						"body": {
@@ -111,7 +127,7 @@
 							"raw": "{\n\t\"password\": \"editeduser\",\n\t\"username\": \"editeduser\",\n\t\"role\": 2\n}"
 						},
 						"url": {
-							"raw": "{{SERVER_LOCAL}}/brimo/login-api/users/2",
+							"raw": "{{SERVER_LOCAL}}/brimo/login-api/users/{{USER_ID}}",
 							"host": [
 								"{{SERVER_LOCAL}}"
 							],
@@ -119,7 +135,7 @@
 								"brimo",
 								"login-api",
 								"users",
-								"2"
+								"{{USER_ID}}"
 							]
 						}
 					},
@@ -140,7 +156,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}"
+								"value": "{{ACCESS_TOKEN}}"
 							}
 						],
 						"body": {
@@ -148,7 +164,7 @@
 							"raw": "{\n\t\"pwd\": \"user\",\n\t\"user\": \"user\"\n}"
 						},
 						"url": {
-							"raw": "{{SERVER_LOCAL}}/brimo/login-api/users/2",
+							"raw": "{{SERVER_LOCAL}}/brimo/login-api/users/{{USER_ID}}",
 							"host": [
 								"{{SERVER_LOCAL}}"
 							],
@@ -156,7 +172,7 @@
 								"brimo",
 								"login-api",
 								"users",
-								"2"
+								"{{USER_ID}}"
 							]
 						}
 					},
@@ -169,6 +185,20 @@
 			"item": [
 				{
 					"name": "Add device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "090ca09e-e4eb-442d-8924-30a8687c71af",
+								"exec": [
+									"pm.test(\"Adding a device should generate a new device with new device id.\", function() {",
+									"    pm.environment.set(\"DEVICE_ID\", pm.response.json()[\"device_id\"]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -182,7 +212,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],
@@ -219,12 +249,12 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{SERVER_LOCAL}}/brimo/sensors-api/devices/1?info=updatedinfo",
+							"raw": "{{SERVER_LOCAL}}/brimo/sensors-api/devices/{{DEVICE_ID}}?info=updatedinfo",
 							"host": [
 								"{{SERVER_LOCAL}}"
 							],
@@ -232,7 +262,7 @@
 								"brimo",
 								"sensors-api",
 								"devices",
-								"1"
+								"{{DEVICE_ID}}"
 							],
 							"query": [
 								{
@@ -251,6 +281,20 @@
 			"item": [
 				{
 					"name": "List devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eed92ea7-3eea-4b50-be12-28a109f91e3c",
+								"exec": [
+									"pm.test(\"Devices list should contain updated device\", function() {",
+									"   pm.expect(pm.response.json()[0][\"info\"]).to.equal(\"updatedinfo\"); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -264,7 +308,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],
@@ -285,6 +329,20 @@
 				},
 				{
 					"name": "Get device info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa7e8c11-1fae-428a-8d57-9fdead2af838",
+								"exec": [
+									"pm.test(\"Devices info should contain updated device\", function() {",
+									"   pm.expect(pm.response.json()[\"info\"]).to.equal(\"updatedinfo\"); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -298,12 +356,12 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/1",
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/{{DEVICE_ID}}",
 							"host": [
 								"{{SERVER_LOCAL}}"
 							],
@@ -311,40 +369,7 @@
 								"brimo",
 								"interface-api",
 								"devices",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "List locations",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "dev-auth",
-								"value": "bRm"
-							},
-							{
-								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/locations",
-							"host": [
-								"{{SERVER_LOCAL}}"
-							],
-							"path": [
-								"brimo",
-								"interface-api",
-								"locations"
+								"{{DEVICE_ID}}"
 							]
 						}
 					},
@@ -352,6 +377,20 @@
 				},
 				{
 					"name": "Add room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "992cac77-c331-4d52-a358-2b6c94531145",
+								"exec": [
+									"pm.test(\"Adding a room should generate a new room with new id.\", function() {",
+									"    pm.environment.set(\"ROOM_ID\", pm.response.json()[\"id\"]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -365,7 +404,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],
@@ -402,7 +441,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],
@@ -411,7 +450,7 @@
 							"raw": "{\n\t\"descr\": \"new_room_updated\"\n}"
 						},
 						"url": {
-							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/locations/1",
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/locations/{{ROOM_ID}}",
 							"host": [
 								"{{SERVER_LOCAL}}"
 							],
@@ -419,7 +458,54 @@
 								"brimo",
 								"interface-api",
 								"locations",
-								"1"
+								"{{ROOM_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List locations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4b04a36c-f9dc-48b8-be5a-6b53eb4a27eb",
+								"exec": [
+									"pm.test(\"Rooms list should contain updated room\", function() {",
+									"   pm.expect(pm.response.json()[0][\"descr\"]).to.equal(\"new_room_updated\"); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{ACCESS_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/locations",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"locations"
 							]
 						}
 					},
@@ -440,7 +526,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],
@@ -484,7 +570,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],
@@ -493,7 +579,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/1",
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/devices/{{DEVICE_ID}}",
 							"host": [
 								"{{SERVER_LOCAL}}"
 							],
@@ -501,6 +587,44 @@
 								"brimo",
 								"interface-api",
 								"devices",
+								"{{DEVICE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete location",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dev-auth",
+								"value": "bRm"
+							},
+							{
+								"key": "x-access-token",
+								"type": "text",
+								"value": "{{ACCESS_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{SERVER_LOCAL}}/brimo/interface-api/locations/1",
+							"host": [
+								"{{SERVER_LOCAL}}"
+							],
+							"path": [
+								"brimo",
+								"interface-api",
+								"locations",
 								"1"
 							]
 						}
@@ -522,7 +646,7 @@
 							},
 							{
 								"key": "x-access-token",
-								"value": "{{INFIN_TOKEN}}",
+								"value": "{{ACCESS_TOKEN}}",
 								"type": "text"
 							}
 						],

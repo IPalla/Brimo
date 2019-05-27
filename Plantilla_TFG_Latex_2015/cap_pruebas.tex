@@ -2,6 +2,7 @@
 \label{chap:pruebas}
 
 \lsection{Introducción}
+\label{sect:intropruebas}
 En este capítulo se describirán las pruebas realizadas para la verificación del correcto funcionamiento del sistema.
 
 Antes de comenzar a describir las pruebas realizadas es necesario diferenciar entre diferentes tipos de tests:
@@ -24,14 +25,42 @@ refactorizado mal.
 \end{itemize}
 
 \lsection{Tests de integración (back-end)}
-\label{sect:sistemasreferencia}
+\label{sect:pruebasback}
 
 Para los tests de integración del back-end hemos creado una colección de Postman, donde se prueba cada uno de los métodos de la API expuesta. Además, para 
 comprobar el correcto funcionamiento de los accesos a base de datos se ha utilizado ``DB Browser for SQLite``.
+\par
+Una vez probado cada método individualmente se pasa el Collection Runner de Postman \ref{Postman:CollectionRunner}, que ejecuta todos los métodos que existen en una colección. Todos los métodos
+de la colección llevan un test que verifica que el código de respuesta sea correcto, y se pueden añadir tests específicos para ese método.
+\par
+En nuestro caso se ha creado un flujo que lleva a cabo las siguientes acciones:
 
+\begin{enumerate}
+\item\underline{Login}: se hace login con el usuario por defecto y se guarda el token generado en la variable ``ACCESS_TOKEN``
+ para usarse en las peticiones posteriores.
+\item\underline{Nuevo usuario}: se añade un usuario nuevo utilizando como token el token anteriormente generado. El id del usuario creado se
+guarda en la variable ``USER_ID``.
+\item\underline{Modificación usuario}: se modifica el usuario creado, accediendo a él a través de su identificador previamente guardado.
+\item\underline{Eliminación usuario}: se elimina el usuario creado, accediendo a él a través de su identificador previamente guardado.
+\item\underline{Añadir dispositivo}: se añade un nuevo dispositivo y se guarda su identificador en la variable ``DEVICE_ID``.
+\item\underline{Actualizar info dispositivo}: se actualiza la información del dispositivo utilizando su identificador. Se envía como información
+la palabra ``updatedinfo``.
+\item\underline{Listar dispositivos}: se obtiene el listado de dispositivos. El primer dispositivo de la lista debe tener la palabra ``updatedinfo``
+en el campo información.
+\item\underline{Obtener información dispositivo}: se obtiene la información del dispositivo a través de su identificador. Esta información debe contener la información actualizada.
+\item\underline{Añadir localización nueva}: se añade una nueva localización y se salva su identificador en la variable ``ROOM_ID``.
+\item\underline{Editar localización}: se edita la localización añadida a través de su identificador, y se cambia su nombre a ``new_room_updated``.
+\item\underline{Listar localizaciones}: se obtiene el listado de localizaciones, que debe contener la localización añadida y editada anteriormente.
+\item\underline{Editar dispositivo}: se edita la localización del dispositivo añadido con la nueva localización.
+\item\underline{Eliminar dispositivo}: se elimina el dispositivo.
+\item\underline{Eliminar localización}: se elimina la localización añadida anteriormente.
+\item\underline{Enviar comando a dispositivo}: se envía un comando al dispositivo, este test debe fallar debido a que no existe ningún dispositivo real que 
+recepcione el comando.
+\end{enumerate}
 
-Se han hecho pruebas forzando el error, 
+Antes de pasar los tests de integración se debe eliminar la base de datos, y al finalizar la ejecución de los tests la base de datos debe quedar vacía, a
+excepción del usuario que se crea por defecto.
 
 \lsection{Tests de integración completos}
-\label{sect:escenarios_pruebas}
+\label{sect:intecompletos}
  
