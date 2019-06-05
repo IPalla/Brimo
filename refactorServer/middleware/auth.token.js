@@ -20,7 +20,6 @@ function protected(req, res, next) {
     if (err) return next({status: 401, message: 'Unauthorized'});
     req.verified = true;
     req.token = decoded;
-    console.log(decoded);
     next();
   });
 }

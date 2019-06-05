@@ -43,6 +43,9 @@ router.delete('/:user_id', function (req, res, next)  {
 
 router.post('/', function (req, res, next) {
   let user = req.body;
+  if (!user.password) return next({status: 400, message:'Missing password.'});
+  if (!user.username) return next({status: 400, message:'Missing username.'});
+  if (!user.role) return next({status: 400, message:'Missing role.'});
   usersService.add( user ).then(response => {
     user.id = response.id;
     res.status(201);
