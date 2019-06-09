@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 var createError = require('http-errors');
 var config = require('./config');
-const hoursToExpire = 3;
+const hoursToExpire = 1;
 
 function createToken(user) {
   console.log('creating token with data:');
@@ -9,7 +9,7 @@ function createToken(user) {
   return jwt.sign({
     user
   }, config.TOKEN_SECRET, {
-    expiresIn: 60 * 60 * 99999
+    expiresIn: 60 * 60 * hoursToExpire
   });
 };
 
