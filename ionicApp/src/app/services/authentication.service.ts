@@ -16,6 +16,7 @@ export class AuthenticationService {
   login(auth_object) {
     const url_login = this.url + '/login';
     return this.http.post(url_login, auth_object).toPromise().then( (response: any) => {
+      console.log(response);
       localStorage.setItem(token_key, response.tkn_auth);
       return true;
     }).catch( (err) => {

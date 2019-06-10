@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule, HttpRequest, HttpHeaders } from '@angular/common/http';
-import { DeviceEdit, Device } from 'src/app/models/devices.model';
+import { DeviceEdit, Device, Room } from 'src/app/models/devices.model';
 
 /**
  *
@@ -30,15 +30,29 @@ export class DevicesService {
     const urlget = this.url + '/devices';
     const headers = this.getHeaders();
     if (!headers) { throw -1; }
-    return this.http.get(urlget, headers).toPromise().then( (response: any) => {
-      this.aDevices =  Object.values(response);
-      console.log(response);
-      return this.aDevices;
-    }).catch(() => {location.reload(); return this.aDevices; });
+    return this.http.get(urlget, headers).toPromise().then( (response: Array<Device>) => {
+      return response != null ? Object.values(response) : []
+    });
   }
 
+  getRooms(){
+    const urlget = this.url + '/locations';
+    const headers = this.getHeaders();
+    if (!headers) { throw -1; }
+    return this.http.get(urlget, headers).toPromise().then( (response: Array<Room>) => {
+      return response != null ? Object.values(response) : [];
+    });
+  }
+  addRoom(roomDescr){
+    const urlget = this.url + '/locations';
+    const headers = this.getHeaders();
+    if (!headers) { throw -1; }
+    return this.http.post(urlget, {descr: roomDescr}, headers).toPromise().then();
+  }
+
+
   deleteDevice(deviceId: Number) {
-    const urldelete = this.url + '/device/' + oDevice.id;
+    const urldelete = this.url + '/device/' + deviceId;
     const headers = this.getHeaders();
     if (!headers) {  location.reload(); throw -1; }
     return this.http.delete(urldelete, headers).toPromise().catch(() => {location.reload(); });
@@ -80,7 +94,7 @@ export class DevicesService {
     const httopts = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'Authorization': token,
+        'x-access-token': token,
         'CORS': 'Access-Control-Allow-Origin',
       })
     };
