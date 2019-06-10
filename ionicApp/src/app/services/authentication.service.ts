@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from  '@angular/common/http';
 
 const token_key = 'tknBrM';
-const URLAPI = 'http://localhost:3000'; // window.location.origin;
+const URLAPI = 'https://localhost:3000/brimo/login-api'; // window.location.origin;
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,10 @@ export class AuthenticationService {
     return this.http.post(url_login, auth_object).toPromise().then( (response: any) => {
       localStorage.setItem(token_key, response.tkn_auth);
       return true;
-    }).catch( () => false);
+    }).catch( (err) => {
+      console.log(err);
+      return false;
+    });
   }
   logout() {
     localStorage.removeItem(token_key);

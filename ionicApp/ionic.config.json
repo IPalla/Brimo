@@ -1,7 +1,14 @@
 {
-  "name": "ionicApp",
+  "name": "Brimo",
   "integrations": {
     "cordova": {}
   },
-  "type": "angular"
+  "type": "angular",
+  "proxies": [
+    {
+      "path": "/",
+      "proxyUrl": "https://localhost:3000/",
+      "rejectUnauthorized": false
+    }
+  ]
 }

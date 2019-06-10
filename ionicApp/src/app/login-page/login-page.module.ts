@@ -5,7 +5,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LoginPagePage } from './login-page.page';
+import { AuthenticationService } from '../services/authentication.service';
 
 const routes: Routes = [
   {
@@ -21,6 +23,9 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [LoginPagePage]
+  declarations: [LoginPagePage],
+  providers: [
+    AuthenticationService
+  ]
 })
 export class LoginPagePageModule {}
