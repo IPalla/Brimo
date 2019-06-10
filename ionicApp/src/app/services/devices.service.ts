@@ -6,17 +6,17 @@ import { DeviceEdit, Device } from 'src/app/models/devices.model';
  *
  *
  * @export
- * @class CommunicationService
+ * @class DevicesService
  * Devices Service: this service manage data from the server's database. It gets, delete and update
  * device's data using httpclient methods (post, get and delete).
  *
  */
-const URLAPI = 'http://localhost:3000';
+const URLAPI = 'https://localhost:3000/brimo/interface-api';
 const token_key = 'tknBrM';
 @Injectable({
   providedIn: 'root'
 })
-export class CommunicationService {
+export class DevicesService {
   
   aDevices: Array<Device>;
   url: string;
@@ -36,21 +36,25 @@ export class CommunicationService {
       return this.aDevices;
     }).catch(() => {location.reload(); return this.aDevices; });
   }
-  deleteDevice(oDevice: Device) {
+
+  deleteDevice(deviceId: Number) {
     const urldelete = this.url + '/device/' + oDevice.id;
     const headers = this.getHeaders();
     if (!headers) {  location.reload(); throw -1; }
     return this.http.delete(urldelete, headers).toPromise().catch(() => {location.reload(); });
 
   }
-  editDevice(oDevice: Device) {
-    const urledit = this.url + '/device/' + oDevice.id;
-    const editObject = new DeviceEdit(oDevice.name, oDevice.location);
+
+  editDevice(deviceId: Number, newName: String, newLocation: Number) {
+    let urledit = this.url + '/device/' + deviceId + '?';
+    urledit += newName != null ? ('&name='+newName) : '';
+    urledit += newLocation != null ? ('&room_id='+newLocation) : '';
     const headers = this.getHeaders();
     if (!headers) {  location.reload(); throw -1; }
-    return this.http.put(urledit, JSON.stringify(editObject), headers).toPromise().catch(() => {location.reload(); });
+    return this.http.patch(urledit, null, headers).toPromise().catch(() => {location.reload(); });
   }
-  updateDevice(oDevice: Device) {
+
+  /*updateDevice(oDevice: Device) {
     const urlget = this.url + '/device/' + oDevice.id;
     const headers = this.getHeaders();
     if (!headers) {  location.reload(); throw -1; }
@@ -69,7 +73,7 @@ export class CommunicationService {
     if (!headers) {  location.reload(); throw -1; }
     return this.http.put(urlDevice, JSON.stringify(commandOBject), headers).toPromise().catch(() => {location.reload(); });
 
-  }
+  }*/
   getHeaders() {
     const token = localStorage.getItem(token_key);
     if (!token) { return undefined; }
