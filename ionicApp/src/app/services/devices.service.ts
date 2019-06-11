@@ -52,7 +52,7 @@ export class DevicesService {
 
 
   deleteDevice(deviceId: Number) {
-    const urldelete = this.url + '/device/' + deviceId;
+    const urldelete = this.url + '/devices/' + deviceId;
     const headers = this.getHeaders();
     if (!headers) {  location.reload(); throw -1; }
     return this.http.delete(urldelete, headers).toPromise().catch(() => {location.reload(); });

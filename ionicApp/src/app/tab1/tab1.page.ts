@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { AlertController, IonSelect } from '@ionic/angular';
 import { DevicesService } from '../services/devices.service';
 import { Device, Room } from 'src/app/models/devices.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -15,20 +16,23 @@ export class Tab1Page implements OnInit{
   aDevices: Array<Device>;
   aRooms: Array<Room>;
 
-  constructor(public alertController: AlertController, public devicesService: DevicesService){
+  constructor(public alertController: AlertController, public devicesService: DevicesService, private router: Router){
     this.aDevices = [];
     this.aRooms = [];
   }
   
   ngOnInit(): void {
-    this.updateRooms().then(()=>this.updateDevices());
+    this.updateAll();
   }
 
+  updateAll(){
+    this.updateRooms().then(()=>this.updateDevices());
+  }
   updateRooms(){
-    return this.devicesService.getRooms().then(rooms=>this.aRooms=rooms);
+    return this.devicesService.getRooms().then(rooms=>this.aRooms=rooms).catch(err=>this.checkUnauthorized(err));
   }
   updateDevices(){
-    return this.devicesService.getDevices().then(devs => {this.aDevices = devs;} );
+    return this.devicesService.getDevices().then(devs => {this.aDevices = devs;} ).catch(err=>this.checkUnauthorized(err));
   }
 
   getRoomFromRoomId(roomId: number){
@@ -37,16 +41,19 @@ export class Tab1Page implements OnInit{
   }
 
   addRoom(roomDescr: string){
-    this.devicesService.addRoom(roomDescr).then(()=>this.updateRooms());
+    this.devicesService.addRoom(roomDescr).then(()=>this.updateAll()).catch(err=>this.checkUnauthorized(err));
+  }
+  deleteDevice(deviceId: number){
+    this.devicesService.deleteDevice(deviceId).then(()=>this.updateAll()).catch(err=>this.checkUnauthorized(err));
   }
 
-  async presentDeleteAlert() {
+  async presentDeleteAlert(deviceId) {
     const alert = await this.alertController.create({
       header: 'Confirm',
       message: 'Are you sure you want to delete the device?',
       buttons: [{
         text: 'Yes',
-        handler: this.updateDevices
+        handler: ()=>this.deleteDevice(deviceId)
       },
        'Cancel']
     });
@@ -84,4 +91,12 @@ export class Tab1Page implements OnInit{
 
     await alert.present();
   }
+  checkUnauthorized(err){
+    if (err != undefined && err.status != undefined && err.status == 401){
+      console.log('Navigating to login page due to unauthorized response');
+      this.router.navigate(['login-page']);
+    }
+    else throw err;
+  }
+
 }
