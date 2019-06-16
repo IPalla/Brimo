@@ -60,7 +60,7 @@ export class DevicesService {
   }
 
   editDevice(deviceId: Number, newName: String, newLocation: Number) {
-    let urledit = this.url + '/device/' + deviceId + '?';
+    let urledit = this.url + '/devices/' + deviceId + '?';
     urledit += newName != null ? ('&name='+newName) : '';
     urledit += newLocation != null ? ('&room_id='+newLocation) : '';
     const headers = this.getHeaders();

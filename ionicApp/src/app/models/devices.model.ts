@@ -19,7 +19,7 @@ export class Command{
   constructor(public command_code: string, command_descr: string) {}
 }
 export class Room{
-  constructor(public id: number, public descr: string){}
+  constructor(public id: number, public descr: string, public room_id: number){}
 }
 export class DeviceEdit {
   constructor( public new_name: string, public new_location: string) {}

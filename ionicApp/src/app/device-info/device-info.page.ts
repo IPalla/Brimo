@@ -19,8 +19,13 @@ export class DeviceInfoPage implements OnInit {
   newName: String;
   newLocation: String;
   aRooms: Array<Room>;
+  hasCommands: boolean;
   constructor(private activatedRouter: ActivatedRoute, public alertController: AlertController, public devicesService: DevicesService, private router: Router) { 
     this.device = {};
+    this.hasCommands = false;
+    this.edit = false;
+    this.device = {};
+    this.aRooms = [];
   }
 
   @ViewChild('filterSelect') selectRef: IonSelect;
@@ -28,9 +33,6 @@ export class DeviceInfoPage implements OnInit {
   ionViewWillEnter() {
     this.deviceId = this.activatedRouter.snapshot.paramMap.get('deviceId');
     this.deviceName = this.activatedRouter.snapshot.paramMap.get('deviceName');
-    this.edit = false;
-    this.device = {};
-    this.aRooms = [];
     this.getDevice();
     this.updateRooms();
   }
@@ -43,6 +45,7 @@ export class DeviceInfoPage implements OnInit {
       this.device=resp;
       this.newName = resp.name;
       this.newLocation = (resp.room != null && resp.room.descr != null) ? resp.room.descr : "None";
+      if (resp.commands != null && resp.commands.length > 0) this.hasCommands = true;
     }).catch(err=>this.checkUnauthorized(err));
   }
 
@@ -54,6 +57,19 @@ export class DeviceInfoPage implements OnInit {
     return this.devicesService.getRooms().then(rooms=>this.aRooms=rooms).catch(err=>this.checkUnauthorized(err));
   }
 
+  editOpenDevice(){
+    let updRoomId = null;
+    let updRoom = this.aRooms.find((rm)=>{ console.log(rm.descr); console.log(rm.descr==this.newLocation); return rm.descr==this.newLocation;});
+    updRoomId = (updRoom != null) ? updRoom.room_id : null;
+    console.log('New location: ' + this.newLocation);
+    console.log('New location id: '+ updRoomId);
+    console.log(updRoom);
+    this.devicesService.editDevice(Number.parseInt(this.deviceId), this.newName, updRoomId).then( () => {
+      this.getDevice();
+      this.edit = !this.edit;
+    }).catch(err=>this.checkUnauthorized(err));
+  }
+
   async presentAlert() {
     const alert = await this.alertController.create({
       header: 'Confirm',
@@ -63,7 +79,7 @@ export class DeviceInfoPage implements OnInit {
 
     await alert.present();
   }
-  
+
   checkUnauthorized(err){
     console.log(err);
     if (err == -1 || (err != undefined && err.status != undefined && err.status == 401)){

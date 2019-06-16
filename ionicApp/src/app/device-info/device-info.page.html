@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="tabs/tab1"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      {{this.deviceName}}
+      {{this.device.name}}
     </ion-title>
   </ion-toolbar>
 
@@ -12,17 +12,16 @@
 
 <ion-content padding>
   
-    <ion-item>
+    <ion-item *ngIf="this.hasCommands">
          <ion-label style="visibility: hidden;">Select command</ion-label>
               <ion-select value="All rooms" style="visibility: hidden;" #filterSelect>
-                <ion-select-option value="Dining room">ON</ion-select-option>
-                <ion-select-option value="Kitchen">OFF</ion-select-option>
+                <ion-select-option *ngFor="let command of this.device.commands" value="{{command.command_code}}">{{command.command_descr}}</ion-select-option>
               </ion-select>
       </ion-item>
   <ion-card *ngIf="!this.edit">
     <ion-card-content>
       <ion-card-header>
-        <ion-card-title>{{this.deviceName}}</ion-card-title>
+        <ion-card-title>{{this.device.name}}</ion-card-title>
       </ion-card-header>
       <ion-list lines="inset">
         <ion-item>
@@ -76,7 +75,7 @@
           <ion-icon name="create"></ion-icon>
           <ion-label>Edit</ion-label>
         </ion-tab-button>
-        <ion-tab-button style="width: 33%;" (click)="this.selectRef.open()">
+        <ion-tab-button style="width: 33%;" *ngIf="this.hasCommands" (click)="this.selectRef.open()">
           <ion-icon name="send"></ion-icon>
           <ion-label>Commands</ion-label>
         </ion-tab-button>
@@ -102,11 +101,11 @@
             </ion-select>
         </ion-item>
       <ion-buttons>
-        <ion-tab-button style="width: 50%;">
+        <ion-tab-button style="width: 50%;" (click)="this.edit = !this.edit">
           <ion-icon name="close-circle"></ion-icon>
           <ion-label>Cancel</ion-label>
         </ion-tab-button>
-        <ion-tab-button style="width: 50%;" (click)="this.edit = !this.edit">
+        <ion-tab-button style="width: 50%;" (click)="this.editOpenDevice()">
           <ion-icon name="checkmark-circle"></ion-icon>
           <ion-label>Save</ion-label>
         </ion-tab-button>
