@@ -6,13 +6,18 @@ const rp = require('request-promise')
  * Retrieves all devices from database. Split commands_list.
  */
 function list() {
+  devices_ids = [];
   devices_list = [];
   return devicesRep.list().then(response => {
     response.forEach(device => {
-      if (device.room_id == null)
-        device.descr = null;
+      if (devices_ids.indexOf(device.device_id) == -1){
+        devices_ids.push(device.device_id);
+        if (device.room_id == null)
+          device.descr = null;
+        devices_list.push(device);
+      }
     });
-    return response;
+    return devices_list;
   });
 }
 /**
@@ -92,7 +97,9 @@ function getDevice(device_id) {
     return commandsRep.getDeviceCommands(device_id).then(commands => {
       device.commands = commands;
       return locationsRep.findById(device.room_id).then(location => {
-        device.descr = (location != null) ? location.descr : null;
+        device.room = {};
+        device.room.room_id = device.room_id;
+        device.room.descr = (location != null) ? location.descr : null;
         return device;
       });
     });

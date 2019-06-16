@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page implements OnInit{
+export class Tab1Page {
 
   @ViewChild('filterSelect') selectRef: IonSelect;
 
@@ -17,20 +17,24 @@ export class Tab1Page implements OnInit{
   aRooms: Array<Room>;
 
   constructor(public alertController: AlertController, public devicesService: DevicesService, private router: Router){
+    console.log('constructor');
     this.aDevices = [];
     this.aRooms = [];
   }
-  
-  ngOnInit(): void {
+
+  ionViewWillEnter(){
+    console.log('ionViewWillEnter');
     this.updateAll();
   }
 
   updateAll(){
     this.updateRooms().then(()=>this.updateDevices());
   }
+
   updateRooms(){
     return this.devicesService.getRooms().then(rooms=>this.aRooms=rooms).catch(err=>this.checkUnauthorized(err));
   }
+
   updateDevices(){
     return this.devicesService.getDevices().then(devs => {this.aDevices = devs;} ).catch(err=>this.checkUnauthorized(err));
   }
@@ -43,6 +47,7 @@ export class Tab1Page implements OnInit{
   addRoom(roomDescr: string){
     this.devicesService.addRoom(roomDescr).then(()=>this.updateAll()).catch(err=>this.checkUnauthorized(err));
   }
+
   deleteDevice(deviceId: number){
     this.devicesService.deleteDevice(deviceId).then(()=>this.updateAll()).catch(err=>this.checkUnauthorized(err));
   }
@@ -60,7 +65,6 @@ export class Tab1Page implements OnInit{
 
     await alert.present();
   }
-  
 
   async presentAlertPrompt() {
     const alert = await this.alertController.create({
@@ -91,12 +95,14 @@ export class Tab1Page implements OnInit{
 
     await alert.present();
   }
+  
   checkUnauthorized(err){
-    if (err != undefined && err.status != undefined && err.status == 401){
+    console.log(err);
+    if (err == -1 || (err != undefined && err.status != undefined && err.status == 401)){
       console.log('Navigating to login page due to unauthorized response');
-      this.router.navigate(['login-page']);
+      if (location.pathname != '/login-page')
+        this.router.navigate(['login-page']);
     }
-    else throw err;
   }
 
 }

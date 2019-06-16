@@ -18,7 +18,7 @@
     </ion-item>
   <ion-list lines="none">
     <ion-item-sliding *ngFor="let device of aDevices" >
-      <ion-item href="/device-info/{{device.device_id}}/Device">
+      <ion-item href="/device-info/{{device.device_id}}/{{device.name}}">
         <ion-card [ngClass]="{'disabled' : i>3}">
           <ion-card-header>
             <!--Disconn device.

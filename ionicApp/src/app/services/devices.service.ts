@@ -29,7 +29,7 @@ export class DevicesService {
   getDevices() {
     const urlget = this.url + '/devices';
     const headers = this.getHeaders();
-    if (!headers) { throw -1; }
+    if (!headers) { return Promise.reject(-1) }
     return this.http.get(urlget, headers).toPromise().then( (response: Array<Device>) => {
       return response != null ? Object.values(response) : []
     });
@@ -38,7 +38,7 @@ export class DevicesService {
   getRooms(){
     const urlget = this.url + '/locations';
     const headers = this.getHeaders();
-    if (!headers) { throw -1; }
+    if (!headers) { return Promise.reject(-1) }
     return this.http.get(urlget, headers).toPromise().then( (response: Array<Room>) => {
       return response != null ? Object.values(response) : [];
     });
@@ -46,7 +46,7 @@ export class DevicesService {
   addRoom(roomDescr){
     const urlget = this.url + '/locations';
     const headers = this.getHeaders();
-    if (!headers) { throw -1; }
+    if (!headers) { return Promise.reject(-1) }
     return this.http.post(urlget, {descr: roomDescr}, headers).toPromise().then();
   }
 
@@ -54,8 +54,8 @@ export class DevicesService {
   deleteDevice(deviceId: Number) {
     const urldelete = this.url + '/devices/' + deviceId;
     const headers = this.getHeaders();
-    if (!headers) {  location.reload(); throw -1; }
-    return this.http.delete(urldelete, headers).toPromise().catch(() => {location.reload(); });
+    if (!headers) { return Promise.reject(-1) }
+    return this.http.delete(urldelete, headers).toPromise();
 
   }
 
@@ -64,18 +64,25 @@ export class DevicesService {
     urledit += newName != null ? ('&name='+newName) : '';
     urledit += newLocation != null ? ('&room_id='+newLocation) : '';
     const headers = this.getHeaders();
-    if (!headers) {  location.reload(); throw -1; }
-    return this.http.patch(urledit, null, headers).toPromise().catch(() => {location.reload(); });
+    if (!headers) { return Promise.reject(-1) }
+    return this.http.patch(urledit, null, headers).toPromise();
+  }
+
+  getDevice(deviceId: String){
+    let urlDeviceInfo = this.url + '/devices/' + deviceId;
+    const headers = this.getHeaders();
+    if (!headers) { return Promise.reject(-1); }
+    return this.http.get(urlDeviceInfo, headers).toPromise();
   }
 
   /*updateDevice(oDevice: Device) {
     const urlget = this.url + '/device/' + oDevice.id;
     const headers = this.getHeaders();
-    if (!headers) {  location.reload(); throw -1; }
+    if (!headers) { return Promise.reject(-1) }
     return this.http.get(urlget, headers).toPromise().then( (response: any) => {
       this.aDevices =  Object.values(response);
       return this.aDevices;
-    }).catch(() => {location.reload(); });
+    });
   }
   sendCommandDevice(oDevice: Device, command: string) {
     const urlDevice = 'http://' + oDevice.IP;
@@ -84,8 +91,8 @@ export class DevicesService {
       Action: command,
     };
     const headers = this.getHeaders();
-    if (!headers) {  location.reload(); throw -1; }
-    return this.http.put(urlDevice, JSON.stringify(commandOBject), headers).toPromise().catch(() => {location.reload(); });
+    if (!headers) { return Promise.reject(-1) }
+    return this.http.put(urlDevice, JSON.stringify(commandOBject), headers).toPromise();
 
   }*/
   getHeaders() {

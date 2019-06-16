@@ -22,7 +22,7 @@
   <ion-card *ngIf="!this.edit">
     <ion-card-content>
       <ion-card-header>
-        <ion-card-title>Table light</ion-card-title>
+        <ion-card-title>{{this.deviceName}}</ion-card-title>
       </ion-card-header>
       <ion-list lines="inset">
         <ion-item>
@@ -31,7 +31,7 @@
               <ion-text>Location:</ion-text>
             </ion-col>
             <ion-col size="8" class="information-text">
-              <ion-text>Kitchen</ion-text>
+              <ion-text>{{this.device.room != null ? this.device.room.descr : ""}}</ion-text>
             </ion-col>
           </ion-row>
         </ion-item>
@@ -42,7 +42,7 @@
               <ion-text>Info:</ion-text>
             </ion-col>
             <ion-col size="8" class="information-text">
-              <ion-text>OFF</ion-text>
+              <ion-text>{{this.device.info}}</ion-text>
             </ion-col>
           </ion-row>
         </ion-item>
@@ -53,7 +53,7 @@
               <ion-text>Last update:</ion-text>
             </ion-col>
             <ion-col size="8" class="information-text">
-              <ion-text>20/03/19 00:23</ion-text>
+              <ion-text>{{this.device.lastupdate}}</ion-text>
             </ion-col>
           </ion-row>
         </ion-item>
@@ -64,7 +64,7 @@
               <ion-text>Update freq.:</ion-text>
             </ion-col>
             <ion-col size="8" class="information-text">
-              <ion-text>20s</ion-text>
+              <ion-text>{{this.device.freq}}s</ion-text>
             </ion-col>
           </ion-row>
         </ion-item>
@@ -92,15 +92,13 @@
     <ion-card-content>
         <ion-item>
           <ion-label style="color: #737373" position="fixed">Name</ion-label>
-            <ion-input style="text-align: right;"value="Table light"></ion-input>
+            <ion-input style="text-align: right;" [(ngModel)]="newName"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label style="color: #737373">Location</ion-label>
-            <ion-select value="None" okText="Okay" cancelText="Dismiss">
+            <ion-select [(ngModel)]="newLocation" okText="Okay" cancelText="Dismiss">
               <ion-select-option value="None">None</ion-select-option>
-              <ion-select-option value="Kitchen">Kitchen</ion-select-option>
-              <ion-select-option value="Dinning rom">Dinning rom</ion-select-option>
-              <ion-select-option value="Garden">Garden</ion-select-option>
+              <ion-select-option *ngFor="let room of aRooms" value="{{room.descr}}">{{room.descr}}</ion-select-option>
             </ion-select>
         </ion-item>
       <ion-buttons>
