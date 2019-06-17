@@ -14,7 +14,7 @@
   
     <ion-item *ngIf="this.hasCommands">
          <ion-label style="visibility: hidden;">Select command</ion-label>
-              <ion-select value="All rooms" style="visibility: hidden;" #filterSelect>
+              <ion-select okText="Send" value="Coom" data-live-search="true" [(ngModel)]="this.selectedCommand" style="visibility: hidden;" #filterSelect> <!-- (ionChange)="onChange($event)-->
                 <ion-select-option *ngFor="let command of this.device.commands" value="{{command.command_code}}">{{command.command_descr}}</ion-select-option>
               </ion-select>
       </ion-item>
@@ -75,11 +75,11 @@
           <ion-icon name="create"></ion-icon>
           <ion-label>Edit</ion-label>
         </ion-tab-button>
-        <ion-tab-button style="width: 33%;" *ngIf="this.hasCommands" (click)="this.selectRef.open()">
+        <ion-tab-button style="width: 33%;" *ngIf="this.hasCommands" (click)="presentCommandsAlert()">
           <ion-icon name="send"></ion-icon>
           <ion-label>Commands</ion-label>
         </ion-tab-button>
-        <ion-tab-button style="width: 33%;" (click)="presentAlert()">
+        <ion-tab-button style="width: 33%;" (click)="presentDeleteAlert()">
           <ion-icon name="trash"></ion-icon>
           <ion-label>Delete</ion-label>
         </ion-tab-button>

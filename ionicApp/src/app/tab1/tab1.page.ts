@@ -26,7 +26,7 @@ export class Tab1Page {
     console.log('ionViewWillEnter');
     this.updateAll();
   }
-
+  
   updateAll(){
     this.updateRooms().then(()=>this.updateDevices());
   }

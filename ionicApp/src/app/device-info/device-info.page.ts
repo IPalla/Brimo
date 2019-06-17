@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./device-info.page.scss'],
 })
 export class DeviceInfoPage implements OnInit {
-  device: Object;
+  device: any;
   deviceId: string;
   deviceName: String;
   edit: boolean;
@@ -20,6 +20,7 @@ export class DeviceInfoPage implements OnInit {
   newLocation: String;
   aRooms: Array<Room>;
   hasCommands: boolean;
+  selectedCommand: String;
   constructor(private activatedRouter: ActivatedRoute, public alertController: AlertController, public devicesService: DevicesService, private router: Router) { 
     this.device = {};
     this.hasCommands = false;
@@ -40,6 +41,11 @@ export class DeviceInfoPage implements OnInit {
   ngOnInit() {
   }
 
+  onChange($event){
+    console.log(this.selectedCommand);
+    this.selectedCommand = "";
+  }
+
   getDevice() {
     this.devicesService.getDevice(this.deviceId).then((resp: any)=>{
       this.device=resp;
@@ -57,6 +63,9 @@ export class DeviceInfoPage implements OnInit {
     return this.devicesService.getRooms().then(rooms=>this.aRooms=rooms).catch(err=>this.checkUnauthorized(err));
   }
 
+  sendCommand(command_descr: any){
+    console.log(command_descr);
+  }
   editOpenDevice(){
     let updRoomId = null;
     let updRoom = this.aRooms.find((rm)=>{ console.log(rm.descr); console.log(rm.descr==this.newLocation); return rm.descr==this.newLocation;});
@@ -70,11 +79,28 @@ export class DeviceInfoPage implements OnInit {
     }).catch(err=>this.checkUnauthorized(err));
   }
 
-  async presentAlert() {
+  async presentDeleteAlert() {
     const alert = await this.alertController.create({
       header: 'Confirm',
       message: 'Are you sure you want to delete the device?',
       buttons: [{ text: 'Yes', handler: ()=>this.deleteDevice(Number.parseInt(this.deviceId))}, 'Cancel']
+    });
+
+    await alert.present();
+  }
+
+  async presentCommandsAlert() {
+    let inputs = [];
+    let buttons = [];
+    this.device.commands.forEach(cmnd => {
+      inputs.push({type: 'radio', value: cmnd.command_descr, label: cmnd.command_code})
+    });
+    buttons.push({text: 'SEND', handler: (data) => this.sendCommand(data)})
+    buttons.push({text: 'Cancel', role: 'cancel'});
+    const alert = await this.alertController.create({
+      message: 'Select the command you want to send:',
+      inputs: inputs,
+      buttons: buttons
     });
 
     await alert.present();
