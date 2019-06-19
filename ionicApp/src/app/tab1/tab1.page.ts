@@ -3,6 +3,8 @@ import { AlertController, IonSelect } from '@ionic/angular';
 import { DevicesService } from '../services/devices.service';
 import { Device, Room } from 'src/app/models/devices.model';
 import { Router } from '@angular/router';
+import { Observable, of, from, interval, BehaviorSubject } from 'rxjs';
+import { map, retry, catchError, timeInterval } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tab1',
@@ -15,6 +17,9 @@ export class Tab1Page {
 
   aDevices: Array<Device>;
   aRooms: Array<Room>;
+  //timer;
+  //emitDevicesSource: BehaviorSubject<any> = new BehaviorSubject<Array<Device>>(null);
+  //emitDevicesObs: Observable<Array<Device>> = this.emitDevicesSource.asObservable();
 
   constructor(public alertController: AlertController, public devicesService: DevicesService, private router: Router){
     console.log('constructor');
@@ -26,18 +31,37 @@ export class Tab1Page {
     console.log('ionViewWillEnter');
     this.updateAll();
   }
+
+  ionViewDidEnter(){
+    console.log('ionviewDidLoad')
+    
+    //this.updateAsyncDevices();
+    //this.emitDevicesObs.subscribe(data =>{ if(this.aDevices != null) this.aDevices = data;});
+  }
   
+  ionViewDidLeave() {
+    //clearInterval(this.timer); 
+  }
+
   updateAll(){
-    this.updateRooms().then(()=>this.updateDevices());
+    return this.updateRooms().then(()=>this.updateDevices());
+  }
+
+  refreshPage(ev){
+    this.updateAll().then(()=>ev.target.complete());
   }
 
   updateRooms(){
-    return this.devicesService.getRooms().then(rooms=>this.aRooms=rooms).catch(err=>this.checkUnauthorized(err));
+    return this.devicesService.getRooms().then(rooms=>{if (rooms != this.aRooms) this.aRooms=rooms}).catch(err=>this.checkUnauthorized(err));
   }
 
   updateDevices(){
-    return this.devicesService.getDevices().then(devs => {this.aDevices = devs;} ).catch(err=>this.checkUnauthorized(err));
+    return this.devicesService.getDevices().then(devs=>this.aDevices=devs).catch(err=>this.checkUnauthorized(err));
   }
+
+  /*updateAsyncDevices() {
+    this.timer = setInterval( () => { this.devicesService.getDevices().then(data=>this.emitDevicesSource.next(data));}, 2000);
+  }*/
 
   getRoomFromRoomId(roomId: number){
     let room = this.aRooms.find(r=>r.id == roomId);
@@ -50,6 +74,11 @@ export class Tab1Page {
 
   deleteDevice(deviceId: number){
     this.devicesService.deleteDevice(deviceId).then(()=>this.updateAll()).catch(err=>this.checkUnauthorized(err));
+  }
+
+  compareDevices(newDevs: Array<Device>){
+    if (newDevs.filter(dev=>!this.aDevices.includes(dev)).length > 0)
+      this.aDevices = newDevs;
   }
 
   async presentDeleteAlert(deviceId) {

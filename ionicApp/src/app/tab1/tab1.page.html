@@ -1,23 +1,30 @@
 <ion-header *ngIf="1==1">
   <ion-toolbar>
-<img slot="start" src="../../assets/logoBrimo.png">
+    <img slot="start" src="../../assets/logoBrimo.png">
     <ion-button slot="end" href="/login-page">
       <ion-icon slot="icon-only" name="exit"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="this.refreshPage($event)">
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
   <ion-item>
-      <ion-button (click)="presentAlertPrompt()" slot="start"><ion-icon name="add-circle"></ion-icon>&nbsp;New room</ion-button>
-      <ion-button (click)="this.selectRef.open()" color="light" round slot="end"><ion-icon name="list"></ion-icon>&nbsp;{{this.selectRef.value}}</ion-button>
-      <ion-label style="visibility: hidden;">Select room</ion-label>
-            <ion-select value="All rooms" style="visibility: hidden;" #filterSelect>
-              <ion-select-option value="All rooms">All Rooms</ion-select-option>
-              <ion-select-option *ngFor="let room of aRooms" value="{{room.descr}}">{{room.descr}}</ion-select-option>
-            </ion-select>
-    </ion-item>
+    <ion-button (click)="presentAlertPrompt()" slot="start">
+      <ion-icon name="add-circle"></ion-icon>&nbsp;New room
+    </ion-button>
+    <ion-button (click)="this.selectRef.open()" color="light" round slot="end">
+      <ion-icon name="list"></ion-icon>&nbsp;{{this.selectRef.value}}
+    </ion-button>
+    <ion-label style="visibility: hidden;">Select room</ion-label>
+    <ion-select value="All rooms" style="visibility: hidden;" #filterSelect>
+      <ion-select-option value="All rooms">All Rooms</ion-select-option>
+      <ion-select-option *ngFor="let room of aRooms" value="{{room.descr}}">{{room.descr}}</ion-select-option>
+    </ion-select>
+  </ion-item>
   <ion-list lines="none">
-    <ion-item-sliding *ngFor="let device of aDevices" >
+    <ion-item-sliding *ngFor="let device of aDevices">
       <ion-item href="/device-info/{{device.device_id}}/{{device.name}}">
         <ion-card [ngClass]="{'disabled' : i>3}">
           <ion-card-header>
@@ -47,7 +54,9 @@
         </ion-card>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option (click)="presentDeleteAlert(device.device_id)"><ion-icon name="trash" slot="icon-only"></ion-icon></ion-item-option>
+        <ion-item-option (click)="presentDeleteAlert(device.device_id)">
+          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>

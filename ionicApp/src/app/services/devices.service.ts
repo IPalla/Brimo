@@ -11,7 +11,7 @@ import { DeviceEdit, Device, Room } from 'src/app/models/devices.model';
  * device's data using httpclient methods (post, get and delete).
  *
  */
-const URLAPI = 'https://localhost:3000/brimo/interface-api';
+const URLAPI = 'https://192.168.1.39:3000/brimo/interface-api';
 const token_key = 'tknBrM';
 @Injectable({
   providedIn: 'root'
@@ -73,6 +73,13 @@ export class DevicesService {
     const headers = this.getHeaders();
     if (!headers) { return Promise.reject(-1); }
     return this.http.get(urlDeviceInfo, headers).toPromise();
+  }
+
+  sendCommand(deviceId: string, command_descr: string) {
+    let url = this.url + '/devices/' + deviceId + '/commands?command_code='+command_descr;
+    const headers = this.getHeaders();
+    if (!headers) { return Promise.reject(-1) }
+    return this.http.post(url, null, headers).toPromise();
   }
 
   /*updateDevice(oDevice: Device) {

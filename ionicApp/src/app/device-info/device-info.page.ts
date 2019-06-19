@@ -63,8 +63,10 @@ export class DeviceInfoPage implements OnInit {
     return this.devicesService.getRooms().then(rooms=>this.aRooms=rooms).catch(err=>this.checkUnauthorized(err));
   }
 
-  sendCommand(command_descr: any){
-    console.log(command_descr);
+  sendCommand(command_descr: string){
+    console.log('Sending comand with code: ' + command_descr);
+    this.devicesService.sendCommand(this.deviceId, command_descr);
+
   }
   editOpenDevice(){
     let updRoomId = null;
@@ -93,7 +95,7 @@ export class DeviceInfoPage implements OnInit {
     let inputs = [];
     let buttons = [];
     this.device.commands.forEach(cmnd => {
-      inputs.push({type: 'radio', value: cmnd.command_descr, label: cmnd.command_code})
+      inputs.push({type: 'radio', value: cmnd.command_code, label: cmnd.command_descr})
     });
     buttons.push({text: 'SEND', handler: (data) => this.sendCommand(data)})
     buttons.push({text: 'Cancel', role: 'cancel'});
