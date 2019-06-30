@@ -64,7 +64,7 @@ export class Tab1Page {
   }*/
 
   getRoomFromRoomId(roomId: number){
-    let room = this.aRooms.find(r=>r.id == roomId);
+    let room = this.aRooms.find(r=>r.room_id == roomId);
     return room == undefined ? "Location not defined" : room.descr;
   }
 
@@ -81,6 +81,15 @@ export class Tab1Page {
       this.aDevices = newDevs;
   }
 
+  isOnline(aDevice) {
+    const lastupdate = Math.round(Number(new Date(aDevice.lastupdate)) / 1000);  // Seconds of lastupdate
+    const now = Math.round(Number(new Date()) / 1000);                                // Actual seconds
+    const update_frequency =  Math.round(Number(aDevice.freq ));                 // Update Frequency on seconds
+    if (now - lastupdate <= update_frequency) {
+      return true;
+    }
+    return false;
+  }
   async presentDeleteAlert(deviceId) {
     const alert = await this.alertController.create({
       header: 'Confirm',

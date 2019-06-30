@@ -26,21 +26,20 @@
   <ion-list lines="none">
     <ion-item-sliding *ngFor="let device of aDevices">
       <ion-item href="/device-info/{{device.device_id}}/{{device.name}}">
-        <ion-card [ngClass]="{'disabled' : i>3}">
+        <ion-card [ngClass]="{'disabled' : !isOnline(device)}">
           <ion-card-header>
-            <!--Disconn device.
-            <ion-card-title *ngIf="i>3">
+            <ion-card-title *ngIf="!isOnline(device)">
               <ion-row>
                 <ion-col size="9">
-                  <ion-text>Termostate {{i}}</ion-text>
+                  <ion-text>{{device.name}}</ion-text>
                 </ion-col>
                 <ion-col size="3">
                   <ion-icon name="flash-off" style="color: danger"></ion-icon>
                 </ion-col>
               </ion-row>
             </ion-card-title>
-          -->
-            <ion-text>{{device.name}}</ion-text>
+
+            <ion-text *ngIf="isOnline(device)">{{device.name}}</ion-text>
 
             <ion-row>
               <ion-col size="9">

@@ -5,6 +5,7 @@ import sys
 import cherrypy
 import utils
 import requests
+import socket
 
 
 from middleware.webtokens import *
@@ -73,7 +74,7 @@ def register(ip=''):
     data = {
         'name': 'LEDS DEVICE',
         'camera': 'false',
-        'IP': 'localhost:8080',
+        'IP': getIp() + ':8090',
         'freq': '30',
         'commands': [
             {
@@ -90,6 +91,7 @@ def register(ip=''):
     r = requests.post("https://localhost:3000/brimo/sensors-api/devices", data=json.dumps(data), headers=headers, verify = False)
     print(r.json()['device_id'])
     deviceId = r.json()['device_id']
+    
     return
 
 def updateInfo(updatedInfo):
@@ -97,9 +99,21 @@ def updateInfo(updatedInfo):
     print(r.text)
     return
 
+def getIp():
+    ip = ''
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    print(s.getsockname()[0])
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
+
 if __name__ == '__main__':
     webservice = webService()
     webservice.config = main_config()
     webservice.command = command()
     cherrypy.engine.subscribe('start', register)
+    cherrypy.config.update({'server.socket_host': getIp(),
+                        'server.socket_port': 8090,
+                       })
     cherrypy.quickstart(webservice, '/brimo/actuators-api', webservice.config.conf)
