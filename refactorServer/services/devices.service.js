@@ -121,8 +121,8 @@ function sendCommand(device_id, command_code) {
           message: 'Command \'' + command_code + '\' not found'
         };
       else{
-        console.log('http://' + device.IP + ':8081/command?command_code=' + command_code);
-        return rp.post({ uri: 'http://' + device.IP + ':8081/command?command_code=' + command_code, json: true, method: 'POST' });
+        console.log('http://' + device.IP + '/brimo/actuators-api/command?command_code=' + command_code);
+        return rp.post({ uri: 'http://' + device.IP + '/brimo/actuators-api/command?command_code=' + command_code, json: true, method: 'POST' });
       }
     });
   });

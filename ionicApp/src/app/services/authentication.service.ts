@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from  '@angular/common/http';
 
 const token_key = 'tknBrM';
-const URLAPI = 'https://192.168.1.39:3000/brimo/login-api'; // window.location.origin;
+const URLAPI = 'https://192.168.1.40:3000/brimo/login-api'; // window.location.origin;
 
 @Injectable({
   providedIn: 'root'

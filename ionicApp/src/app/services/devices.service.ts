@@ -11,7 +11,7 @@ import { DeviceEdit, Device, Room } from 'src/app/models/devices.model';
  * device's data using httpclient methods (post, get and delete).
  *
  */
-const URLAPI = 'https://192.168.1.39:3000/brimo/interface-api';
+const URLAPI = 'https://192.168.1.40:3000/brimo/interface-api';
 const token_key = 'tknBrM';
 @Injectable({
   providedIn: 'root'
