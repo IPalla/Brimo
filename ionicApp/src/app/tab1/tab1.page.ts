@@ -57,7 +57,11 @@ export class Tab1Page {
 
   updateDevices(){
     return this.devicesService.getDevices().then(devs=>{
-      devs.sort((dev1, dev2) => Math.round(Number(new Date(dev2.lastupdate)) / 1000) - Math.round(Number(new Date(dev1.lastupdate)) / 1000)) 
+      devs.sort((dev1, dev2) => {
+        dev1.isOnline = this.isOnline(dev1);
+        dev2.isOnline = this.isOnline(dev2);
+        console.log(dev1.isOnline);
+        return Math.round(Number(new Date(dev2.lastupdate)) / 1000) - Math.round(Number(new Date(dev1.lastupdate)) / 1000)}) 
       this.aDevices=devs;
     }).catch(err=>this.checkUnauthorized(err));
   }

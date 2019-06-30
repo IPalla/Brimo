@@ -26,9 +26,9 @@
   <ion-list lines="none">
     <ion-item-sliding *ngFor="let device of aDevices">
       <ion-item href="/device-info/{{device.device_id}}/{{device.name}}">
-        <ion-card [ngClass]="{'disabled' : !isOnline(device)}">
+        <ion-card [ngClass]="{'disabled' : !device.isOnline}">
           <ion-card-header>
-            <ion-card-title *ngIf="!isOnline(device)">
+            <ion-card-title *ngIf="!device.isOnline">
               <ion-row>
                 <ion-col size="9">
                   <ion-text>{{device.name}}</ion-text>
@@ -38,7 +38,7 @@
                 </ion-col>
               </ion-row>
             </ion-card-title>
-            <ion-card-title *ngIf="isOnline(device)">
+            <ion-card-title *ngIf="device.isOnline">
               <ion-row>
                 <ion-text>{{device.name}}</ion-text>
               </ion-row>
