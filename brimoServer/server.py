@@ -6,6 +6,7 @@ import cherrypy
 import utils
 import requests
 import socket
+import threading
 
 
 from middleware.webtokens import *
@@ -17,6 +18,19 @@ passWord = 'root'
 token = ''
 deviceId = ''
 headers = {'content-type': 'application/json'}
+
+class Timer(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.event = threading.Event()
+
+    def run(self):
+        while not self.event.is_set():                
+            updateInfo("KEPACHA")  
+            self.event.wait(30)
+
+    def stop(self):
+        self.event.set()
 
 
 class webService(object):
@@ -91,11 +105,13 @@ def register(ip=''):
     r = requests.post("https://localhost:3000/brimo/sensors-api/devices", data=json.dumps(data), headers=headers, verify = False)
     print(r.json()['device_id'])
     deviceId = r.json()['device_id']
-    
+    tmr = Timer()
+    tmr.start()
     return
 
 def updateInfo(updatedInfo):
-    r = requests.get("https://localhost:3000/brimo/interface-api/locations", headers=headers, verify = False)
+    global deviceId
+    r = requests.put("https://localhost:3000/brimo/sensors-api/devices/" + str(deviceId) + "?info=" + str(updatedInfo), headers=headers, verify = False)
     print(r.text)
     return
 

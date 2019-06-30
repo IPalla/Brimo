@@ -38,8 +38,11 @@
                 </ion-col>
               </ion-row>
             </ion-card-title>
-
-            <ion-text *ngIf="isOnline(device)">{{device.name}}</ion-text>
+            <ion-card-title *ngIf="isOnline(device)">
+              <ion-row>
+                <ion-text>{{device.name}}</ion-text>
+              </ion-row>
+            </ion-card-title>
 
             <ion-row>
               <ion-col size="9">
