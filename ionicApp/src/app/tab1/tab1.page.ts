@@ -5,7 +5,6 @@ import { Device, Room } from 'src/app/models/devices.model';
 import { Router } from '@angular/router';
 import { Observable, of, from, interval, BehaviorSubject } from 'rxjs';
 import { map, retry, catchError, timeInterval } from 'rxjs/operators';
-import {List} from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -15,10 +14,12 @@ import {List} from '@ionic/angular';
 export class Tab1Page {
 
   @ViewChild('filterSelect') selectRef: IonSelect;
-  @ViewChild('slidingList') slidingList: List;
+  @ViewChild('slidingList') slidingList: any;
 
   aDevices: Array<Device>;
   aRooms: Array<Room>;
+  filteredDevices: Array<Device>;
+  roomToFilter: string;
   //timer;
   //emitDevicesSource: BehaviorSubject<any> = new BehaviorSubject<Array<Device>>(null);
   //emitDevicesObs: Observable<Array<Device>> = this.emitDevicesSource.asObservable();
@@ -27,6 +28,7 @@ export class Tab1Page {
     console.log('constructor');
     this.aDevices = [];
     this.aRooms = [];
+    this.filteredDevices = [];
   }
 
   ionViewWillEnter(){
@@ -53,7 +55,7 @@ export class Tab1Page {
   }
 
   updateRooms(){
-    return this.devicesService.getRooms().then(rooms=>{if (rooms != this.aRooms) this.aRooms=rooms}).catch(err=>this.checkUnauthorized(err));
+    return this.devicesService.getRooms().then(rooms=>{if (rooms != this.aRooms) this.aRooms=rooms; this.filterRooms()}).catch(err=>this.checkUnauthorized(err));
   }
 
   updateDevices(){
@@ -62,6 +64,7 @@ export class Tab1Page {
         return Math.round(Number(new Date(dev2.lastupdate)) / 1000) - Math.round(Number(new Date(dev1.lastupdate)) / 1000)});
       devs.map(dev=>dev.isOnline = this.isOnline(dev)); 
       this.aDevices=devs;
+      this.filterRooms();
     }).catch(err=>this.checkUnauthorized(err));
   }
 
@@ -150,4 +153,11 @@ export class Tab1Page {
     }
   }
 
+  filterRooms(){
+    console.log(this.aDevices);
+    console.log(this.roomToFilter);
+    this.filteredDevices = this.aDevices.filter((dev: Device) => {
+      return this.roomToFilter == "All rooms" || this.roomToFilter == undefined || (this.getRoomFromRoomId(dev.room_id) == this.roomToFilter);
+    });
+  }
 }

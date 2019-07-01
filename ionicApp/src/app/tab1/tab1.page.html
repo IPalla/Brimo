@@ -18,13 +18,13 @@
       <ion-icon name="list"></ion-icon>&nbsp;{{this.selectRef.value}}
     </ion-button>
     <ion-label style="visibility: hidden;">Select room</ion-label>
-    <ion-select value="All rooms" style="visibility: hidden;" #filterSelect>
+    <ion-select value="All rooms" style="visibility: hidden;" [(ngModel)]="roomToFilter" #filterSelect (ionChange)="filterRooms()">
       <ion-select-option value="All rooms">All Rooms</ion-select-option>
       <ion-select-option *ngFor="let room of aRooms" value="{{room.descr}}">{{room.descr}}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-list lines="none" #slidingList>
-    <ion-item-sliding *ngFor="let device of aDevices">
+    <ion-item-sliding *ngFor="let device of filteredDevices">
       <ion-item href="/device-info/{{device.device_id}}/{{device.name}}">
         <ion-card [ngClass]="{'disabled' : !device.isOnline}">
           <ion-card-header>

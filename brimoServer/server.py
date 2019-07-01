@@ -37,7 +37,7 @@ class Timer(threading.Thread):
     def run(self):
         while not self.event.is_set():                
             updateInfo(status)  
-            self.event.wait(30)
+            self.event.wait(15)
 
     def stop(self):
         self.event.set()
@@ -110,7 +110,7 @@ def register(ip=''):
         'name': 'LEDS DEVICE',
         'camera': 'false',
         'IP': getIp() + ':8090',
-        'freq': '30',
+        'freq': '20',
         'commands': [
             {
 			'command_descr': 'GREEN ON',
@@ -142,14 +142,14 @@ def updateInfo(updatedInfo):
     global status
     status = updatedInfo
     r = requests.put("https://192.168.1.40:3000/brimo/sensors-api/devices/" + str(deviceId) + "?info=" + str(updatedInfo), headers=headers, verify = False)
-    print(r.text)
+    if r.status_code == 401:
+        login()
     return
 
 def getIp():
     ip = ''
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
-    print(s.getsockname()[0])
     ip = s.getsockname()[0]
     s.close()
     return ip

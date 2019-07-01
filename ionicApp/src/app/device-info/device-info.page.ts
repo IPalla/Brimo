@@ -65,7 +65,7 @@ export class DeviceInfoPage implements OnInit {
 
   sendCommand(command_descr: string){
     console.log('Sending comand with code: ' + command_descr);
-    this.devicesService.sendCommand(this.deviceId, command_descr);
+    this.devicesService.sendCommand(this.deviceId, command_descr).then(res=>this.getDevice());
 
   }
   editOpenDevice(){

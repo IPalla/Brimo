@@ -9,12 +9,13 @@ interface DeviceIf {
   camera: boolean;
   IP: string;
   isOnline: boolean;
+  room_id: number;
 }
 
 export class Device implements DeviceIf {
   constructor(public device_id: number, public name: string, public freq: number,
     public info: string, public commands: [Command], public room: Room, public lastupdate: string,
-    public camera: boolean, public IP: string, public isOnline: boolean) {}
+    public camera: boolean, public IP: string, public isOnline: boolean, public room_id: number) {}
 }
 export class Command{
   constructor(public command_code: string, command_descr: string) {}
