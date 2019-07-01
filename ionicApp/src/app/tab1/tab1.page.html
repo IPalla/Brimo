@@ -23,7 +23,7 @@
       <ion-select-option *ngFor="let room of aRooms" value="{{room.descr}}">{{room.descr}}</ion-select-option>
     </ion-select>
   </ion-item>
-  <ion-list lines="none">
+  <ion-list lines="none" #slidingList>
     <ion-item-sliding *ngFor="let device of aDevices">
       <ion-item href="/device-info/{{device.device_id}}/{{device.name}}">
         <ion-card [ngClass]="{'disabled' : !device.isOnline}">
@@ -49,7 +49,7 @@
                 <ion-card-subtitle side="start">{{getRoomFromRoomId(device.room_id)}}</ion-card-subtitle>
               </ion-col>
               <ion-col size="3">
-                <ion-card-subtitle side="end">25ºC</ion-card-subtitle>
+                <ion-card-subtitle side="end">{{device.info}}</ion-card-subtitle>
               </ion-col>
             </ion-row>
           </ion-card-header>

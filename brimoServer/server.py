@@ -7,16 +7,26 @@ import utils
 import requests
 import socket
 import threading
-
+import RPi.GPIO as GPIO
+import time
 
 from middleware.webtokens import *
 from config.config import *
 from model.model import *
 
+
+GPIO.setmode(GPIO.BCM)
+
+RED = 21
+GREEN = 20
+BLUE = 22
+
+
 userName = 'root'
 passWord = 'root'
 token = ''
 deviceId = ''
+status = 'OFF'
 headers = {'content-type': 'application/json'}
 
 class Timer(threading.Thread):
@@ -26,7 +36,7 @@ class Timer(threading.Thread):
 
     def run(self):
         while not self.event.is_set():                
-            updateInfo("KEPACHA")  
+            updateInfo(status)  
             self.event.wait(30)
 
     def stop(self):
@@ -57,9 +67,20 @@ class command(object):
     def POST(self, command_code):
         if command_code == None:
             cherrypy.response.status = "400 Bad Request"
-
             return { 'error': 'Missing command_code query param'}
         print('Received command ' + command_code)
+        if (command_code == 'OFF'):
+            off()
+        elif (command_code == 'WHITE'):
+            white()
+        elif (command_code == 'GREEN'):
+            green()
+        elif (command_code == 'BLUE'):
+            blue()
+        else:
+            print('Unkwon command')
+            cherrypy.response.status = "400 Bad Request"
+            return { 'error': 'Unkwon command'}
         return {'response': 'OK'}
 
 # set the priority according to your needs if you are hooking something
@@ -73,7 +94,7 @@ def secureheaders():
 
 def login():
     data = {'username': userName, 'password': passWord}
-    r = requests.post("https://localhost:3000/brimo/login-api/login", data=data, verify = False)
+    r = requests.post("https://192.168.1.40:3000/brimo/login-api/login", data=data, verify = False)
     global token 
     global headers
     token = r.json()['tkn_auth']
@@ -92,26 +113,35 @@ def register(ip=''):
         'freq': '30',
         'commands': [
             {
-			'command_descr': 'ENCENDER',
-			'command_code': 'ON'
+			'command_descr': 'GREEN ON',
+			'command_code': 'GREEN'
             },
             {
-                'command_descr': 'APAGAR',
-                'command_code': 'OFF'
+			'command_descr': 'BLUE ON',
+			'command_code': 'BLUE'
+            },
+            {
+			'command_descr': 'WHITE ON',
+			'command_code': 'WHITE'
+            },
+            {
+			'command_descr': 'OFF',
+			'command_code': 'OFF'
             }
         ]
     }
-    print(data)
-    r = requests.post("https://localhost:3000/brimo/sensors-api/devices", data=json.dumps(data), headers=headers, verify = False)
-    print(r.json()['device_id'])
+    r = requests.post("https://192.168.1.40:3000/brimo/sensors-api/devices", data=json.dumps(data), headers=headers, verify = False)
     deviceId = r.json()['device_id']
+    gpioSetUp()
     tmr = Timer()
     tmr.start()
     return
 
 def updateInfo(updatedInfo):
     global deviceId
-    r = requests.put("https://localhost:3000/brimo/sensors-api/devices/" + str(deviceId) + "?info=" + str(updatedInfo), headers=headers, verify = False)
+    global status
+    status = updatedInfo
+    r = requests.put("https://192.168.1.40:3000/brimo/sensors-api/devices/" + str(deviceId) + "?info=" + str(updatedInfo), headers=headers, verify = False)
     print(r.text)
     return
 
@@ -123,6 +153,38 @@ def getIp():
     ip = s.getsockname()[0]
     s.close()
     return ip
+
+def gpioSetUp():
+    GPIO.setup(RED, GPIO.OUT)
+    GPIO.output(RED, 0)
+    GPIO.setup(GREEN, GPIO.OUT)
+    GPIO.output(GREEN, 0)
+    GPIO.setup(BLUE, GPIO.OUT)
+    GPIO.output(BLUE, 0)
+
+def white():
+    GPIO.output(RED, 1)
+    GPIO.output(GREEN, 1)
+    GPIO.output(BLUE, 1)
+    updateInfo('WHITE')
+
+def blue():
+    GPIO.output(RED, 0)
+    GPIO.output(GREEN, 0)
+    GPIO.output(BLUE, 1)
+    updateInfo('BLUE')
+
+def green():
+    GPIO.output(RED, 1)
+    GPIO.output(GREEN, 0)
+    GPIO.output(BLUE, 0)
+    updateInfo('GREEN')
+
+def off():
+    GPIO.output(RED, 0)
+    GPIO.output(GREEN, 0)
+    GPIO.output(BLUE, 0)
+    updateInfo('OFF')
 
 if __name__ == '__main__':
     webservice = webService()

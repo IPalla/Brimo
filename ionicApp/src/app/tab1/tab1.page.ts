@@ -5,6 +5,7 @@ import { Device, Room } from 'src/app/models/devices.model';
 import { Router } from '@angular/router';
 import { Observable, of, from, interval, BehaviorSubject } from 'rxjs';
 import { map, retry, catchError, timeInterval } from 'rxjs/operators';
+import {List} from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -14,6 +15,7 @@ import { map, retry, catchError, timeInterval } from 'rxjs/operators';
 export class Tab1Page {
 
   @ViewChild('filterSelect') selectRef: IonSelect;
+  @ViewChild('slidingList') slidingList: List;
 
   aDevices: Array<Device>;
   aRooms: Array<Room>;
@@ -28,7 +30,6 @@ export class Tab1Page {
   }
 
   ionViewWillEnter(){
-    console.log('ionViewWillEnter');
     this.updateAll();
   }
 
@@ -58,10 +59,8 @@ export class Tab1Page {
   updateDevices(){
     return this.devicesService.getDevices().then(devs=>{
       devs.sort((dev1, dev2) => {
-        dev1.isOnline = this.isOnline(dev1);
-        dev2.isOnline = this.isOnline(dev2);
-        console.log(dev1.isOnline);
-        return Math.round(Number(new Date(dev2.lastupdate)) / 1000) - Math.round(Number(new Date(dev1.lastupdate)) / 1000)}) 
+        return Math.round(Number(new Date(dev2.lastupdate)) / 1000) - Math.round(Number(new Date(dev1.lastupdate)) / 1000)});
+      devs.map(dev=>dev.isOnline = this.isOnline(dev)); 
       this.aDevices=devs;
     }).catch(err=>this.checkUnauthorized(err));
   }
@@ -79,8 +78,9 @@ export class Tab1Page {
     this.devicesService.addRoom(roomDescr).then(()=>this.updateAll()).catch(err=>this.checkUnauthorized(err));
   }
 
-  deleteDevice(deviceId: number){
+  async deleteDevice(deviceId: number){
     this.devicesService.deleteDevice(deviceId).then(()=>this.updateAll()).catch(err=>this.checkUnauthorized(err));
+    await this.slidingList.closeSlidingItems();
   }
 
   compareDevices(newDevs: Array<Device>){
